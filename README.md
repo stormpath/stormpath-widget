@@ -24,5 +24,5 @@ const stormpath = new Stormpath({
 When you are ready for the user to login, simply invoke the login feature of the widget:
 
 ```javascript
-stormpath.login();
+stormpath.showLogin();  // or maybe stormpath.loginScreen() ?
 ```
