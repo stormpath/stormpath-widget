@@ -1,4 +1,5 @@
 # stormpath-widget
+
 Pay you $10 for a better name for this feature
 
 Wiki:
@@ -25,4 +26,26 @@ When you are ready for the user to login, simply invoke the login feature of the
 
 ```javascript
 stormpath.showLogin();  // or maybe stormpath.loginScreen() ?
+```
+
+### Build
+
+This will compile all of the js/html/css assets into the dist/stormpath.js and dist/stormpath.min.js files.
+
+```term
+$ npm run dev
+```
+
+### Develop
+
+This will compile all of the js/html/css assets into the dist/stormpath.dev.js while running webpack with the --watch flag.
+
+```term
+$ npm run dev
+```
+
+This will do the same as above, but at the same time launch a browser running an example project.
+
+```term
+$ npm run dev-browser
 ```
