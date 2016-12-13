@@ -1,0 +1,18 @@
+{
+  "presets": [
+    "es2015",
+    "stage-0"
+  ],
+  "plugins": [
+    [
+      "transform-decorators-legacy",
+      "dev-expression",
+      "transform-proto-to-assign",
+      [
+        "transform-es2015-classes", {
+          "loose": true
+        }
+      ]
+    ]
+  ]
+}

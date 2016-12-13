@@ -1,0 +1,27 @@
+{
+  "name": "stormpath",
+  "version": "0.0.1",
+  "main": [
+    "dist/stormpath.min.js"
+  ],
+  "keywords": [
+    "stormpath",
+    "widget",
+    "jwt",
+    "token",
+    "user",
+    "token based authentication",
+    "login",
+    "password",
+    "registration",
+    "user management"
+  ],
+  "ignore": [
+    ".tmp",
+    "build",
+    "example",
+    "src"
+  ],
+  "dependencies": {
+  }
+}
