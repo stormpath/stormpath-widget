@@ -18,12 +18,14 @@
   "scripts": {
     "build": "NODE_ENV=production webpack src/js/index.js dist/stormpath.js && NODE_ENV=production webpack -p src/js/index.js dist/stormpath.min.js",
     "dev": "NODE_ENV=development webpack src/js/index.js dist/stormpath.dev.js --watch",
-    "dev-browser": "open ./example/login/index.html && npm run dev"
+    "dev-browser": "open ./example/login/index.html && npm run dev",
+    "eslint": "./node_modules/.bin/eslint -c .eslintrc src/",
+    "test": "npm run eslint"
   },
   "dependencies": {
-    "rivets": "^0.9.6",
     "babel-cli": "^6.18.0",
     "babel-core": "^6.20.0",
+    "babel-eslint": "^6.1.2",
     "babel-loader": "^6.2.9",
     "babel-plugin-dev-expression": "^0.2.1",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
@@ -32,6 +34,8 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.16.0",
     "bundle-loader": "^0.5.4",
+    "eslint": "^3.12.1",
+    "rivets": "^0.9.6",
     "webpack": "^1.14.0"
   }
 }
