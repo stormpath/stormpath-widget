@@ -1,0 +1,9 @@
+<div class="sp-login-component">
+  <form>
+    <div sp-each-field="fields">
+      <label for="#login-field-{field.name}">{field.label}</label>
+      <input type="field.type" sp-name="field.type" sp-value="field.value" />
+    </div>
+    <button sp-on-click="submit">Submit</button>
+  </form>
+</div>

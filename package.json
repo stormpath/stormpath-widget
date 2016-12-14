@@ -8,7 +8,7 @@
     "*.md",
     "dist"
   ],
-  "main": "src/js/index",
+  "main": "src/index",
   "repository": {
     "type": "git",
     "url": "https://github.com/stormpath/stormpath-widget.git"
@@ -16,8 +16,8 @@
   "homepage": "https://stormpath.github.io/stormpath-widget/",
   "bugs": "https://github.com/stormpath/stormpath-widget/issues",
   "scripts": {
-    "build": "NODE_ENV=production webpack src/js/index.js dist/stormpath.js && NODE_ENV=production webpack -p src/js/index.js dist/stormpath.min.js",
-    "dev": "NODE_ENV=development webpack src/js/index.js dist/stormpath.dev.js --watch",
+    "build": "NODE_ENV=production webpack src/index.js dist/stormpath.js && NODE_ENV=production webpack -p src/index.js dist/stormpath.min.js",
+    "dev": "NODE_ENV=development webpack src/index.js dist/stormpath.dev.js --watch",
     "dev-browser": "open ./example/login/index.html && npm run dev",
     "eslint": "./node_modules/.bin/eslint -c .eslintrc src/",
     "test": "npm run eslint"
@@ -34,8 +34,13 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-0": "^6.16.0",
     "bundle-loader": "^0.5.4",
+    "css-loader": "^0.26.1",
     "eslint": "^3.12.1",
+    "html-loader": "^0.4.4",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
     "rivets": "^0.9.6",
+    "style-loader": "^0.13.1",
     "webpack": "^1.14.0"
   }
 }
