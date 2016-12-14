@@ -5,7 +5,8 @@
     "before": true,
     "beforeEach": true,
     "describe": true,
-    "it": true
+    "it": true,
+    "pkg"
   },
   "env": {
     "node": true
