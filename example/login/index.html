@@ -14,13 +14,20 @@
       function onDocumentReady() {
         var stormpath = new Stormpath({
           authStrategy: 'token',
-          // Robert's app: https://lawful-heron.apps.stormpath.io'
+          // Robert's app: 'https://lawful-heron.apps.stormpath.io'
           // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
-          api: 'https://oval-summer.apps.dev.stormpath.io'
+          api: 'https://lawful-heron.apps.stormpath.io'
+        });
+
+        stormpath.once('unauthenticated', () => {
+          stormpath.showLogin();
+        });
+
+        stormpath.once('authenticated', () => {
+          console.log('We\'re logged in!');
         });
 
         //function onLoginButtonClick() {
-          stormpath.showLogin();
         //}
 
         //document.getElementById('login-button')

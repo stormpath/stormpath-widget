@@ -1,6 +1,6 @@
 <div class="sp-login-component">
   <div sp-show="state | is 'loading'">Loading view model</div>
-  <div sp-show="state | is 'loading_error'">Error: {err.message}</div>
+  <div sp-show="state | is 'loading_error'">Error: {error.message}</div>
   <div sp-show="state | is 'authenticated'">You are authenticated</div>
   <form sp-show="state | in 'ready,login_error'">
     <div sp-each-field="fields">

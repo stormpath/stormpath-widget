@@ -1,8 +1,27 @@
-class ClientApiUserService {
+import EventEmitter from 'events';
+
+class ClientApiUserService extends EventEmitter {
   constructor(httpProvider, storage) {
+    super();
     httpProvider.setRequestInterceptor(this);
     this.httpProvider = httpProvider;
     this.storage = storage;
+    this.account = null;
+    this.mostRecentState = null;
+  }
+
+  _setState(newState) {
+    if (this.mostRecentState !== newState) {
+      console.log('Setting state', newState);
+      this.mostRecentState = newState;
+      this.emit(newState);
+    }
+  }
+
+  getAccount() {
+    return new Promise((accept) => {
+      accept(this.account);
+    });
   }
 
   setToken(token) {
@@ -13,28 +32,57 @@ class ClientApiUserService {
     return this.storage.get('stormpath.token');
   }
 
+  removeToken() {
+    return this.storage.remove('stormpath.token');
+  }
+
   getState() {
-    return this.getToken().then((token) => {
-      if (token) {
-        return Promise.resolve('authenticated');
-      } else {
-        return Promise.resolve('unauthenticated');
-      }
-    });
+    const authenticated = () => {
+      this._setState('authenticated');
+      return Promise.resolve('authenticated');
+    };
+
+    const unauthenticated = () => {
+      this._setState('unauthenticated');
+      return Promise.resolve('unauthenticated');
+    };
+
+    return this.getToken()
+      .then((token) => {
+        if (!token) {
+          return unauthenticated();
+        }
+
+        if (this.account) {
+          return authenticated();
+        }
+
+        return this.me()
+          .then(authenticated)
+          .catch(this.removeToken().then(unauthenticated));
+      })
+      .catch(unauthenticated);
   }
 
   onBeforeRequest(request) {
     return this.getToken()
       .then((token) => {
-        if (!request.headers) {
-          request.headers = {};
-        }
-
         if (token) {
+          if (!request.headers) {
+            request.headers = {};
+          }
           request.headers['Authorization'] = 'Bearer ' + token;
         }
       })
       .catch(() => Promise.resolve());
+  }
+
+  me() {
+    return this.httpProvider.getJson('/me').then((result) => {
+      // Question is if we should do this...
+      // I.e. cache the account to avoid hitting the /me endpoint unnecessarily when calling getState().
+      this.account = result.account;
+    });
   }
 
   getLoginViewModel() {
@@ -54,6 +102,13 @@ class ClientApiUserService {
       password
     }).then((response) => {
       return this.setToken(response.access_token);
+    });
+  }
+
+  logout() {
+    return this.storage.remove('stormpath.token').then(() => {
+      this.account = null;
+      this._setState('unauthenticated');
     });
   }
 }

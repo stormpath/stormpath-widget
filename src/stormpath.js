@@ -1,10 +1,11 @@
 import extend from 'xtend';
 import Rivets from 'rivets';
+import EventEmitter from 'events';
 
 import { LoginComponent } from './components';
 import { HttpProvider, LocalStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
 
-class Stormpath {
+class Stormpath extends EventEmitter {
   static prefix = 'sp';
   static version = pkg.version;
 
@@ -18,10 +19,15 @@ class Stormpath {
   };
 
   constructor(options) {
+    super();
+
     // This needs to be fixed so that provided options override default.
     options = extend(this.options, options);
-    this._initializeRivets(options.templates);
+
     this.userService = this._createUserService(options);
+
+    this._initializeUserServiceEvents();
+    this._initializeRivets(options.templates);
   }
 
   _createUserService(options) {
@@ -44,6 +50,14 @@ class Stormpath {
     }
 
     return userService;
+  }
+
+  _initializeUserServiceEvents() {
+    this.userService.on('authenticated', () => this.emit('authenticated'));
+    this.userService.on('unauthenticated', () => this.emit('unauthenticated'));
+
+    // Make an initial request to getState() in order to trigger our first user events.
+    this.userService.getState();
   }
 
   _initializeRivets(templates) {

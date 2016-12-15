@@ -25,7 +25,9 @@ const stormpath = new Stormpath({
 When you are ready for the user to login, simply invoke the login feature of the widget:
 
 ```javascript
-stormpath.showLogin();
+stormpath.once('unauthenticated', function () {
+  stormpath.showLogin();
+});
 ```
 
 ### Build
@@ -42,10 +44,4 @@ This will compile all of the js/html/css assets into the dist/stormpath.dev.js w
 
 ```term
 $ npm run dev
-```
-
-This will do the same as above, but at the same time launch a browser running an example project.
-
-```term
-$ npm run dev-browser
 ```
