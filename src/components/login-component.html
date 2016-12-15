@@ -1,5 +1,8 @@
 <div class="sp-login-component">
-  <form>
+  <div sp-show="fetching">Loading view model</div>
+  <div sp-show="error">{error}</div>
+  <div sp-show="authenticated">You are authenticated</div>
+  <form sp-hide="fetching">
     <div sp-each-field="fields">
       <label for="#login-field-{field.name}">{field.label}</label>
       <input type="field.type" sp-name="field.type" sp-value="field.value" />

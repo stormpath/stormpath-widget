@@ -7,23 +7,32 @@ class LoginComponent {
   static view = view;
   static style = style;
 
-  fields = [{
-    name: 'login',
-    label: 'Username/Email',
-    type: 'string',
-    value: ''
-  }, {
-    name: 'password',
-    label: 'Password',
-    type: 'password',
-    value: ''
-  }];
+  fields;
+  error;
+  authenticated = false;
 
   constructor(data) {
     this.id = LoginComponent.id;
+    this.api = data.api;
 
+    // I think this would be a good way to allow the
+    // developer to override the remote field config
     if (data.fields) {
       this.fields = data.fields;
+    } else {
+      this.fetching = true;
+
+      // How do we feel about promises?  I do think they read well
+
+      this.api.getLoginViewModel()
+        .then((data) => {
+          this.fetching = false;
+          this.fields = data.form.fields;
+        })
+        .catch((error) => {
+          this.fetching = false; // having to duplicate this is annoying though :( in some implementations we have finally() to do catchall things
+          this.error = error;
+        });
     }
   }
 
@@ -32,9 +41,16 @@ class LoginComponent {
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
 
-    console.log('Submitting form!', 'login=', fields.login.value, 'password=', fields.password.value);
+    this.api.authenticate({
 
-    fields.login.value += '1';
+      grant_type: 'password',
+      username: fields.login.value,
+      password: fields.password.value
+
+    }).then(() => {
+      this.authenticated = true;
+    }).catch((error) => this.error = error);
+
   }
 }
 

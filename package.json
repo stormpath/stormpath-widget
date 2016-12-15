@@ -36,11 +36,14 @@
     "bundle-loader": "^0.5.4",
     "css-loader": "^0.26.1",
     "eslint": "^3.12.1",
+    "form-urlencoded": "^1.5.0",
     "html-loader": "^0.4.4",
     "less": "^2.7.1",
     "less-loader": "^2.2.3",
     "rivets": "^0.9.6",
     "style-loader": "^0.13.1",
-    "webpack": "^1.14.0"
+    "webpack": "^1.14.0",
+    "xhr": "^2.3.1",
+    "xtend": "^4.0.1"
   }
 }

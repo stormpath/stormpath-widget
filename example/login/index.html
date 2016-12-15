@@ -12,7 +12,9 @@
       console.log('Loaded Stormpath v%s.', Stormpath.version);
 
       function onDocumentReady() {
-        var stormpath = new Stormpath();
+        var stormpath = new Stormpath({
+          api: 'https://lawful-heron.apps.stormpath.io'
+        });
 
         function onLoginButtonClick() {
           stormpath.showLogin();

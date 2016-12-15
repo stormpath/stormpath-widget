@@ -1,5 +1,9 @@
+import extend from 'xtend';
 import Rivets from 'rivets';
+
+import ClientApi from './client-api';
 import { LoginComponent } from './components';
+
 
 class Stormpath {
   static prefix = 'sp';
@@ -16,8 +20,9 @@ class Stormpath {
 
   constructor(options) {
     // This needs to be fixed so that provided options override default.
-    options = this.options;
+    options = extend(this.options, options);
     this._initializeRivets(options.templates);
+    this.api = new ClientApi(options);
   }
 
   _initializeRivets(templates) {
@@ -36,7 +41,9 @@ class Stormpath {
 
   showLogin(element) {
     const targetElement = element || document.body;
-    const data = {};
+    const data = {
+      api: this.api
+    };
     Rivets.init(Stormpath.prefix + '-' + LoginComponent.id, targetElement, data);
   }
 }
