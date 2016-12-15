@@ -1,4 +1,3 @@
-import Rivets from 'rivets';
 import utils from '../utils';
 import view from 'html!./login-component.html';
 import style from '!style-loader!css-loader!less-loader!./login-component.less';
@@ -28,7 +27,7 @@ class LoginComponent {
     }
   }
 
-  submit = (event, model) => {
+  submit = (event) => {
     event.preventDefault();
 
     const fields = utils.mapArrayToObject(this.fields, 'name');

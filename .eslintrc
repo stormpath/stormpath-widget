@@ -5,6 +5,7 @@
     "before": true,
     "beforeEach": true,
     "describe": true,
+    "document": true,
     "it": true,
     "pkg"
   },
