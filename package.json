@@ -16,9 +16,8 @@
   "homepage": "https://stormpath.github.io/stormpath-widget/",
   "bugs": "https://github.com/stormpath/stormpath-widget/issues",
   "scripts": {
-    "build": "NODE_ENV=production webpack src/index.js dist/stormpath.js && NODE_ENV=production webpack -p src/index.js dist/stormpath.min.js",
-    "dev": "NODE_ENV=development webpack src/index.js dist/stormpath.dev.js --watch",
-    "dev-browser": "open ./example/login/index.html && npm run dev",
+    "build": "NODE_ENV=production webpack src/index.js dist/stormpath.js --display-modules && NODE_ENV=production webpack -p src/index.js dist/stormpath.min.js --display-modules",
+    "dev": "node dev-server.js",
     "eslint": "./node_modules/.bin/eslint -c .eslintrc src/",
     "test": "npm run eslint"
   },
@@ -45,5 +44,9 @@
     "webpack": "^1.14.0",
     "xhr": "^2.3.1",
     "xtend": "^4.0.1"
+  },
+  "devDependencies": {
+    "express": "^4.14.0",
+    "webpack-dev-middleware": "^1.8.4"
   }
 }

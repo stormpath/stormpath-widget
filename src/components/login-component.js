@@ -7,50 +7,58 @@ class LoginComponent {
   static view = view;
   static style = style;
 
-  fields;
-  error;
-  authenticated = false;
+  fields = [];
+  state = 'unknown';
 
   constructor(data) {
-    this.id = LoginComponent.id;
-    this.api = data.api;
+    this.userService = data.userService;
 
-    // I think this would be a good way to allow the
-    // developer to override the remote field config
-    if (data.fields) {
-      this.fields = data.fields;
-    } else {
-      this.fetching = true;
+    this.state = 'loading';
 
-      // How do we feel about promises?  I do think they read well
+    this.userService.getState().then((state) => {
+      if (state === 'authenticated') {
+        this.state = 'authenticated';
+        return;
+      }
 
-      this.api.getLoginViewModel()
-        .then((data) => {
-          this.fetching = false;
-          this.fields = data.form.fields;
-        })
-        .catch((error) => {
-          this.fetching = false; // having to duplicate this is annoying though :( in some implementations we have finally() to do catchall things
-          this.error = error;
-        });
-    }
+      // I think this would be a good way to allow the
+      // developer to override the remote field config
+      if (data.fields) {
+        this.fields = data.fields;
+        this.onViewModelLoaded({form: { fields: data.fields }});
+        return;
+      }
+
+      this.userService.getLoginViewModel()
+        .then(this.onViewModelLoaded.bind(this))
+        .catch(this.onError.bind(this, 'loading_error'));
+    });
   }
 
-  submit = (event) => {
+  onError(state, err) {
+    this.error = err;
+    this.state = state;
+  }
+
+  onViewModelLoaded(data) {
+    this.fields = data.form.fields;
+    this.state = 'ready';
+  }
+
+  onAuthenticated() {
+    this.state = 'authenticated';
+  }
+
+  onFormSubmit = (event) => {
     event.preventDefault();
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
+    const username = fields.login.value;
+    const password = fields.password.value;
 
-    this.api.authenticate({
-
-      grant_type: 'password',
-      username: fields.login.value,
-      password: fields.password.value
-
-    }).then(() => {
-      this.authenticated = true;
-    }).catch((error) => this.error = error);
-
+    this.userService.login(username, password)
+      .then(this.onAuthenticated.bind(this))
+      .catch(this.onError.bind(this, 'login_error'));
   }
 }
 

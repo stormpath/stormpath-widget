@@ -1,9 +1,8 @@
 import extend from 'xtend';
 import Rivets from 'rivets';
 
-import ClientApi from './client-api';
 import { LoginComponent } from './components';
-
+import { HttpProvider, LocalStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
 
 class Stormpath {
   static prefix = 'sp';
@@ -22,13 +21,39 @@ class Stormpath {
     // This needs to be fixed so that provided options override default.
     options = extend(this.options, options);
     this._initializeRivets(options.templates);
-    this.api = new ClientApi(options);
+    this.userService = this._createUserService(options);
+  }
+
+  _createUserService(options) {
+    const httpProvider = new HttpProvider(options.api);
+
+    let userService;
+
+    switch (options.authStrategy) {
+      case 'token':
+        userService = new ClientApiUserService(httpProvider, new LocalStorage());
+        break;
+
+      case 'mock':
+        userService = new MockUserService();
+        break;
+
+      default:
+        userService = new CookieUserService(httpProvider);
+        break;
+    }
+
+    return userService;
   }
 
   _initializeRivets(templates) {
     Rivets.configure({
       prefix: Stormpath.prefix
     });
+
+    Rivets.formatters['is'] = (a, b) => a === b;
+    Rivets.formatters['isnt'] = (a, b) => a !== b;
+    Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
 
     for (var id in templates) {
       const options = templates[id];
@@ -42,7 +67,7 @@ class Stormpath {
   showLogin(element) {
     const targetElement = element || document.body;
     const data = {
-      api: this.api
+      userService: this.userService
     };
     Rivets.init(Stormpath.prefix + '-' + LoginComponent.id, targetElement, data);
   }

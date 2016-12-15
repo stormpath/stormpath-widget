@@ -7,21 +7,24 @@
   <head>
     <meta charset="utf-8">
     <title>Stormpath Widget - Login Example</title>
-    <script src="../../dist/stormpath.dev.js"></script>
+    <script src="/js/app.js"></script>
     <script>
       console.log('Loaded Stormpath v%s.', Stormpath.version);
 
       function onDocumentReady() {
         var stormpath = new Stormpath({
-          api: 'https://lawful-heron.apps.stormpath.io'
+          authStrategy: 'token',
+          // Robert's app: https://lawful-heron.apps.stormpath.io'
+          // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
+          api: 'https://oval-summer.apps.dev.stormpath.io'
         });
 
-        function onLoginButtonClick() {
+        //function onLoginButtonClick() {
           stormpath.showLogin();
-        }
+        //}
 
-        document.getElementById('login-button')
-          .addEventListener('click', onLoginButtonClick);
+        //document.getElementById('login-button')
+        //  .addEventListener('click', onLoginButtonClick);
       }
 
       window.onload = onDocumentReady;
