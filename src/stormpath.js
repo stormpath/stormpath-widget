@@ -2,7 +2,7 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
-import { LoginComponent } from './components';
+import { RegistrationComponent, LoginComponent } from './components';
 import { HttpProvider, LocalStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
 
 class Stormpath extends EventEmitter {
@@ -14,6 +14,10 @@ class Stormpath extends EventEmitter {
       [LoginComponent.id]: {
         component: LoginComponent,
         view: () => LoginComponent.view
+      },
+      [RegistrationComponent.id]: {
+        component: RegistrationComponent,
+        view: () => RegistrationComponent.view
       }
     }
   };
@@ -31,7 +35,7 @@ class Stormpath extends EventEmitter {
   }
 
   _createUserService(options) {
-    const httpProvider = new HttpProvider(options.api);
+    const httpProvider = new HttpProvider(options.appUri);
 
     let userService;
 
@@ -53,6 +57,9 @@ class Stormpath extends EventEmitter {
   }
 
   _initializeUserServiceEvents() {
+    this.userService.on('loggedIn', () => this.emit('loggedIn'));
+    this.userService.on('loggedOut', () => this.emit('loggedOut'));
+    this.userService.on('registered', () => this.emit('registered'));
     this.userService.on('authenticated', () => this.emit('authenticated'));
     this.userService.on('unauthenticated', () => this.emit('unauthenticated'));
 
@@ -84,6 +91,14 @@ class Stormpath extends EventEmitter {
       userService: this.userService
     };
     Rivets.init(Stormpath.prefix + '-' + LoginComponent.id, targetElement, data);
+  }
+
+  showRegistration(element) {
+    const targetElement = element || document.body;
+    const data = {
+      userService: this.userService
+    };
+    Rivets.init(Stormpath.prefix + '-' + RegistrationComponent.id, targetElement, data);
   }
 }
 

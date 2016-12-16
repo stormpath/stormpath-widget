@@ -19,6 +19,15 @@ class HttpProvider {
     });
   }
 
+  postJson(path, data) {
+    return this._createRequest({
+      method: 'POST',
+      path: path,
+      body: data,
+      json: true
+    });
+  }
+
   postForm(path, data) {
     return this._createRequest({
       method: 'POST',

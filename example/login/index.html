@@ -11,33 +11,69 @@
     <script>
       console.log('Loaded Stormpath v%s.', Stormpath.version);
 
+      function createButton(text, onClickHandler) {
+          var buttonElement = document.createElement('button');
+
+          buttonElement.innerHTML = text;
+
+          if (onClickHandler) {
+            buttonElement.addEventListener('click', onClickHandler);
+          }
+
+          return buttonElement;
+      }
+
       function onDocumentReady() {
         var stormpath = new Stormpath({
           authStrategy: 'token',
           // Robert's app: 'https://lawful-heron.apps.stormpath.io'
           // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
-          api: 'https://lawful-heron.apps.stormpath.io'
-        });
-
-        stormpath.once('unauthenticated', () => {
-          stormpath.showLogin();
+          appUri: 'https://lawful-heron.apps.stormpath.io'
         });
 
         stormpath.once('authenticated', () => {
-          console.log('We\'re logged in!');
+          console.log('We\'re authenticated!');
         });
 
-        //function onLoginButtonClick() {
-        //}
+        stormpath.once('unauthenticated', () => {
+          console.log('We\'re not authenticated. Showing login/registration options.');
 
-        //document.getElementById('login-button')
-        //  .addEventListener('click', onLoginButtonClick);
+          var loginButton = createButton('Login', function () {
+            stormpath.showLogin();
+          });
+
+          document.body.appendChild(loginButton);
+
+          var registrationButton = createButton('Registration', function () {
+            stormpath.showRegistration();
+          });
+
+          document.body.appendChild(registrationButton);
+        });
+
+        stormpath.once('registered', function (account) {
+          console.log('User just created a new account!', account);
+        });
+
+        stormpath.once('loggedIn', function (account) {
+          console.log('User just logged in!', account);
+        });
+
+        stormpath.once('loggedOut', function () {
+          console.log('User just logged out!');
+        });
+
+        //authenticated
+        //unauthenticated
+        //loggedIn
+        //loggedOut
+        //registered
       }
 
       window.onload = onDocumentReady;
     </script>
   </head>
   <body>
-    <button id="login-button">Login</button>
+    <!--button id="login-button">Login</button-->
   </body>
 </html>

@@ -1,6 +1,42 @@
-class MockUserService {
+import EventEmitter from 'events';
+
+class MockUserService extends EventEmitter {
+  constructor() {
+    super();
+    this.authenticated = false;
+  }
+
   getState() {
-    return Promise.resolve('unauthenticated');
+    this.emit(this.authenticated ? 'authenticated' : 'unauthenticated');
+    return Promise.resolve(this.authenticated ? 'authenticated' : 'unauthenticated');
+  }
+
+  getRegistrationViewModel() {
+    return new Promise((accept) => {
+      accept({
+      });
+    });
+  }
+
+  me() {
+    return new Promise((accept) => {
+      accept({
+        account: {
+          href: 'https://api.stormpath.com/v1/accounts/5tNTKayRIkNQIcjjcvaaMz',
+          createdAt: '2016-12-16T12:25:40.292Z',
+          modifiedAt: '2016-12-16T12:25:40.292Z',
+          username: 'robin+test@stormpath.com',
+          email: 'robin+test@stormpath.com',
+          givenName: 'Robin',
+          middleName: null,
+          surname: 'Test',
+          status: 'ENABLED',
+          fullName: 'Robin Test',
+          emailVerificationStatus: 'UNVERIFIED',
+          passwordModifiedAt: '2016-12-16T12:25:40.000Z'
+        }
+      });
+    });
   }
 
   getLoginViewModel() {
@@ -39,11 +75,28 @@ class MockUserService {
   login(username, password) {
     return new Promise((accept, reject) => {
       if (username === 'test' && password === 'test') {
+        this.authenticated = true;
+        this.emit('loggedIn');
+        this.emit('authenticated');
         accept();
       } else {
+        this.authenticated = false;
         reject({message:'Invalid username or password.'});
       }
     });
+  }
+
+  register(data) {
+    return new Promise((accept) => {
+      this.emit('registered');
+    });
+  }
+
+  logout() {
+    this.authenticated = false;
+    this.emit('loggedOut');
+    this.emit('unauthenticated');
+    return Promise.resolve();
   }
 }
 

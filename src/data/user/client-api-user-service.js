@@ -10,11 +10,10 @@ class ClientApiUserService extends EventEmitter {
     this.mostRecentState = null;
   }
 
-  _setState(newState) {
-    if (this.mostRecentState !== newState) {
-      console.log('Setting state', newState);
+  _setState(newState, force, ...args) {
+    if (this.mostRecentState !== newState || force) {
       this.mostRecentState = newState;
-      this.emit(newState);
+      this.emit(newState, ...args);
     }
   }
 
@@ -24,16 +23,20 @@ class ClientApiUserService extends EventEmitter {
     });
   }
 
-  setToken(token) {
-    return this.storage.set('stormpath.token', token);
+  setToken(accessToken, refreshToken) {
+    return this.storage.set('stormpath.access_token', accessToken).then(() => {
+      if (refreshToken) {
+        return this.storage.set('stormpath.refresh_token', refreshToken);
+      }
+    });
   }
 
-  getToken() {
-    return this.storage.get('stormpath.token');
+  getToken(type) {
+    return this.storage.get('stormpath.' + type);
   }
 
-  removeToken() {
-    return this.storage.remove('stormpath.token');
+  removeToken(type) {
+    return this.storage.remove('stormpath.' + type);
   }
 
   getState() {
@@ -47,9 +50,9 @@ class ClientApiUserService extends EventEmitter {
       return Promise.resolve('unauthenticated');
     };
 
-    return this.getToken()
-      .then((token) => {
-        if (!token) {
+    return this.getToken('access_token')
+      .then((accessToken) => {
+        if (!accessToken) {
           return unauthenticated();
         }
 
@@ -59,19 +62,23 @@ class ClientApiUserService extends EventEmitter {
 
         return this.me()
           .then(authenticated)
-          .catch(this.removeToken().then(unauthenticated));
+          .catch(() =>
+            this.removeToken('access_token')
+              .then(this.removeToken('refresh_token'))
+              .then(unauthenticated)
+          );
       })
       .catch(unauthenticated);
   }
 
   onBeforeRequest(request) {
-    return this.getToken()
-      .then((token) => {
-        if (token) {
+    return this.getToken('access_token')
+      .then((accessToken) => {
+        if (accessToken) {
           if (!request.headers) {
             request.headers = {};
           }
-          request.headers['Authorization'] = 'Bearer ' + token;
+          request.headers['Authorization'] = 'Bearer ' + accessToken;
         }
       })
       .catch(() => Promise.resolve());
@@ -79,14 +86,22 @@ class ClientApiUserService extends EventEmitter {
 
   me() {
     return this.httpProvider.getJson('/me').then((result) => {
+      const account = result.account;
+
       // Question is if we should do this...
       // I.e. cache the account to avoid hitting the /me endpoint unnecessarily when calling getState().
-      this.account = result.account;
+      this.account = account;
+
+      return Promise.resolve(account);
     });
   }
 
   getLoginViewModel() {
     return this.httpProvider.getJson('/login');
+  }
+
+  getRegisterViewModel() {
+    return this.httpProvider.getJson('/register');
   }
 
   login(username, password) {
@@ -101,14 +116,37 @@ class ClientApiUserService extends EventEmitter {
       username,
       password
     }).then((response) => {
-      return this.setToken(response.access_token);
+      return this.setToken(response.access_token, response.refresh_token).then(() => {
+        return this.me().then((account) => {
+          console.log('Got result', account);
+          this._setState('loggedIn', true, account);
+          this._setState('authenticated');
+        });
+      });
+    });
+  }
+
+  register(data) {
+    return this.httpProvider.postJson('/register', data).then((result) => {
+      this.account = result.account;
+      this._setState('registered');
     });
   }
 
   logout() {
-    return this.storage.remove('stormpath.token').then(() => {
-      this.account = null;
-      this._setState('unauthenticated');
+    return this.storage.get('stormpath.refresh_token').then((refreshToken) => {
+      return this.httpProvider.postForm('/oauth/revoke', {
+        token: refreshToken,
+        token_type_hint: 'refresh_token'
+      }).then(() => {
+        return this.storage.remove('stormpath.access_token').then(() => {
+          return this.storage.remove('stormpath.refresh_token').then(() => {
+            this.account = null;
+            this._setState('loggedOut');
+            this._setState('unauthenticated');
+          });
+        });
+      });
     });
   }
 }

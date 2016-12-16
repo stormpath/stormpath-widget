@@ -1,13 +1,13 @@
-<div class="sp-login-component">
+<div class="sp-registration-component">
   <div sp-show="state | is 'loading'">Loading view model</div>
   <div sp-show="state | is 'loading_error'">Error: {error.message}</div>
-  <div sp-show="state | is 'authenticated'">You are authenticated</div>
-  <form sp-show="state | in 'ready,login_error'">
+  <div sp-show="state | is 'account_created'">Your new account is created!</div>
+  <form sp-show="state | in 'ready,validation_error'">
     <div sp-each-field="fields">
       <label for="#login-field-{field.name}">{field.label}</label>
       <input sp-type="field.type" sp-name="field.type" sp-value="field.value" />
     </div>
-    <div sp-show="state | is 'login_error'">{error.message}</div>
-    <button sp-on-click="onFormSubmit">Login</button>
+    <div sp-show="state | is 'validation_error'">{error.message}</div>
+    <button sp-on-click="onFormSubmit">Register</button>
   </form>
 </div>
