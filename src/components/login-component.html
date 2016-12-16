@@ -4,8 +4,9 @@
   <div sp-show="state | is 'authenticated'">You are authenticated</div>
   <form sp-show="state | in 'ready,login_error'">
     <div sp-each-field="fields">
-      <label for="#login-field-{field.name}">{field.label}</label>
-      <input sp-type="field.type"
+      <label sp-for="field.name | prefix 'login-field-'">{field.label}</label>
+      <input sp-id="field.name | prefix 'login-field-'"
+             sp-type="field.type"
              sp-name="field.name"
              sp-value="field.value"
              sp-placeholder="field.placeholder"

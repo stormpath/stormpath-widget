@@ -70,6 +70,7 @@ class Stormpath extends EventEmitter {
     Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
 
     Rivets.binders.required = (el, val) => el.required = val === true;
+    Rivets.formatters.prefix = (name, prefix) => prefix + name;
 
     for (var id in templates) {
       const options = templates[id];
