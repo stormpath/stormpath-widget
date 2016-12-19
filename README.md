@@ -18,17 +18,62 @@ The widget works with the Stormpath Client API on a per-application basis, so yo
 
 ```javascript
 const stormpath = new Stormpath({
-  api: 'https://foo.apps.stormpath.io'
+  authStrategy: 'token',
+  appUri: 'https://foo.apps.stormpath.io'
 });
 ```
 
 When you are ready for the user to login, simply invoke the login feature of the widget:
 
 ```javascript
-stormpath.once('unauthenticated', function () {
+stormpath.on('unauthenticated', function () {
   stormpath.showLogin();
 });
 ```
+
+### API
+
+#### showLogin([renderTo])
+
+Shows a login form. If `renderTo` is specified, it will render the form to that element. Else it will show the form in an overlay.
+
+#### showRegistration([renderTo])
+
+Shows a registration form. If `renderTo` is specified, it will render the form to that element. Else it will show the form in an overlay.
+
+#### logout()
+
+Logs the user out.
+
+### Events
+
+Supported events that are emitted from the `Stormpath` instance.
+
+```javascript
+stormpath.on('loggedIn', function onLoggedIn() {
+  console.log('User logged in!');
+});
+```
+
+#### authenticated
+
+This event is either emitted directly when the Stormpath instance is created and a session is present, or after a user logs in.
+
+#### unauthenticated
+
+This event is either emitted directly when the Stormpath instance is created and no session is present, or after a user logs out.
+
+#### registered
+
+This event is emitted when a new account is created.
+
+#### loggedIn
+
+This event is emitted once a user logs in.
+
+#### loggedOut
+
+This event is emitted once a user logs out.
 
 ### Build
 

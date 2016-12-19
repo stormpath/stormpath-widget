@@ -40,8 +40,13 @@ class RegistrationComponent {
     this.state = 'ready';
   }
 
-  onAccountCreated() {
-    this.state = 'account_created';
+  onRegistrationComplete(result) {
+    if (result.status === 'ENABLED') {
+      this.state = 'account_enabled';
+      // TODO: Automatically login the account in with the provided credentials?
+    } else {
+      this.state = 'account_pending';
+    }
   }
 
   onFormSubmit = (event) => {
@@ -55,7 +60,7 @@ class RegistrationComponent {
     }
 
     this.userService.register(accountData)
-      .then(this.onAccountCreated.bind(this))
+      .then(this.onRegistrationComplete.bind(this))
       .catch(this.onError.bind(this, 'validation_error'));
   }
 }

@@ -11,16 +11,24 @@
     <script>
       console.log('Loaded Stormpath v%s.', Stormpath.version);
 
-      function createButton(text, onClickHandler) {
-          var buttonElement = document.createElement('button');
+      function initializeView(stormpath) {
+        var stormpathContainer = document.getElementById('stormpath-container');
 
-          buttonElement.innerHTML = text;
+        // Authenticated
+        var authenticatedContainer = document.getElementById('authenticated');
+        var loginButton = document.getElementById('login-button');
+        var registerButton = document.getElementById('register-button');
 
-          if (onClickHandler) {
-            buttonElement.addEventListener('click', onClickHandler);
-          }
+        authenticatedContainer.style.display = 'none';
+        loginButton.addEventListener('click', () => stormpath.showLogin(stormpathContainer));
+        registerButton.addEventListener('click', () => stormpath.showRegistration(stormpathContainer));
 
-          return buttonElement;
+        // Unauthenticated
+        var unauthenticatedContainer = document.getElementById('unauthenticated');
+        var logoutButton = document.getElementById('logout-button');
+
+        unauthenticatedContainer.style.display = 'none';
+        logoutButton.addEventListener('click', () => stormpath.logout());
       }
 
       function onDocumentReady() {
@@ -31,24 +39,22 @@
           appUri: 'https://lawful-heron.apps.stormpath.io'
         });
 
-        stormpath.once('authenticated', () => {
+        stormpath.on('authenticated', () => {
           console.log('We\'re authenticated!');
+
+          document.getElementById('authenticated').style.display = 'block';
+          document.getElementById('unauthenticated').style.display = 'none';
+
+          stormpath.getAccessToken().then((accessToken) => {
+            document.getElementById('access-token').innerHTML = accessToken;
+          });
         });
 
-        stormpath.once('unauthenticated', () => {
+        stormpath.on('unauthenticated', () => {
           console.log('We\'re not authenticated. Showing login/registration options.');
 
-          var loginButton = createButton('Login', function () {
-            stormpath.showLogin();
-          });
-
-          document.body.appendChild(loginButton);
-
-          var registrationButton = createButton('Registration', function () {
-            stormpath.showRegistration();
-          });
-
-          document.body.appendChild(registrationButton);
+          document.getElementById('authenticated').style.display = 'none';
+          document.getElementById('unauthenticated').style.display = 'block';
         });
 
         stormpath.once('registered', function (account) {
@@ -63,17 +69,23 @@
           console.log('User just logged out!');
         });
 
-        //authenticated
-        //unauthenticated
-        //loggedIn
-        //loggedOut
-        //registered
+        initializeView(stormpath);
       }
 
       window.onload = onDocumentReady;
     </script>
   </head>
   <body>
-    <!--button id="login-button">Login</button-->
+    <div id="authenticated">
+      You are logged in!<br><br>
+      This is your access token: <span id="access-token"></span><br><br>
+      <button id="logout-button">Logout</button>
+      <hr>
+    </div>
+    <div id="unauthenticated">
+      <button id="login-button">Login</button> or <button id="register-button">Create a new account</button>
+      <hr>
+    </div>
+    <div id="stormpath-container"></div>
   </body>
 </html>

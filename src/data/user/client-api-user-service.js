@@ -1,11 +1,11 @@
 import EventEmitter from 'events';
 
 class ClientApiUserService extends EventEmitter {
-  constructor(httpProvider, storage) {
+  constructor(httpProvider, tokenStorage) {
     super();
     httpProvider.setRequestInterceptor(this);
     this.httpProvider = httpProvider;
-    this.storage = storage;
+    this.tokenStorage = tokenStorage;
     this.account = null;
     this.mostRecentState = null;
   }
@@ -23,22 +23,6 @@ class ClientApiUserService extends EventEmitter {
     });
   }
 
-  setToken(accessToken, refreshToken) {
-    return this.storage.set('stormpath.access_token', accessToken).then(() => {
-      if (refreshToken) {
-        return this.storage.set('stormpath.refresh_token', refreshToken);
-      }
-    });
-  }
-
-  getToken(type) {
-    return this.storage.get('stormpath.' + type);
-  }
-
-  removeToken(type) {
-    return this.storage.remove('stormpath.' + type);
-  }
-
   getState() {
     const authenticated = () => {
       this._setState('authenticated');
@@ -50,7 +34,7 @@ class ClientApiUserService extends EventEmitter {
       return Promise.resolve('unauthenticated');
     };
 
-    return this.getToken('access_token')
+    return this.tokenStorage.getAccessToken()
       .then((accessToken) => {
         if (!accessToken) {
           return unauthenticated();
@@ -63,8 +47,7 @@ class ClientApiUserService extends EventEmitter {
         return this.me()
           .then(authenticated)
           .catch(() =>
-            this.removeToken('access_token')
-              .then(this.removeToken('refresh_token'))
+            this.tokenStorage.removeAll()
               .then(unauthenticated)
           );
       })
@@ -72,7 +55,7 @@ class ClientApiUserService extends EventEmitter {
   }
 
   onBeforeRequest(request) {
-    return this.getToken('access_token')
+    return this.tokenStorage.getAccessToken()
       .then((accessToken) => {
         if (accessToken) {
           if (!request.headers) {
@@ -116,11 +99,20 @@ class ClientApiUserService extends EventEmitter {
       username,
       password
     }).then((response) => {
-      return this.setToken(response.access_token, response.refresh_token).then(() => {
-        return this.me().then((account) => {
-          console.log('Got result', account);
-          this._setState('loggedIn', true, account);
-          this._setState('authenticated');
+      return this.tokenStorage.setAccessToken(response.access_token).then(() => {
+        let waitFor;
+
+        if (response.refresh_token) {
+          waitFor = this.tokenStorage.setRefreshToken(response.refresh_token);
+        } else {
+          waitFor = Promise.resolve();
+        }
+
+        waitFor.then(() => {
+          return this.me().then((account) => {
+            this._setState('loggedIn', true, account);
+            this._setState('authenticated');
+          });
         });
       });
     });
@@ -134,17 +126,15 @@ class ClientApiUserService extends EventEmitter {
   }
 
   logout() {
-    return this.storage.get('stormpath.refresh_token').then((refreshToken) => {
+    return this.tokenStorage.getRefreshToken().then((refreshToken) => {
       return this.httpProvider.postForm('/oauth/revoke', {
         token: refreshToken,
         token_type_hint: 'refresh_token'
       }).then(() => {
-        return this.storage.remove('stormpath.access_token').then(() => {
-          return this.storage.remove('stormpath.refresh_token').then(() => {
-            this.account = null;
-            this._setState('loggedOut');
-            this._setState('unauthenticated');
-          });
+        return this.tokenStorage.removeAll().then(() => {
+          this.account = null;
+          this._setState('loggedOut');
+          this._setState('unauthenticated');
         });
       });
     });

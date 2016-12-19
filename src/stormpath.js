@@ -3,13 +3,18 @@ import Rivets from 'rivets';
 import EventEmitter from 'events';
 
 import { RegistrationComponent, LoginComponent } from './components';
-import { HttpProvider, LocalStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
+import { HttpProvider, LocalStorage, TokenStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
 
 class Stormpath extends EventEmitter {
   static prefix = 'sp';
   static version = pkg.version;
 
+  storage = null;
+  tokenStorage = null;
+
   options = {
+    authStrategy: null,
+
     templates: {
       [LoginComponent.id]: {
         component: LoginComponent,
@@ -26,8 +31,11 @@ class Stormpath extends EventEmitter {
     super();
 
     // This needs to be fixed so that provided options override default.
-    options = extend(this.options, options);
+    this.options = options = extend(this.options, options);
 
+    //this.overlay = new Overlayer();
+
+    this.storage = new LocalStorage();
     this.userService = this._createUserService(options);
 
     this._initializeUserServiceEvents();
@@ -41,7 +49,8 @@ class Stormpath extends EventEmitter {
 
     switch (options.authStrategy) {
       case 'token':
-        userService = new ClientApiUserService(httpProvider, new LocalStorage());
+        this.tokenStorage = new TokenStorage(this.storage);
+        userService = new ClientApiUserService(httpProvider, this.tokenStorage);
         break;
 
       case 'mock':
@@ -85,20 +94,42 @@ class Stormpath extends EventEmitter {
     }
   }
 
-  showLogin(element) {
-    const targetElement = element || document.body;
-    const data = {
-      userService: this.userService
-    };
-    Rivets.init(Stormpath.prefix + '-' + LoginComponent.id, targetElement, data);
+  getAccessToken() {
+    if (!this.tokenStorage) {
+      throw new Error('No token store is present. Please verify that you\'ve set the \'authStrategy\' option to \'token\'.');
+    }
+
+    return this.tokenStorage.getAccessToken();
   }
 
-  showRegistration(element) {
-    const targetElement = element || document.body;
+  showLogin(renderTo) {
+    const targetElement = renderTo || this.overlay.el;
     const data = {
       userService: this.userService
     };
+
+    Rivets.init(Stormpath.prefix + '-' + LoginComponent.id, targetElement, data);
+
+    if (!renderTo) {
+      //this.overlay.show();
+    }
+  }
+
+  showRegistration(renderTo) {
+    const targetElement = renderTo || this.overlay.el;
+    const data = {
+      userService: this.userService
+    };
+
     Rivets.init(Stormpath.prefix + '-' + RegistrationComponent.id, targetElement, data);
+
+    if (!renderTo) {
+      //this.overlay.show();
+    }
+  }
+
+  logout() {
+    return this.userService.logout();
   }
 }
 
