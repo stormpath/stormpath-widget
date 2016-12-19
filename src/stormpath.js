@@ -39,8 +39,6 @@ class Stormpath extends EventEmitter {
       options.authStrategy = 'token';
     }
 
-    //this.overlay = new Overlayer();
-
     this.storage = new LocalStorage();
     this.userService = this._createUserService(options);
 
@@ -116,29 +114,29 @@ class Stormpath extends EventEmitter {
   }
 
   showLogin(renderTo) {
-    const targetElement = renderTo || this.overlay.el;
+    const targetElement = renderTo || null; //this.overlay.element;
     const data = {
       userService: this.userService
     };
 
     Rivets.init(Stormpath.prefix + '-' + LoginComponent.id, targetElement, data);
 
-    if (!renderTo) {
-      //this.overlay.show();
-    }
+    //if (!renderTo) {
+    //  this.overlay.show();
+    //}
   }
 
   showRegistration(renderTo) {
-    const targetElement = renderTo || this.overlay.el;
+    const targetElement = renderTo || null; //this.overlay.element;
     const data = {
       userService: this.userService
     };
 
     Rivets.init(Stormpath.prefix + '-' + RegistrationComponent.id, targetElement, data);
 
-    if (!renderTo) {
-      //this.overlay.show();
-    }
+    //if (!renderTo) {
+    //  this.overlay.show();
+    //}
   }
 
   logout() {

@@ -59,7 +59,7 @@ class HttpProvider {
       }
     }
 
-    if (typeof err === 'object') {x
+    if (typeof err === 'object') {
       type = err.type ? err.type : 'uknown';
       message = err.message ? err.message : JSON.stringify(err);
     } else {
