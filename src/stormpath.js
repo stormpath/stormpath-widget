@@ -33,6 +33,12 @@ class Stormpath extends EventEmitter {
     // This needs to be fixed so that provided options override default.
     this.options = options = extend(this.options, options);
 
+    // If we haven't set an auth strategy and point our appUri to a Stormpath app endpoint,
+    // then automatically use the token auth strategy.
+    if (!options.authStrategy && options.appUri.indexOf('.apps.stormpath.io') > -1) {
+      options.authStrategy = 'token';
+    }
+
     //this.overlay = new Overlayer();
 
     this.storage = new LocalStorage();
@@ -95,6 +101,10 @@ class Stormpath extends EventEmitter {
         initialize: (el, data) => new options.component(data)
       };
     }
+  }
+
+  getAccount() {
+    return this.userService.getAccount();
   }
 
   getAccessToken() {

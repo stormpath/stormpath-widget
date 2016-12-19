@@ -122,6 +122,7 @@ class ClientApiUserService extends EventEmitter {
     return this.httpProvider.postJson('/register', data).then((result) => {
       this.account = result.account;
       this._setState('registered');
+      return Promise.resolve(result.account);
     });
   }
 

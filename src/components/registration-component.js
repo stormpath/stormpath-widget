@@ -43,7 +43,8 @@ class RegistrationComponent {
   onRegistrationComplete(result) {
     if (result.status === 'ENABLED') {
       this.state = 'account_enabled';
-      // TODO: Automatically login the account in with the provided credentials?
+      const fields = utils.mapArrayToObject(this.fields, 'name');
+      this.userService.login(fields.email.value, fields.password.value);
     } else {
       this.state = 'account_pending';
     }

@@ -33,7 +33,6 @@
 
       function onDocumentReady() {
         var stormpath = new Stormpath({
-          authStrategy: 'token',
           // Robert's app: 'https://lawful-heron.apps.stormpath.io'
           // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
           appUri: 'https://lawful-heron.apps.stormpath.io'
@@ -44,6 +43,10 @@
 
           document.getElementById('authenticated').style.display = 'block';
           document.getElementById('unauthenticated').style.display = 'none';
+
+          stormpath.getAccount().then((account) => {
+            document.getElementById('account-full-name').innerHTML = account.givenName;
+          });
 
           stormpath.getAccessToken().then((accessToken) => {
             document.getElementById('access-token').innerHTML = accessToken;
@@ -77,7 +80,7 @@
   </head>
   <body>
     <div id="authenticated">
-      You are logged in!<br><br>
+      You are logged in as <span id="account-full-name"></span>!<br><br>
       This is your access token: <span id="access-token"></span><br><br>
       <button id="logout-button">Logout</button>
       <hr>
