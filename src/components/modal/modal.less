@@ -1,0 +1,33 @@
+.sp-overlay {
+    display: none;
+}
+.sp-overlay.active {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 10;
+    cursor: progress;
+}
+
+.sp-modal {
+  display: none;
+}
+.sp-modal.active {
+    display: block;
+    background-color: white;
+    width: 300px;
+    height: 200px;
+    line-height: 200px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -150px;
+    border-radius: 5px;
+    text-align: center;
+    z-index: 11; /* 1px higher than the overlay layer */
+}

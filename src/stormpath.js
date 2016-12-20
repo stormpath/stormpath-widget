@@ -2,7 +2,13 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
-import { FormFieldComponent, RegistrationComponent, LoginComponent } from './components';
+import {
+  FormFieldComponent,
+  LoginComponent,
+  ModalComponent,
+  RegistrationComponent
+} from './components';
+
 import { HttpProvider, LocalStorage, TokenStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
 
 class Stormpath extends EventEmitter {
@@ -118,6 +124,10 @@ class Stormpath extends EventEmitter {
   }
 
   showLogin(renderTo) {
+    var modal = new ModalComponent();
+    modal.show();
+    return; // todo
+
     const targetElement = renderTo || null; //this.overlay.element;
     const data = {
       userService: this.userService
