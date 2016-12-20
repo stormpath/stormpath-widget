@@ -6,7 +6,7 @@ module.exports = function (config) {
     webpack: require('./webpack.config'),
     reporters: ['progress'],
     preprocessors: {
-      './test/**/*.js': ['webpack']
+      './test/**/*.js': ['webpack', 'sourcemap']
     },
     port: 9876,
     colors: true,
@@ -17,7 +17,8 @@ module.exports = function (config) {
     plugins: [
       require('karma-webpack'),
       'karma-mocha',
-      'karma-phantomjs-launcher'
+      'karma-phantomjs-launcher',
+      'karma-sourcemap-loader'
     ],
     webpackMiddleware: {
       noInfo: true
