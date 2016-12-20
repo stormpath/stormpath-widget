@@ -18,10 +18,11 @@
   "scripts": {
     "build": "NODE_ENV=production webpack src/index.js dist/stormpath.js --display-modules && NODE_ENV=production webpack -p src/index.js dist/stormpath.min.js --display-modules",
     "dev": "node dev-server.js",
+    "karma": "./node_modules/karma/bin/karma start",
+    "karma:watch": "npm run karma -- --no-single-run --auto-watch",
     "lint": "./node_modules/.bin/esw -c .eslintrc src test",
     "lint:watch": "npm run lint -- --watch",
-    "test": "./node_modules/karma/bin/karma start",
-    "test:watch": "npm run test -- --no-single-run --auto-watch"
+    "test": "npm run lint && npm run karma"
   },
   "dependencies": {
     "babel-cli": "^6.18.0",
