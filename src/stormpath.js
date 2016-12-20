@@ -2,22 +2,25 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
+import utils from './utils';
+
 import {
   ModalComponent,
   FormFieldComponent,
   LoginComponent,
-  RegistrationComponent
+  RegistrationComponent,
+  VerifyEmailComponent
 } from './components';
 
 import {
+  CachedUserService,
+  ClientApiUserService,
+  CookieUserService,
   HttpProvider,
   LocalStorage,
   MemoryStorage,
-  TokenStorage,
-  CachedUserService,
   MockUserService,
-  ClientApiUserService,
-  CookieUserService
+  TokenStorage,
 } from './data';
 
 class Stormpath extends EventEmitter {
@@ -42,6 +45,10 @@ class Stormpath extends EventEmitter {
       [RegistrationComponent.id]: {
         component: RegistrationComponent,
         view: () => RegistrationComponent.view
+      },
+      [VerifyEmailComponent.id]: {
+        component: VerifyEmailComponent,
+        view: () => VerifyEmailComponent.view
       }
     }
   };
@@ -178,6 +185,16 @@ class Stormpath extends EventEmitter {
     if (modalMode) {
       this.modal.show();
     }
+  }
+
+  showEmailVerification(renderTo, token) {
+    const targetElement = renderTo || null;
+    const parsedQueryString = utils.parseQueryString(window.location.search);
+    const data = {
+      userService: this.userService,
+      token: token || parsedQueryString.sptoken
+    };
+    Rivets.init(Stormpath.prefix + '-' + VerifyEmailComponent.id, targetElement, data);
   }
 
   logout() {

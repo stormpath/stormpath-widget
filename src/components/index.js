@@ -1,4 +1,5 @@
+export ModalComponent from './modal/modal';
 export FormFieldComponent from './form-field/form-field';
 export LoginComponent from './login/login';
-export ModalComponent from './modal/modal';
 export RegistrationComponent from './registration/registration';
+export VerifyEmailComponent from './verify-email/verify-email';

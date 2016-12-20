@@ -77,6 +77,35 @@ class Utils {
       decorator[name] = member.bind(decorated);
     });
   }
+
+  encodeQueryString(query) {
+    var result = '';
+
+    for (var key in query) {
+      if (result !== '') {
+        result += '&';
+      }
+      result += key + '=' + encodeURIComponent(query[key]);
+    }
+
+    return result;
+  }
+
+  parseQueryString(queryString) {
+    if (!queryString) {
+      return {};
+    }
+
+    if (/^[?#]/.test(queryString)) {
+      queryString = queryString.slice(1);
+    }
+
+    return queryString.split('&').reduce((params, param) => {
+      let [key, value] = param.split('=');
+      params[key] = decodeURIComponent(value || '');
+      return params;
+    }, {});
+  }
 }
 
 export default new Utils();
