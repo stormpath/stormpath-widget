@@ -147,16 +147,26 @@ class Stormpath extends EventEmitter {
   }
 
   showRegistration(renderTo) {
-    const targetElement = renderTo || null; //this.overlay.element;
+    let targetElement = renderTo;
+    let modal = null;
+
+    if (!targetElement) {
+      modal = new ModalComponent();
+      targetElement = modal.element;
+    }
+
     const data = {
       userService: this.userService
     };
 
-    Rivets.init(Stormpath.prefix + '-' + RegistrationComponent.id, targetElement, data);
+    Rivets.init(
+      Stormpath.prefix + '-' + RegistrationComponent.id,
+      targetElement,
+      data);
 
-    //if (!renderTo) {
-    //  this.overlay.show();
-    //}
+    if (modal) {
+      modal.show();
+    }
   }
 
   logout() {
