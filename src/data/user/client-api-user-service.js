@@ -3,15 +3,23 @@ import EventEmitter from 'events';
 class ClientApiUserService extends EventEmitter {
   constructor(httpProvider, tokenStorage) {
     super();
+
     httpProvider.setRequestInterceptor(this);
+
     this.httpProvider = httpProvider;
     this.tokenStorage = tokenStorage;
+
     this.account = null;
     this.mostRecentState = null;
+    this.resolveStateCache = null;
+
+    // If tokens are removed, then reassert the token state.
+    tokenStorage.on('removed', () => this.getState());
   }
 
   _setState(newState, force, ...args) {
     if (this.mostRecentState !== newState || force) {
+      console.log('Setting state', newState, force);
       this.mostRecentState = newState;
       this.emit(newState, ...args);
     }
@@ -24,34 +32,41 @@ class ClientApiUserService extends EventEmitter {
   }
 
   getState() {
-    const authenticated = () => {
-      this._setState('authenticated');
-      return Promise.resolve('authenticated');
-    };
+    if (this.resolveStateCache) {
+      return this.resolveStateCache;
+    }
 
-    const unauthenticated = () => {
-      this._setState('unauthenticated');
-      return Promise.resolve('unauthenticated');
-    };
+    this.resolveStateCache = new Promise((accept) => {
+      const acceptState = (state) => {
+        this.resolveStateCache = null;
+        this._setState(state);
+        return accept(state);
+      };
 
-    return this.tokenStorage.getAccessToken()
-      .then((accessToken) => {
-        if (!accessToken) {
-          return unauthenticated();
-        }
+      const authenticated = () => acceptState('authenticated');
+      const unauthenticated = () => acceptState('unauthenticated');
 
-        if (this.account) {
-          return authenticated();
-        }
+      return this.tokenStorage.getAccessToken()
+        .then((accessToken) => {
+          if (!accessToken) {
+            return unauthenticated();
+          }
 
-        return this.me()
-          .then(authenticated)
-          .catch(() =>
-            this.tokenStorage.removeAll()
-              .then(unauthenticated)
-          );
-      })
-      .catch(unauthenticated);
+          if (this.account) {
+            return authenticated();
+          }
+
+          return this.me()
+            .then(authenticated)
+            .catch(() =>
+              this.tokenStorage.removeAll()
+                .then(unauthenticated)
+            );
+        })
+        .catch(unauthenticated);
+    });
+
+    return this.resolveStateCache;
   }
 
   onBeforeRequest(request) {

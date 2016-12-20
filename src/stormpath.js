@@ -45,7 +45,7 @@ class Stormpath extends EventEmitter {
 
     // If we haven't set an auth strategy and point our appUri to a Stormpath app endpoint,
     // then automatically use the token auth strategy.
-    if (!options.authStrategy && options.appUri.indexOf('.apps.stormpath.io') > -1) {
+    if (!options.authStrategy && options.appUri.indexOf('.stormpath.io') > -1) {
       options.authStrategy = 'token';
     }
 
@@ -64,7 +64,7 @@ class Stormpath extends EventEmitter {
 
     switch (options.authStrategy) {
       case 'token':
-        this.tokenStorage = new TokenStorage(this.storage);
+        this.tokenStorage = new TokenStorage(this.storage, httpProvider);
         userService = new ClientApiUserService(httpProvider, this.tokenStorage);
         break;
 
