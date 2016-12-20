@@ -1,2 +1,2 @@
-export LoginComponent from './login-component';
-export RegistrationComponent from './registration-component';
+export LoginComponent from './login/login';
+export RegistrationComponent from './registration/registration';

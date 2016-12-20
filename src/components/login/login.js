@@ -1,6 +1,6 @@
-import utils from '../utils';
-import view from 'html!./login-component.html';
-import style from '!style-loader!css-loader!less-loader!./login-component.less';
+import utils from '../../utils';
+import view from 'html!./login.html';
+import style from '!style-loader!css-loader!less-loader!./login.less';
 
 class LoginComponent {
   static id = 'login-component';
