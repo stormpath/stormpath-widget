@@ -21,18 +21,34 @@ class ModalComponent {
 
     utils.addClass(this.overlayElement, 'active');
     utils.addClass(this.modalElement, 'active');
-    this.overlayElement.addEventListener('click', this.close.bind(this), true);
+
+    this.overlayElement
+      .addEventListener('click', this.close.bind(this), true);
+    this.modalElement
+      .addEventListener('keyup', this._closeOnEsc.bind(this), true);
+    this.modalElement.focus();
 
     this.visible = true;
   }
 
   close() {
-    this.overlayElement.removeEventListener('click', this.close.bind(this), true);
+    this.overlayElement
+      .removeEventListener('click', this.close.bind(this), true);
+
     utils.removeClass(this.modalElement, 'active');
     utils.removeClass(this.overlayElement, 'active');
 
     this._removeElement(this.modalElement);
     this._removeElement(this.overlayElement);
+  }
+
+  _closeOnEsc(e) {
+    if (e.keyCode !== 27) {
+      return;
+    }
+
+    e.preventDefault();
+    this.close();
   }
 
   _createOverlayElement() {
@@ -46,9 +62,12 @@ class ModalComponent {
     var modalDiv = document.createElement('div');
     modalDiv.className = 'sp-modal';
     modalDiv.innerHTML = view;
+    modalDiv.tabIndex = 0;
 
     // Wire up close button
-    modalDiv.getElementsByClassName('sp-modal-close-btn')[0].addEventListener('click', this.close.bind(this), true);
+    modalDiv
+      .getElementsByClassName('sp-modal-close-btn')[0]
+      .addEventListener('click', this.close.bind(this), false);
 
     this._addElement(modalDiv);
     return modalDiv;
