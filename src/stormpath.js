@@ -2,7 +2,7 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
-import { RegistrationComponent, LoginComponent } from './components';
+import { FormFieldComponent, RegistrationComponent, LoginComponent } from './components';
 import { HttpProvider, LocalStorage, TokenStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
 
 class Stormpath extends EventEmitter {
@@ -16,6 +16,10 @@ class Stormpath extends EventEmitter {
     authStrategy: null,
 
     templates: {
+      [FormFieldComponent.id]: {
+        component: FormFieldComponent,
+        view: () => FormFieldComponent.view
+      },
       [LoginComponent.id]: {
         component: LoginComponent,
         view: () => LoginComponent.view
