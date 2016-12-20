@@ -1,3 +1,5 @@
+const jwtExpression = /^[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+$/;
+
 class Utils {
   // Takes an object array and remaps it to an object based on a key.
   mapArrayToObject(source, key) {
@@ -125,6 +127,39 @@ class Utils {
     }, {});
 
     return result;
+  }
+
+  base64Decode(value) {
+    return new Buffer(value, 'base64').toString('utf8');
+  }
+
+  getUnixTime() {
+    return Math.round((new Date).getTime() / 1000);
+  }
+
+  parseJwt(value) {
+    if (!value) {
+      return false;
+    }
+
+    value = value.trim();
+
+    if (value.match(jwtExpression) === null) {
+      return false;
+    }
+
+    let [header, body, signature] = value.split('.');
+
+    try {
+      return {
+        header: JSON.parse(this.base64Decode(header)),
+        body: JSON.parse(this.base64Decode(body)),
+        signature: signature,
+        raw: value
+      };
+    } catch (err) {
+      return false;
+    }
   }
 }
 
