@@ -86,8 +86,8 @@ class MockUserService extends EventEmitter {
     });
   }
 
-  register(data) {
-    return new Promise((accept) => {
+  register() {
+    return new Promise(() => {
       this.emit('registered');
     });
   }
