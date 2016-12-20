@@ -75,18 +75,25 @@ This event is emitted once a user logs in.
 
 This event is emitted once a user logs out.
 
-### Build
+# Contributing
 
-This will compile all of the js/html/css assets into the dist/stormpath.js and dist/stormpath.min.js files.
+You can build and test the widget by cloning this repository and running:
 
 ```term
+$ npm i
 $ npm run dev
 ```
 
-### Develop
+Open a browser and navigate to http://localhost:3000 to view the demo.
 
-This will compile all of the js/html/css assets into the dist/stormpath.dev.js while running webpack with the --watch flag.
+`npm run dev` compiles all of the JS/HTML/CSS assets into `dist/stormpath.dev.js` while running webpack with the `--watch` flag.
 
-```term
-$ npm run dev
-```
+## Running tests
+
+TODO
+
+## Building
+
+This will compile all of the js/html/css assets into the `dist/stormpath.js` and `dist/stormpath.min.js` files.
+
+TODO
