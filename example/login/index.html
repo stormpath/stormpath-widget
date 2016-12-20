@@ -16,12 +16,15 @@
 
         // Authenticated
         var authenticatedContainer = document.getElementById('authenticated');
+        var forgotPasswordButton = document.getElementById('forgot-password-button');
         var loginButton = document.getElementById('login-button');
         var registerButton = document.getElementById('register-button');
 
         authenticatedContainer.style.display = 'none';
         loginButton.addEventListener('click', () => stormpath.showLogin());
         registerButton.addEventListener('click', () => stormpath.showRegistration());
+        forgotPasswordButton.addEventListener('click', () => stormpath.showForgotPassword());
+
 
         // Unauthenticated
         var unauthenticatedContainer = document.getElementById('unauthenticated');
@@ -87,6 +90,7 @@
     </div>
     <div id="unauthenticated">
       <button id="login-button">Login</button> or <button id="register-button">Create a new account</button>
+      or <button id="forgot-password-button">Forgot Password</button>
       <hr>
     </div>
     <div id="stormpath-container"></div>

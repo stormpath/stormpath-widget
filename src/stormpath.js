@@ -3,13 +3,21 @@ import Rivets from 'rivets';
 import EventEmitter from 'events';
 
 import {
+  ForgotPasswordComponent,
   FormFieldComponent,
   LoginComponent,
   ModalComponent,
   RegistrationComponent
 } from './components';
 
-import { HttpProvider, LocalStorage, TokenStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
+import {
+  ClientApiUserService,
+  CookieUserService,
+  HttpProvider,
+  LocalStorage,
+  MockUserService,
+  TokenStorage,
+} from './data';
 
 class Stormpath extends EventEmitter {
   static prefix = 'sp';
@@ -25,6 +33,10 @@ class Stormpath extends EventEmitter {
       [FormFieldComponent.id]: {
         component: FormFieldComponent,
         view: () => FormFieldComponent.view
+      },
+      [ForgotPasswordComponent.id]: {
+        component: ForgotPasswordComponent,
+        view: () => ForgotPasswordComponent.view
       },
       [LoginComponent.id]: {
         component: LoginComponent,
@@ -122,6 +134,14 @@ class Stormpath extends EventEmitter {
     }
 
     return this.tokenStorage.getAccessToken();
+  }
+
+  showForgotPassword(renderTo) {
+    const targetElement = renderTo || null;
+    const data = {
+      userService: this.userService
+    };
+    Rivets.init(Stormpath.prefix + '-' + ForgotPasswordComponent.id, targetElement, data);
   }
 
   showLogin(renderTo) {
