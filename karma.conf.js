@@ -1,17 +1,11 @@
-var webpackConfig = require('./webpack.config');
-webpackConfig.entry = {};
-
 module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['mocha'],
-    files: [
-      //'./app/bundle.js', // TODO this should point to the production file
-      './test/**/*.js'],
-    webpack: webpackConfig,
+    files: ['./test/**/*.js'],
+    webpack: require('./webpack.config'),
     reporters: ['progress'],
     preprocessors: {
-      //'./app/bundle.js': ['webpack'], // TODO
       './test/**/*.js': ['webpack']
     },
     port: 9876,
