@@ -19,7 +19,9 @@
     "build": "NODE_ENV=production webpack src/index.js dist/stormpath.js --display-modules && NODE_ENV=production webpack -p src/index.js dist/stormpath.min.js --display-modules",
     "dev": "node dev-server.js",
     "lint": "./node_modules/.bin/eslint -c .eslintrc src/",
-    "test": "npm run lint && node ./node_modules/karma/bin/karma start"
+    "lint:watch": "npm run lint -- ",
+    "test": "npm run lint && node ./node_modules/karma/bin/karma start",
+    "test:watch": "npm run test -- --no-single-run --auto-watch"
   },
   "dependencies": {
     "babel-cli": "^6.18.0",
@@ -47,11 +49,11 @@
   },
   "devDependencies": {
     "express": "^4.14.0",
-    "karma":"^1.3.0",
-    "mocha":"^3.2.0",
+    "karma": "^1.3.0",
     "karma-mocha": "^1.3.0",
     "karma-phantomjs-launcher": "^1.0.2",
     "karma-webpack": "^1.8.0",
+    "mocha": "^3.2.0",
     "webpack-dev-middleware": "^1.8.4"
   }
 }
