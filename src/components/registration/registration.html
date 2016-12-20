@@ -4,9 +4,11 @@
   <div sp-show="state | is 'account_enabled'">Your account has been created. You are now ready to login.</div>
   <div sp-show="statis | is 'account_pending'">Your account has been created. Please check your email for a verification link.</div>
   <form sp-show="state | in 'ready,validation_error'">
-    <sp-form-field sp-each-field="fields"
-                   vm="field"
-                   name-prefix="'registration-field'"></sp-form-field>
+    <sp-form-field
+      sp-each-field="fields"
+      model="field"
+      name-prefix="'registration-field'">
+    </sp-form-field>
     <div sp-show="state | is 'validation_error'">{error.message}</div>
     <button sp-on-click="onFormSubmit">Register</button>
   </form>

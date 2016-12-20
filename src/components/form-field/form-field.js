@@ -8,7 +8,7 @@ class FormFieldComponent {
   field = {};
 
   constructor(data) {
-    this.field = data.vm;
+    this.field = data.model;
     this.namePrefix = data.namePrefix + '-';
   }
 }
