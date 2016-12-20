@@ -20,7 +20,7 @@
         var registerButton = document.getElementById('register-button');
 
         authenticatedContainer.style.display = 'none';
-        loginButton.addEventListener('click', () => stormpath.showLogin(stormpathContainer));
+        loginButton.addEventListener('click', () => stormpath.showLogin());
         registerButton.addEventListener('click', () => stormpath.showRegistration(stormpathContainer));
 
         // Unauthenticated

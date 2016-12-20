@@ -6,40 +6,43 @@ class ModalComponent {
   static style = style;
   static view = view;
 
-  visible = false;
-
   constructor() {
-    this.name = name;
-    this.overlayElement = this._createOverlayElement();
-    this.modalElement = this._createModalElement();
+    this._visible = false;
+
+    this._overlayElement = this._createOverlayElement();
+    this._modalElement = this._createModalElement();
   }
 
   show() {
-    if (this.visible) {
+    if (this._visible) {
       return;
     }
 
-    utils.addClass(this.overlayElement, 'active');
-    utils.addClass(this.modalElement, 'active');
+    utils.addClass(this._overlayElement, 'active');
+    utils.addClass(this._modalElement, 'active');
 
-    this.overlayElement
+    this._overlayElement
       .addEventListener('click', this.close.bind(this), true);
-    this.modalElement
+    this._modalElement
       .addEventListener('keyup', this._closeOnEsc.bind(this), true);
-    this.modalElement.focus();
+    this._modalElement.focus();
 
-    this.visible = true;
+    this._visible = true;
   }
 
   close() {
-    this.overlayElement
+    this._overlayElement
       .removeEventListener('click', this.close.bind(this), true);
 
-    utils.removeClass(this.modalElement, 'active');
-    utils.removeClass(this.overlayElement, 'active');
+    utils.removeClass(this._modalElement, 'active');
+    utils.removeClass(this._overlayElement, 'active');
 
-    this._removeElement(this.modalElement);
-    this._removeElement(this.overlayElement);
+    this._removeFromBody(this._modalElement);
+    this._removeFromBody(this._overlayElement);
+  }
+
+  get element() {
+    return this._innerElement;
   }
 
   _closeOnEsc(e) {
@@ -54,7 +57,7 @@ class ModalComponent {
   _createOverlayElement() {
     var overlayDiv = document.createElement('div');
     overlayDiv.className = 'sp-overlay';
-    this._addElement(overlayDiv);
+    this._addToBody(overlayDiv);
     return overlayDiv;
   }
 
@@ -69,12 +72,16 @@ class ModalComponent {
       .getElementsByClassName('sp-modal-close-btn')[0]
       .addEventListener('click', this.close.bind(this), false);
 
-    this._addElement(modalDiv);
+    // Save a reference to the inner content div
+    this._innerElement = modalDiv
+      .getElementsByClassName('sp-modal-content')[0];
+
+    this._addToBody(modalDiv);
     return modalDiv;
   }
 
-  _addElement = (el) => document.body.insertBefore(el, null);
-  _removeElement = (el) => document.body.removeChild(el);
+  _addToBody = (el) => document.body.insertBefore(el, null);
+  _removeFromBody = (el) => document.body.removeChild(el);
 }
 
 export default ModalComponent;
