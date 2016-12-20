@@ -1,4 +1,7 @@
+@modal-width: 350px;
+@modal-height: 400px;
 @modal-radius: 5px;
+@modal-z: 10;
 
 .sp-overlay {
     display: none;
@@ -12,7 +15,7 @@
     height: 100%;
     width: 100%;
     background-color: rgba(0,0,0,0.5);
-    z-index: 10;
+    z-index: @modal-z;
 }
 
 .sp-modal {
@@ -23,17 +26,16 @@
 .sp-modal.active {
     display: block;
     background-color: white;
-    width: 300px;
-    height: 200px;
-    line-height: 200px;
+    width: @modal-width;
+    height: @modal-height;
     position: fixed;
     top: 50%;
     left: 50%;
-    margin-top: -100px;
-    margin-left: -150px;
+    margin-top: round(@modal-height / -2);
+    margin-left: round(@modal-width / -2);
     border-radius: @modal-radius;
     text-align: center;
-    z-index: 11;
+    z-index: @modal-z + 1;
 }
 
 .sp-modal .sp-modal-close-btn {
