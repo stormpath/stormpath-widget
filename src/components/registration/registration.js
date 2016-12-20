@@ -1,6 +1,6 @@
-import utils from '../utils';
-import view from 'html!./registration-component.html';
-import style from '!style-loader!css-loader!less-loader!./registration-component.less';
+import utils from '../../utils';
+import view from 'html!./registration.html';
+import style from '!style-loader!css-loader!less-loader!./registration.less';
 
 class RegistrationComponent {
   static id = 'registration-component';
@@ -15,7 +15,7 @@ class RegistrationComponent {
 
     this.state = 'loading';
 
-    this.userService.getState().then((state) => {
+    this.userService.getState().then(() => {
       // I think this would be a good way to allow the
       // developer to override the remote field config
       if (data.fields) {
