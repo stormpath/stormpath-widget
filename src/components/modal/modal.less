@@ -1,6 +1,7 @@
 .sp-overlay {
     display: none;
 }
+
 .sp-overlay.active {
     display: block;
     position: fixed;
@@ -16,6 +17,7 @@
 .sp-modal {
   display: none;
 }
+
 .sp-modal.active {
     display: block;
     background-color: white;
@@ -29,5 +31,17 @@
     margin-left: -150px;
     border-radius: 5px;
     text-align: center;
-    z-index: 11; /* 1px higher than the overlay layer */
+    z-index: 11;
+}
+
+.sp-modal .sp-modal-close-btn {
+  float: right;
+  background-color: rgb(200,200,200);
+  color: #777;
+  border-style: none;
+  font-size: 1.5em;
+  padding-top: 0;
+  padding-bottom: 3px;
+  padding-left: 6px;
+  padding-right: 6px;
 }

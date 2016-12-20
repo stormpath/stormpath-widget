@@ -1,38 +1,61 @@
 import utils from '../../utils';
-//import view from 'html!./modal.html';
+import view from 'html!./modal.html';
 import style from '!style-loader!css-loader!less-loader!./modal.less';
 
 class ModalComponent {
-  //static id = 'modal-component';
   static style = style;
+  static view = view;
+
+  visible = false;
 
   constructor() {
+    this.name = name;
     this.overlayElement = this._createOverlayElement();
     this.modalElement = this._createModalElement();
   }
 
   show() {
+    if (this.visible) {
+      return;
+    }
+
     utils.addClass(this.overlayElement, 'active');
     utils.addClass(this.modalElement, 'active');
+    this.overlayElement.addEventListener('click', this.close.bind(this), true);
+
+    this.visible = true;
+  }
+
+  close() {
+    this.overlayElement.removeEventListener('click', this.close.bind(this), true);
+    utils.removeClass(this.modalElement, 'active');
+    utils.removeClass(this.overlayElement, 'active');
+
+    this._removeElement(this.modalElement);
+    this._removeElement(this.overlayElement);
   }
 
   _createOverlayElement() {
-    var overlay = document.createElement('div');
-    overlay.className = 'sp-overlay';
-    this._addToBody(overlay);
-
-    return overlay;
+    var overlayDiv = document.createElement('div');
+    overlayDiv.className = 'sp-overlay';
+    this._addElement(overlayDiv);
+    return overlayDiv;
   }
 
   _createModalElement() {
-    var overlay = document.createElement('div');
-    overlay.className = 'sp-modal';
-    this._addToBody(overlay);
+    var modalDiv = document.createElement('div');
+    modalDiv.className = 'sp-modal';
+    modalDiv.innerHTML = view;
 
-    return overlay;
+    // Wire up close button
+    modalDiv.getElementsByClassName('sp-modal-close-btn')[0].addEventListener('click', this.close.bind(this), true);
+
+    this._addElement(modalDiv);
+    return modalDiv;
   }
 
-  _addToBody = (el) => document.body.insertBefore(el, null);
+  _addElement = (el) => document.body.insertBefore(el, null);
+  _removeElement = (el) => document.body.removeChild(el);
 }
 
 export default ModalComponent;
