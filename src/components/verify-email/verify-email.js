@@ -1,4 +1,3 @@
-import utils from '../../utils';
 import view from 'html!./verify-email.html';
 import style from '!style-loader!css-loader!less-loader!./verify-email.less';
 

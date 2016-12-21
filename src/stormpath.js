@@ -31,6 +31,7 @@ class Stormpath extends EventEmitter {
   tokenStorage = null;
 
   options = {
+    appUri: null,
     authStrategy: null,
 
     templates: {
@@ -59,10 +60,15 @@ class Stormpath extends EventEmitter {
     // This needs to be fixed so that provided options override default.
     this.options = options = extend(this.options, options);
 
-    // If we haven't set an auth strategy and point our appUri to a Stormpath app endpoint,
-    // then automatically use the token auth strategy.
-    if (!options.authStrategy && options.appUri.indexOf('.apps.stormpath.io') > -1) {
-      options.authStrategy = 'token';
+    if (!options.authStrategy) {
+      // If we haven't set an auth strategy and point our appUri to a Stormpath app endpoint,
+      // then automatically use the token auth strategy.
+      if (options.appUri && options.appUri.indexOf('.apps.stormpath.io') > -1) {
+        options.authStrategy = 'token';
+      // Else, default to using cookie.
+      } else {
+        options.authStrategy = 'cookie';
+      }
     }
 
     this.modal = new ModalComponent();
@@ -89,9 +95,12 @@ class Stormpath extends EventEmitter {
         userService = new MockUserService();
         break;
 
-      default:
+      case 'cookie':
         userService = new CookieUserService(httpProvider);
         break;
+
+      default:
+        throw new Error('Invalid authStrategy \'' + options.authStrategy + '\'.');
     }
 
     // Decorate our user service with caching

@@ -92,19 +92,35 @@ class Utils {
   }
 
   parseQueryString(queryString) {
+    let result = {};
+
     if (!queryString) {
-      return {};
+      return result;
     }
 
     if (/^[?#]/.test(queryString)) {
       queryString = queryString.slice(1);
     }
 
-    return queryString.split('&').reduce((params, param) => {
+    result = queryString.split('&').reduce((params, param) => {
       let [key, value] = param.split('=');
-      params[key] = decodeURIComponent(value || '');
+
+      if (!key) {
+        return params;
+      }
+
+      try {
+        value = decodeURIComponent(value || '');
+      } catch (e) {
+        value = undefined;
+      }
+
+      params[key] = value;
+
       return params;
     }, {});
+
+    return result;
   }
 }
 
