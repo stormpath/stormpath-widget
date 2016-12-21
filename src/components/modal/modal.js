@@ -8,7 +8,7 @@ class ModalComponent {
 
   constructor() {
     this._visible = false;
-
+    this._onKeyUpHandler = this._onKeyUp.bind(this);
     this._overlayElement = this._createOverlayElement();
     this._modalElement = this._createModalElement();
   }
@@ -21,43 +21,52 @@ class ModalComponent {
     utils.addClass(this._overlayElement, 'active');
     utils.addClass(this._modalElement, 'active');
 
-    this._overlayElement
-      .addEventListener('click', this.close.bind(this), true);
-    this._modalElement
-      .addEventListener('keyup', this._closeOnEsc.bind(this), true);
+    document.addEventListener('keyup', this._onKeyUpHandler, true);
+    this._overlayElement.addEventListener('click', this.close.bind(this), true);
     this._modalElement.focus();
+
+    this._addToBody(this._modalElement);
+    this._addToBody(this._overlayElement);
 
     this._visible = true;
   }
 
   close() {
-    this._overlayElement
-      .removeEventListener('click', this.close.bind(this), true);
+    if (!this._visible) {
+      return;
+    }
+
+    document.removeEventListener('keyup', this._onKeyUpHandler, true);
+    this._overlayElement.removeEventListener('click', this.close.bind(this), true);
 
     utils.removeClass(this._modalElement, 'active');
     utils.removeClass(this._overlayElement, 'active');
 
     this._removeFromBody(this._modalElement);
     this._removeFromBody(this._overlayElement);
+
+    this._visible = false;
   }
 
   get element() {
     return this._innerElement;
   }
 
-  _closeOnEsc(e) {
-    if (e.keyCode !== 27) {
+  _onKeyUp(e) {
+    const escapeKeyCode = 27;
+
+    if (e.keyCode !== escapeKeyCode) {
       return;
     }
 
     e.preventDefault();
+
     this.close();
   }
 
   _createOverlayElement() {
     var overlayDiv = document.createElement('div');
     overlayDiv.className = 'sp-overlay';
-    this._addToBody(overlayDiv);
     return overlayDiv;
   }
 
@@ -76,7 +85,6 @@ class ModalComponent {
     this._innerElement = modalDiv
       .getElementsByClassName('sp-modal-content')[0];
 
-    this._addToBody(modalDiv);
     return modalDiv;
   }
 

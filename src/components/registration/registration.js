@@ -8,10 +8,13 @@ class RegistrationComponent {
   static style = style;
 
   fields = [];
+  userService = null;
+  modal = null;
   state = 'unknown';
 
   constructor(data) {
     this.userService = data.userService;
+    this.modal = data.modal;
 
     this.state = 'loading';
 
@@ -44,7 +47,11 @@ class RegistrationComponent {
     if (result.status === 'ENABLED') {
       this.state = 'account_enabled';
       const fields = utils.mapArrayToObject(this.fields, 'name');
-      this.userService.login(fields.email.value, fields.password.value);
+      this.userService.login(fields.email.value, fields.password.value).then(() => {
+        if (this.modal) {
+          this.modal.close();
+        }
+      });
     } else {
       this.state = 'account_pending';
     }

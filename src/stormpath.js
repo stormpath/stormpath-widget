@@ -49,6 +49,7 @@ class Stormpath extends EventEmitter {
       options.authStrategy = 'token';
     }
 
+    this.modal = new ModalComponent();
     this.storage = new LocalStorage();
     this.userService = this._createUserService(options);
 
@@ -124,58 +125,41 @@ class Stormpath extends EventEmitter {
   }
 
   showLogin(renderTo) {
-    let targetElement = renderTo;
-    let modal = null;
-
-    if (!targetElement) {
-      modal = new ModalComponent();
-      targetElement = modal.element;
-    }
+    const modalMode = renderTo === undefined;
 
     const data = {
-      userService: this.userService
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
     };
 
     Rivets.init(
       Stormpath.prefix + '-' + LoginComponent.id,
-      targetElement,
-      data);
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
 
-    if (modal) {
-      modal.show();
-
-      this.once('loggedIn', () => {
-        modal.close();
-      });
+    if (modalMode) {
+      this.modal.show();
     }
   }
 
   showRegistration(renderTo) {
-    let targetElement = renderTo;
-    let modal = null;
-
-    if (!targetElement) {
-      modal = new ModalComponent();
-      targetElement = modal.element;
-    }
+    const modalMode = renderTo === undefined;
 
     const data = {
-      userService: this.userService
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
     };
 
     Rivets.init(
       Stormpath.prefix + '-' + RegistrationComponent.id,
-      targetElement,
-      data);
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
 
-    if (modal) {
-      modal.show();
+    if (modalMode) {
+      this.modal.show();
     }
-
-    // TODO this only handles autologin, not the email verification (2-step) login
-    this.once('loggedIn', () => {
-      modal.close();
-    });
   }
 
   logout() {

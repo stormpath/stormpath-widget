@@ -9,9 +9,11 @@ class LoginComponent {
 
   fields = [];
   state = 'unknown';
+  modal = null;
 
   constructor(data) {
     this.userService = data.userService;
+    this.modal = data.modal;
 
     this.state = 'loading';
 
@@ -47,6 +49,9 @@ class LoginComponent {
 
   onAuthenticated() {
     this.state = 'authenticated';
+    if (this.modal) {
+      this.modal.close();
+    }
   }
 
   onFormSubmit = (event) => {
