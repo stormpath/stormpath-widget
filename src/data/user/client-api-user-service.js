@@ -108,7 +108,7 @@ class ClientApiUserService extends EventEmitter {
           waitFor = Promise.resolve();
         }
 
-        waitFor.then(() => {
+        return waitFor.then(() => {
           return this.me().then((account) => {
             this._setState('loggedIn', true, account);
             this._setState('authenticated');

@@ -2,7 +2,13 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
-import { FormFieldComponent, RegistrationComponent, LoginComponent } from './components';
+import {
+  FormFieldComponent,
+  LoginComponent,
+  ModalComponent,
+  RegistrationComponent
+} from './components';
+
 import { HttpProvider, LocalStorage, TokenStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
 
 class Stormpath extends EventEmitter {
@@ -43,6 +49,7 @@ class Stormpath extends EventEmitter {
       options.authStrategy = 'token';
     }
 
+    this.modal = new ModalComponent();
     this.storage = new LocalStorage();
     this.userService = this._createUserService(options);
 
@@ -118,29 +125,41 @@ class Stormpath extends EventEmitter {
   }
 
   showLogin(renderTo) {
-    const targetElement = renderTo || null; //this.overlay.element;
+    const modalMode = renderTo === undefined;
+
     const data = {
-      userService: this.userService
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
     };
 
-    Rivets.init(Stormpath.prefix + '-' + LoginComponent.id, targetElement, data);
+    Rivets.init(
+      Stormpath.prefix + '-' + LoginComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
 
-    //if (!renderTo) {
-    //  this.overlay.show();
-    //}
+    if (modalMode) {
+      this.modal.show();
+    }
   }
 
   showRegistration(renderTo) {
-    const targetElement = renderTo || null; //this.overlay.element;
+    const modalMode = renderTo === undefined;
+
     const data = {
-      userService: this.userService
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
     };
 
-    Rivets.init(Stormpath.prefix + '-' + RegistrationComponent.id, targetElement, data);
+    Rivets.init(
+      Stormpath.prefix + '-' + RegistrationComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
 
-    //if (!renderTo) {
-    //  this.overlay.show();
-    //}
+    if (modalMode) {
+      this.modal.show();
+    }
   }
 
   logout() {
