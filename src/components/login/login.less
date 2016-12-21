@@ -1,2 +1,86 @@
-.sp-login-component {
+.sp-login-provider {
+  display: inline-block;
+  min-height: 40px;
+  color: #fff;
+  margin-bottom: 5px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 2.5rem;
+  letter-spacing: 0.1rem;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border-radius: 4px;
+  border: 1px solid rgba(0,0,0,0.2);
+  cursor: pointer;
+  -webkit-transition: background-color 0.2s 0ms;
+  transition: background-color 0.2s 0ms;
+  width: 100%;
+}
+
+.sp-login-provider:active {
+  outline: 0;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+}
+
+.sp-login-provider.google {
+  background-color: #dd4b39;
+}
+
+.sp-login-provider.google:active,
+.sp-login-provider.google:focus,
+.sp-login-provider.google:hover {
+  background-color: #c23321;
+}
+
+.sp-login-provider.facebook {
+  background-color: #3b5998;
+}
+
+.sp-login-provider.facebook:active,
+.sp-login-provider.facebook:focus,
+.sp-login-provider.facebook:hover {
+  background-color: #2d4373;
+}
+
+.sp-login-provider.github {
+  background-color: #444;
+}
+
+.sp-login-provider.github:active,
+.sp-login-provider.github:focus,
+.sp-login-provider.github:hover {
+  background-color: #2b2b2b;
+}
+
+.sp-login-provider.linkedin {
+  background-color: #007bb6;
+}
+
+.sp-login-provider.linkedin:active,
+.sp-login-provider.linkedin:focus,
+.sp-login-provider.linkedin:hover {
+  background-color: #005983;
+}
+
+.sp-login-provider.saml {
+  background-color: #999;
+}
+
+.sp-login-provider.saml:active,
+.sp-login-provider.saml:focus,
+.sp-login-provider.saml:hover {
+  background-color: #888;
+}
+
+.sp-login-provider.twitter {
+  background-color: #00a5d5;
+}
+
+.sp-login-provider.twitter:active,
+.sp-login-provider.twitter:focus,
+.sp-login-provider.twitter:hover {
+  background-color: #007da2;
 }

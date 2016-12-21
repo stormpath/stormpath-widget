@@ -10,6 +10,7 @@ class LoginComponent {
   static style = style;
 
   fields = [];
+  accountStores = [];
   state = 'unknown';
   modal = null;
   capsWarning = false;
@@ -49,6 +50,7 @@ class LoginComponent {
 
   onViewModelLoaded(data) {
     this.fields = data.form.fields;
+    this.accountStores = data.accountStores;
     this.state = 'ready';
   }
 
