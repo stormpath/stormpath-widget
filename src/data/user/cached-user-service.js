@@ -5,6 +5,7 @@ class CachedUserService {
     utils.createDecorator(this, userService);
     this.userService = userService;
     this.storage = storage;
+    this.resolvePromises = {};
   }
 
   _cachedPromise(key, cacheResolver) {
@@ -15,10 +16,20 @@ class CachedUserService {
         return Promise.resolve(JSON.parse(result));
       }
 
-      return cacheResolver().then((result) => {
-        this.storage.set(storageKey, JSON.stringify(result));
+      if (key in this.resolvePromises) {
+        return this.resolvePromises[key];
+      }
+
+      const resolvePromise = cacheResolver().then((result) => {
+        this.storage.set(storageKey, JSON.stringify(result)).then(() => {
+          delete this.resolvePromises[key];
+        });
         return result;
       });
+
+      this.resolvePromises[key] = resolvePromise;
+
+      return resolvePromise;
     });
   }
 
