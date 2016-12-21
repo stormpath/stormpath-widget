@@ -87,7 +87,7 @@ class Stormpath extends EventEmitter {
     }
 
     // Decorate our user service with caching
-    userService = new CachedUserService(userService, this.storage);
+    //userService = new CachedUserService(userService, this.storage);
 
     return userService;
   }
