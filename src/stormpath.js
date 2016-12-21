@@ -143,6 +143,10 @@ class Stormpath extends EventEmitter {
 
     if (modal) {
       modal.show();
+
+      this.once('loggedIn', () => {
+        modal.close();
+      });
     }
   }
 
@@ -167,6 +171,11 @@ class Stormpath extends EventEmitter {
     if (modal) {
       modal.show();
     }
+
+    // TODO this only handles autologin, not the email verification (2-step) login
+    this.once('loggedIn', () => {
+      modal.close();
+    });
   }
 
   logout() {
