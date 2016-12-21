@@ -43,7 +43,7 @@ describe.only('Stormpath', () => {
       });
 
       describe('when renderTo is [DOMNode]', () => {
-        it.skip('should render component to [DOMNode]', () => {
+        it.skip('should render component to [DOMNode]', () => {
         });
       });
 
