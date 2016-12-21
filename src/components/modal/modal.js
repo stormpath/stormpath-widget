@@ -18,8 +18,8 @@ class ModalComponent {
       return;
     }
 
-    utils.addClass(this._overlayElement, 'active');
-    utils.addClass(this._modalElement, 'active');
+    utils.addClass(this._overlayElement, 'sp-active');
+    utils.addClass(this._modalElement, 'sp-active');
 
     document.addEventListener('keyup', this._onKeyUpHandler, true);
     this._overlayElement.addEventListener('click', this.close.bind(this), true);
@@ -39,8 +39,8 @@ class ModalComponent {
     document.removeEventListener('keyup', this._onKeyUpHandler, true);
     this._overlayElement.removeEventListener('click', this.close.bind(this), true);
 
-    utils.removeClass(this._modalElement, 'active');
-    utils.removeClass(this._overlayElement, 'active');
+    utils.removeClass(this._modalElement, 'sp-active');
+    utils.removeClass(this._overlayElement, 'sp-active');
 
     this._removeFromBody(this._modalElement);
     this._removeFromBody(this._overlayElement);
