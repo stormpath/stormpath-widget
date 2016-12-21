@@ -1,3 +1,3 @@
 import Stormpath from './stormpath';
 
-export default Stormpath;
+module.exports = Stormpath;
