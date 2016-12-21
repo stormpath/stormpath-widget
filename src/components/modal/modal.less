@@ -4,10 +4,9 @@
 @modal-z: 10;
 
 .sp-overlay {
-    display: none;
-}
+  display: none;
 
-.sp-overlay.active {
+  &.active {
     display: block;
     position: fixed;
     top: 0;
@@ -16,14 +15,14 @@
     width: 100%;
     background-color: rgba(0,0,0,0.5);
     z-index: @modal-z;
+  }
 }
 
 .sp-modal {
   display: none;
   outline: none;
-}
 
-.sp-modal.active {
+  &.active {
     display: block;
     background-color: white;
     width: @modal-width;
@@ -36,17 +35,18 @@
     border-radius: @modal-radius;
     text-align: center;
     z-index: @modal-z + 1;
-}
+  }
 
-.sp-modal .sp-modal-close-btn {
-  float: right;
-  background-color: rgb(200,200,200);
-  color: #777;
-  border-style: none;
-  font-size: 1.5em;
-  padding-top: 0;
-  padding-bottom: 3px;
-  padding-left: 6px;
-  padding-right: 6px;
-  border-top-right-radius: @modal-radius;
+  .sp-modal-close-btn {
+    float: right;
+    background-color: rgb(200,200,200);
+    color: #777;
+    border-style: none;
+    font-size: 1.5em;
+    padding-top: 0;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-top-right-radius: @modal-radius;
+  }
 }
