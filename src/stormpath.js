@@ -2,7 +2,6 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
-<<<<<<< 00a33b9149b443c5b62657328de69147048237f9
 import {
   ModalComponent,
   FormFieldComponent,
@@ -13,16 +12,13 @@ import {
 import {
   HttpProvider,
   LocalStorage,
+  MemoryStorage,
   TokenStorage,
   CachedUserService,
   MockUserService,
   ClientApiUserService,
   CookieUserService
 } from './data';
-=======
-import { FormFieldComponent, RegistrationComponent, LoginComponent } from './components';
-import { HttpProvider, MemoryStorage, LocalStorage, TokenStorage, CachedUserService, MockUserService, ClientApiUserService, CookieUserService } from './data';
->>>>>>> cache view models in memory store
 
 class Stormpath extends EventEmitter {
   static prefix = 'sp';
