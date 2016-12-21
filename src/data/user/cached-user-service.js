@@ -35,21 +35,11 @@ function createDecorator(decorator, decorated) {
 class CachedUserService {
   constructor(userService, storage) {
     createDecorator(this, userService);
-
     this.userService = userService;
     this.storage = storage;
-
-    this.cache = {
-      getLoginViewModel: null,
-      getRegistrationViewModel: null
-    };
   }
 
   _cachedPromise(key, cacheResolver) {
-    if (this.cache[key]) {
-      return this.cache[key];
-    }
-
     const storageKey = 'cache.' + key;
 
     return this.storage.get(storageKey).then((result) => {
@@ -57,14 +47,10 @@ class CachedUserService {
         return Promise.resolve(JSON.parse(result));
       }
 
-      const cachedPromise = cacheResolver().then((result) => {
+      return cacheResolver().then((result) => {
         this.storage.set(storageKey, JSON.stringify(result));
         return result;
       });
-
-      this.cache[key] = cachedPromise;
-
-      return cachedPromise;
     });
   }
 
