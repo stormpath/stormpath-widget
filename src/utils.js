@@ -77,6 +77,55 @@ class Utils {
       decorator[name] = member.bind(decorated);
     });
   }
+
+  getWindowQueryString() {
+    return window.location.search;
+  }
+
+  encodeQueryString(query) {
+    var result = '';
+
+    for (var key in query) {
+      if (result !== '') {
+        result += '&';
+      }
+      result += key + '=' + encodeURIComponent(query[key]);
+    }
+
+    return result;
+  }
+
+  parseQueryString(queryString) {
+    let result = {};
+
+    if (!queryString) {
+      return result;
+    }
+
+    if (/^[?#]/.test(queryString)) {
+      queryString = queryString.slice(1);
+    }
+
+    result = queryString.split('&').reduce((params, param) => {
+      let [key, value] = param.split('=');
+
+      if (!key) {
+        return params;
+      }
+
+      try {
+        value = decodeURIComponent(value || '');
+      } catch (e) {
+        value = undefined;
+      }
+
+      params[key] = value;
+
+      return params;
+    }, {});
+
+    return result;
+  }
 }
 
 export default new Utils();

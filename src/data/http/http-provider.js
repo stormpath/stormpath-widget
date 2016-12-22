@@ -1,4 +1,5 @@
 import xhr from 'xhr';
+import utils from '../../utils';
 import formUrlencoded from 'form-urlencoded';
 
 class HttpProvider {
@@ -11,7 +12,11 @@ class HttpProvider {
     this.requestInterceptor = requestInterceptor;
   }
 
-  getJson(path) {
+  getJson(path, queryParameters) {
+    if (queryParameters) {
+      path += '?' + utils.encodeQueryString(queryParameters);
+    }
+
     return this._createRequest({
       method: 'GET',
       path: path,

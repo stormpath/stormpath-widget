@@ -1,6 +1,13 @@
-class CookieUserService {
+import EventEmitter from 'events';
+
+class CookieUserService extends EventEmitter {
   constructor(httpProvider) {
+    super();
     this.httpProvider = httpProvider;
+  }
+
+  getState() {
+    return Promise.resolve('unauthenticated');
   }
 
   getLoginViewModel() {

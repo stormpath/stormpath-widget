@@ -30,6 +30,10 @@
 
         unauthenticatedContainer.style.display = 'none';
         logoutButton.addEventListener('click', () => stormpath.logout());
+
+        if ((/#verify/).test(window.location.href)) {
+          stormpath.showEmailVerification();
+        }
       }
 
       function onDocumentReady() {

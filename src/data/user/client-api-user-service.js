@@ -118,6 +118,12 @@ class ClientApiUserService extends EventEmitter {
     });
   }
 
+  verifyEmail(token) {
+    return this.httpProvider.getJson('/verify', {
+      sptoken: token
+    });
+  }
+
   register(data) {
     return this.httpProvider.postJson('/register', data).then((result) => {
       this.account = result.account;

@@ -37,6 +37,16 @@ stormpath.on('unauthenticated', function () {
 
 Shows a login form. If `renderTo` is specified, it will render the form to that element. Else it will show the form in an overlay.
 
+#### stormpath.showEmailVerification([renderTo], [sptoken]);
+
+Trigger the email verification workflow, this is when the user is landing on your app after clicking the email verification link. The library fetches the `sptoken` from the URL if it's not passed explicitly.  To distinguish from password reset, we recommend that you set the [Link Base URL of your directory](https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#customizing-stormpath-email-templates) to `http://example.com#verify`, and then use this API like so:
+
+```javascript
+if ((/#verify/).test(window.location.href)) {
+  stormpath.showEmailVerification();
+}
+```
+
 #### showRegistration([renderTo])
 
 Shows a registration form. If `renderTo` is specified, it will render the form to that element. Else it will show the form in an overlay.
