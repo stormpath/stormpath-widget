@@ -3,6 +3,10 @@ var webpack = require('webpack');
 module.exports = {
   devtool: 'inline-source-map',
 
+  entry: [
+    './src/index'
+  ],
+
   output: {
     library: 'Stormpath'
   },
@@ -16,7 +20,16 @@ module.exports = {
         retainLines: true,
         cacheDirectory: true
       }
-    }]
+    }],
+    noParse: [
+      /\/sinon\.js/,
+    ],
+  },
+
+  resolve: {
+    alias: {
+      sinon: 'sinon/pkg/sinon',
+    }
   },
 
   plugins: [

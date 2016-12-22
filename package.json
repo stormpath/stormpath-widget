@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "babel-polyfill": "^6.20.0",
+    "chai": "^3.5.0",
     "eslint-watch": "^2.1.14",
     "express": "^4.14.0",
     "json-loader": "^0.5.4",
@@ -62,6 +63,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.2.0",
+    "sinon": "^1.17.6",
     "webpack-dev-middleware": "^1.8.4"
   }
 }

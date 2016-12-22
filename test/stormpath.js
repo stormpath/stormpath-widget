@@ -1,7 +1,9 @@
-import assert from 'assert';
+import { assert } from 'chai';
+import sinon from 'sinon';
+import Rivets from 'rivets';
 import Stormpath from '../src/';
 
-describe.only('Stormpath', () => {
+describe('Stormpath', () => {
   describe('constructor([options])', () => {
     describe('when options is undefined', () => {
       it('should return a new instance', () => {
@@ -35,30 +37,89 @@ describe.only('Stormpath', () => {
     });
   });
 
-  describe.only('instance', () => {
-    let stormpath = new Stormpath({
-      authStrategy: 'mock'
+  describe('instance', () => {
+    let sandbox;
+    let stormpathMock;
+    let modal;
+    let modalShowSpy;
+
+    beforeEach(() => {
+      sandbox = sinon.sandbox.create();
+
+      stormpathMock = new Stormpath({
+        authStrategy: 'mock'
+      });
+
+      modal = stormpathMock.modal;
+
+      modalShowSpy = sinon.spy(modal, 'show');
+    });
+
+    afterEach(() => {
+      sandbox.restore();
     });
 
     describe('.showEmailVerification([renderTo], [token])', () => {
       describe('when renderTo is undefined', () => {
-        it.only('should show and render component to modal', () => {
-          stormpath.showEmailVerification();
+        it('should show and render component to modal', () => {
+          stormpathMock.showEmailVerification();
+          assert.isTrue(modalShowSpy.calledOnce);
+          assert.include(modal.element.innerHTML, '<div class="sp-verify-email-component">');
         });
       });
 
       describe('when renderTo is [DOMNode]', () => {
-        it.skip('should render component to [DOMNode]', () => {
+        let elementMock;
+
+        beforeEach(() => {
+          elementMock = document.createElement();
+        });
+
+        it('should render component to [DOMNode]', () => {
+          stormpathMock.showEmailVerification(elementMock);
+          assert.isFalse(modalShowSpy.called);
+          assert.equal(modal.element.innerHTML, '');
+          assert.include(elementMock.innerHTML, '<div class="sp-verify-email-component">');
         });
       });
 
-      describe('when token is undefined', () => {
-        it.skip('should pass sptoken from query string to component', () => {
+      // TODO: Need to fix a way to mock window.location.search.
+      describe.skip('when token is undefined', () => {
+        let rivetsInitSpy;
+
+        beforeEach(() => {
+          rivetsInitSpy = sandbox.spy(Rivets, 'init');
+          window.location.search = '?sptoken=123';
+        });
+
+        it('should pass sptoken from query string to component', () => {
+          stormpathMock.showEmailVerification();
+
+          assert.isTrue(rivetsInitSpy.calledOnce);
+
+          const rivetsInitCall = rivetsInitSpy.getCall(0);
+          const rivetsDataArg = rivetsInitCall.args[2];
+
+          assert.equal(rivetsDataArg.token, '123');
         });
       });
 
       describe('when token is \'abc\'', () => {
-        it.skip('should pass \'abc\' as token to component', () => {
+        let rivetsInitSpy;
+
+        beforeEach(() => {
+          rivetsInitSpy = sandbox.spy(Rivets, 'init');
+        });
+
+        it('should pass \'abc\' as token to component', () => {
+          stormpathMock.showEmailVerification(null, 'abc');
+
+          assert.isTrue(rivetsInitSpy.calledOnce);
+
+          const rivetsInitCall = rivetsInitSpy.getCall(0);
+          const rivetsDataArg = rivetsInitCall.args[2];
+
+          assert.equal(rivetsDataArg.token, 'abc');
         });
       });
     });
