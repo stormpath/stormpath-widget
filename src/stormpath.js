@@ -3,13 +3,22 @@ import Rivets from 'rivets';
 import EventEmitter from 'events';
 
 import {
+  ModalComponent,
   FormFieldComponent,
   LoginComponent,
-  ModalComponent,
   RegistrationComponent
 } from './components';
 
-import { HttpProvider, LocalStorage, TokenStorage, MockUserService, ClientApiUserService, CookieUserService } from './data';
+import {
+  HttpProvider,
+  LocalStorage,
+  MemoryStorage,
+  TokenStorage,
+  CachedUserService,
+  MockUserService,
+  ClientApiUserService,
+  CookieUserService
+} from './data';
 
 class Stormpath extends EventEmitter {
   static prefix = 'sp';
@@ -55,6 +64,7 @@ class Stormpath extends EventEmitter {
 
     this._initializeUserServiceEvents();
     this._initializeRivets(options.templates);
+    this._preloadViewModels();
   }
 
   _createUserService(options) {
@@ -77,6 +87,9 @@ class Stormpath extends EventEmitter {
         break;
     }
 
+    // Decorate our user service with caching
+    userService = new CachedUserService(userService, new MemoryStorage());
+
     return userService;
   }
 
@@ -89,6 +102,11 @@ class Stormpath extends EventEmitter {
 
     // Make an initial request to getState() in order to trigger our first user events.
     this.userService.getState();
+  }
+
+  _preloadViewModels() {
+    this.userService.getLoginViewModel();
+    this.userService.getRegistrationViewModel();
   }
 
   _initializeRivets(templates) {

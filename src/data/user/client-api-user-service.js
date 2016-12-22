@@ -83,7 +83,7 @@ class ClientApiUserService extends EventEmitter {
     return this.httpProvider.getJson('/login');
   }
 
-  getRegisterViewModel() {
+  getRegistrationViewModel() {
     return this.httpProvider.getJson('/register');
   }
 
