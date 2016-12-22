@@ -51,6 +51,7 @@
     "xtend": "^4.0.1"
   },
   "devDependencies": {
+    "babel-polyfill": "^6.20.0",
     "eslint-watch": "^2.1.14",
     "express": "^4.14.0",
     "json-loader": "^0.5.4",

@@ -2,7 +2,7 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['mocha'],
-    files: ['./test/**/*.js', './node_modules/promise-polyfill/promise.js'],
+    files: ['./test/**/*.js'],
     webpack: require('./webpack.config'),
     reporters: ['progress', 'mocha'],
     preprocessors: {
