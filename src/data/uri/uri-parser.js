@@ -24,11 +24,22 @@ class UriParser {
       end = nextParam;
     }
 
+    let fragment = this._uri.indexOf('#', start);
+    if (fragment > -1 && fragment <= end) {
+      end = fragment;
+    }
+
     result.value = this._uri.substring(start + name.length + 1, end);
 
     var trimmedStart = this._uri.substring(0, start);
-    var trimmedEnd = this._uri.substring(end + 1);
+    var trimmedEnd = this._uri.substring(end);
     result.new = trimmedStart + trimmedEnd;
+
+    result.new = result.new
+      .replace('?&', '?')
+      .replace('?#', '#')
+      .replace('&&', '&')
+      .replace('&#', '#');
 
     if (result.new[result.new.length - 1] === '&'
      || result.new[result.new.length - 1] === '?') {
