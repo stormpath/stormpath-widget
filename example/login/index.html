@@ -21,9 +21,9 @@
         var registerButton = document.getElementById('register-button');
 
         authenticatedContainer.style.display = 'none';
-        loginButton.addEventListener('click', () => stormpath.showLogin(stormpathContainer));
-        registerButton.addEventListener('click', () => stormpath.showRegistration(stormpathContainer));
-        forgotPasswordButton.addEventListener('click', () => stormpath.showForgotPassword(stormpathContainer));
+        loginButton.addEventListener('click', () => stormpath.showLogin());
+        registerButton.addEventListener('click', () => stormpath.showRegistration());
+        forgotPasswordButton.addEventListener('click', () => stormpath.showForgotPassword());
 
         // Unauthenticated
         var unauthenticatedContainer = document.getElementById('unauthenticated');
@@ -39,6 +39,10 @@
           // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
           appUri: 'https://lawful-heron.apps.stormpath.io'
         });
+
+        if ((/#change-password/).test(window.location.href)) {
+          stormpath.showChangePassword();
+        }
 
         stormpath.on('authenticated', () => {
           console.log('We\'re authenticated!');

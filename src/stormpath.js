@@ -2,10 +2,15 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
+import utils from './utils';
+
 import {
-  ForgotPasswordComponent,
+  ModalComponent,
+  FormFieldComponent,
   LoginComponent,
-  RegistrationComponent
+  RegistrationComponent,
+  ChangePasswordComponent,
+  ForgotPasswordComponent
 } from './components';
 
 import {
@@ -28,6 +33,14 @@ class Stormpath extends EventEmitter {
     authStrategy: null,
 
     templates: {
+      [ChangePasswordComponent.id]: {
+        component: ChangePasswordComponent,
+        view: () => ChangePasswordComponent.view
+      },
+      [FormFieldComponent.id]: {
+        component: FormFieldComponent,
+        view: () => FormFieldComponent.view
+      },
       [ForgotPasswordComponent.id]: {
         component: ForgotPasswordComponent,
         view: () => ForgotPasswordComponent.view
@@ -55,6 +68,7 @@ class Stormpath extends EventEmitter {
       options.authStrategy = 'token';
     }
 
+    this.modal = new ModalComponent();
     this.storage = new LocalStorage();
     this.userService = this._createUserService(options);
 
@@ -129,38 +143,82 @@ class Stormpath extends EventEmitter {
     return this.tokenStorage.getAccessToken();
   }
 
-  showForgotPassword(renderTo) {
-    const targetElement = renderTo || null;
+  showChangePassword(renderTo, sptoken) {
+    const modalMode = renderTo === undefined;
+    const parsedQueryString = utils.parseQueryString(window.location.search);
+
     const data = {
-      userService: this.userService
+      userService: this.userService,
+      modal: modalMode ? this.modal : null,
+      sptoken: sptoken || parsedQueryString.sptoken
     };
-    Rivets.init(Stormpath.prefix + '-' + ForgotPasswordComponent.id, targetElement, data);
+
+    Rivets.init(
+      Stormpath.prefix + '-' + ChangePasswordComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
+  }
+
+  showForgotPassword(renderTo) {
+    const modalMode = renderTo === undefined;
+
+    const data = {
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
+    };
+
+    Rivets.init(
+      Stormpath.prefix + '-' + ForgotPasswordComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
   }
 
   showLogin(renderTo) {
-    const targetElement = renderTo || null; //this.overlay.element;
+    const modalMode = renderTo === undefined;
+
     const data = {
-      userService: this.userService
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
     };
 
-    Rivets.init(Stormpath.prefix + '-' + LoginComponent.id, targetElement, data);
+    Rivets.init(
+      Stormpath.prefix + '-' + LoginComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
 
-    //if (!renderTo) {
-    //  this.overlay.show();
-    //}
+    if (modalMode) {
+      this.modal.show();
+    }
   }
 
   showRegistration(renderTo) {
-    const targetElement = renderTo || null; //this.overlay.element;
+    const modalMode = renderTo === undefined;
+
     const data = {
-      userService: this.userService
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
     };
 
-    Rivets.init(Stormpath.prefix + '-' + RegistrationComponent.id, targetElement, data);
+    Rivets.init(
+      Stormpath.prefix + '-' + RegistrationComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
 
-    //if (!renderTo) {
-    //  this.overlay.show();
-    //}
+    if (modalMode) {
+      this.modal.show();
+    }
   }
 
   logout() {

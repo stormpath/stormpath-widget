@@ -34,7 +34,9 @@ class ForgotPasswordComponent {
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const login = fields.login.value;
 
-    this.userService.sendForgotPasswordEmail({ login: login })
+    this.state = 'sending';
+
+    this.userService.sendForgotPasswordEmail({ email: login })
       .then(this.onSent.bind(this))
       .catch(this.onError.bind(this, 'login_error'));
   }
