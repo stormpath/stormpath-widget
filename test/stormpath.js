@@ -1,5 +1,5 @@
 import assert from 'assert';
-import Stormpath from '../src/stormpath';
+import Stormpath from '../src/';
 
 describe.only('Stormpath', () => {
   describe('constructor([options])', () => {
@@ -35,10 +35,15 @@ describe.only('Stormpath', () => {
     });
   });
 
-  describe('instance', () => {
+  describe.only('instance', () => {
+    let stormpath = new Stormpath({
+      authStrategy: 'mock'
+    });
+
     describe('.showEmailVerification([renderTo], [token])', () => {
       describe('when renderTo is undefined', () => {
-        it.skip('should show and render component to overlay', () => {
+        it.only('should show and render component to modal', () => {
+          stormpath.showEmailVerification();
         });
       });
 

@@ -197,13 +197,24 @@ class Stormpath extends EventEmitter {
   }
 
   showEmailVerification(renderTo, token) {
-    const targetElement = renderTo || null;
+    const modalMode = renderTo === undefined;
     const parsedQueryString = utils.parseQueryString(window.location.search);
+
     const data = {
       userService: this.userService,
+      modal: modalMode ? this.modal : null,
       token: token || parsedQueryString.sptoken
     };
-    Rivets.init(Stormpath.prefix + '-' + VerifyEmailComponent.id, targetElement, data);
+
+    Rivets.init(
+      Stormpath.prefix + '-' + VerifyEmailComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
   }
 
   logout() {
