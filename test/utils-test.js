@@ -63,21 +63,21 @@ describe('utils', () => {
     describe('when queryString is \'?a=1\'', () => {
       it('should return { a: 1 }', () => {
         const parsedQueryString = utils.parseQueryString('?a=1');
-        assert.deepEqual(parsedQueryString, { a: 1 });
+        assert.deepEqual(parsedQueryString, { a: '1' });
       });
     });
 
     describe('when queryString is \'a=1\'', () => {
       it('should return { a: 1 }', () => {
         const parsedQueryString = utils.parseQueryString('a=1');
-        assert.deepEqual(parsedQueryString, { a: 1 });
+        assert.deepEqual(parsedQueryString, { a: '1' });
       });
     });
 
     describe('when queryString is \'a=1&b=2\'', () => {
       it('should return { a: 1, b: 2 }', () => {
         const parsedQueryString = utils.parseQueryString('a=1&b=2');
-        assert.deepEqual(parsedQueryString, { a: 1, b: 2 });
+        assert.deepEqual(parsedQueryString, { a: '1', b: '2' });
       });
     });
 
