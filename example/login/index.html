@@ -41,6 +41,10 @@
           appUri: 'https://lawful-heron.apps.stormpath.io'
         });
 
+        if ((/#change-password/).test(window.location.href)) {
+          stormpath.showChangePassword();
+        }
+
         stormpath.on('authenticated', () => {
           console.log('We\'re authenticated!');
 

@@ -17,6 +17,10 @@ class ClientApiUserService extends EventEmitter {
     }
   }
 
+  changePassword(data) {
+    return this.httpProvider.postJson('/change', data);
+  }
+
   getAccount() {
     return new Promise((accept) => {
       accept(this.account);
@@ -143,6 +147,11 @@ class ClientApiUserService extends EventEmitter {
         });
       });
     });
+  }
+
+  verifyPasswordResetToken(token) {
+
+    return this.httpProvider.getJson('/change?sptoken=' + token);
   }
 }
 

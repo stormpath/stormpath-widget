@@ -2,7 +2,10 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
+import utils from './utils';
+
 import {
+  ChangePasswordComponent,
   ForgotPasswordComponent,
   FormFieldComponent,
   LoginComponent,
@@ -30,6 +33,10 @@ class Stormpath extends EventEmitter {
     authStrategy: null,
 
     templates: {
+      [ChangePasswordComponent.id]: {
+        component: ChangePasswordComponent,
+        view: () => ChangePasswordComponent.view
+      },
       [FormFieldComponent.id]: {
         component: FormFieldComponent,
         view: () => FormFieldComponent.view
@@ -136,6 +143,28 @@ class Stormpath extends EventEmitter {
     return this.tokenStorage.getAccessToken();
   }
 
+  showChangePassword(renderTo, sptoken) {
+
+    const modalMode = renderTo === undefined;
+
+    const parsedQueryString = utils.parseQueryString(window.location.search);
+    const data = {
+      userService: this.userService,
+      modal: modalMode ? this.modal : null,
+      sptoken: sptoken || parsedQueryString.sptoken
+    };
+
+    Rivets.init(
+      Stormpath.prefix + '-' + ChangePasswordComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
+  }
+
   showForgotPassword(renderTo) {
 
     const modalMode = renderTo === undefined;
@@ -154,6 +183,7 @@ class Stormpath extends EventEmitter {
     if (modalMode) {
       this.modal.show();
     }
+
   }
 
   showLogin(renderTo) {
