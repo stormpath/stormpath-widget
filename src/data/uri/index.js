@@ -1,6 +1,5 @@
-import UriParser from './uri-parser';
+//import UriParser from './uri-parser';
+export UriParser from './uri-parser';
+//module.exports = UriParser;
 
-module.exports = UriParser;
-
-// TODO for some reason the karma tests will not run if this is used:
-// export UriParser from './uri-parser'
+// TODO for some reason the karma tests will not run unless the module.exports style is used

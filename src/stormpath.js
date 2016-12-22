@@ -26,6 +26,7 @@ import {
   MemoryStorage,
   MockUserService,
   TokenStorage,
+  UriParser,
 } from './data';
 
 class Stormpath extends EventEmitter {
@@ -90,7 +91,12 @@ class Stormpath extends EventEmitter {
 
     this._initializeUserServiceEvents();
     this._initializeRivets(options.templates);
+<<<<<<< HEAD
     this._preloadViewModels();
+=======
+
+    this._handleCallbackResponse();
+>>>>>>> Successfully pulling callback response out of querystring
   }
 
   _createUserService(options) {
@@ -180,6 +186,23 @@ class Stormpath extends EventEmitter {
     if (modalMode) {
       this.modal.show();
     }
+  }
+
+  _handleCallbackResponse() {
+    // TODO check for OAuth error parameters first
+
+    let parser = new UriParser(window.location.toString());
+    if (!parser.hasParameter('jwtResponse')) {
+      return;
+    }
+
+    let result = parser.extract('jwtResponse');
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, result.new);
+    }
+
+    // TODO exchange this assertion token for an access token
+    console.log(result.value);
   }
 
   getAccount() {
