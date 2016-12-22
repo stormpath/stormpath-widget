@@ -33,6 +33,7 @@ class ForgotPasswordComponent {
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const login = fields.login.value;
+    this.state = 'sending';
 
     this.userService.sendForgotPasswordEmail({ login: login })
       .then(this.onSent.bind(this))

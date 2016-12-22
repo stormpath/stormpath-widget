@@ -137,11 +137,23 @@ class Stormpath extends EventEmitter {
   }
 
   showForgotPassword(renderTo) {
-    const targetElement = renderTo || null;
+
+    const modalMode = renderTo === undefined;
+
     const data = {
-      userService: this.userService
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
     };
-    Rivets.init(Stormpath.prefix + '-' + ForgotPasswordComponent.id, targetElement, data);
+
+    Rivets.init(
+      Stormpath.prefix + '-' + ForgotPasswordComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
   }
 
   showLogin(renderTo) {
