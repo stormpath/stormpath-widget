@@ -2,7 +2,7 @@ import utils from '../../utils';
 
 class CachedUserService {
   constructor(userService, storage) {
-    utils.createDecorator(this, userService);
+    utils.decoratePublicMethods(this, userService);
     this.userService = userService;
     this.storage = storage;
     this.resolvePromises = {};

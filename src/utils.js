@@ -55,7 +55,7 @@ class Utils {
     return names.filter(name => name !== 'constructor');
   }
 
-  createDecorator(decorator, decorated) {
+  decoratePublicMethods(decorator, decorated) {
     this.getAllPropertyNames(decorated.constructor.prototype).forEach((name) => {
       const member = decorated[name];
 
