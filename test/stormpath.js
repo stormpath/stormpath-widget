@@ -1,6 +1,8 @@
 import { assert } from 'chai';
 import sinon from 'sinon';
 import Rivets from 'rivets';
+
+import utils from '../src/utils';
 import Stormpath from '../src/';
 
 describe('Stormpath', () => {
@@ -83,16 +85,18 @@ describe('Stormpath', () => {
         });
       });
 
-      // TODO: Need to fix a way to mock window.location.search.
-      describe.skip('when token is undefined', () => {
+      describe('when token is undefined', () => {
         let rivetsInitSpy;
+        let utilsQueryStringStub;
 
         beforeEach(() => {
           rivetsInitSpy = sandbox.spy(Rivets, 'init');
-          window.location.search = '?sptoken=123';
+          utilsQueryStringStub = sandbox.stub(utils, 'getWindowQueryString');
         });
 
-        it('should pass sptoken from query string to component', () => {
+        it('should pass value of query string ?sptoken=123 as token to component', () => {
+          utilsQueryStringStub.returns('?sptoken=123');
+
           stormpathMock.showEmailVerification();
 
           assert.isTrue(rivetsInitSpy.calledOnce);

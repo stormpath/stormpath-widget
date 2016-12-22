@@ -198,7 +198,7 @@ class Stormpath extends EventEmitter {
 
   showEmailVerification(renderTo, token) {
     const modalMode = renderTo === undefined;
-    const parsedQueryString = utils.parseQueryString(window.location.search);
+    const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
 
     const data = {
       userService: this.userService,

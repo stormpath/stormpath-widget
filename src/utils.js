@@ -78,6 +78,10 @@ class Utils {
     });
   }
 
+  getWindowQueryString() {
+    return window.location.search;
+  }
+
   encodeQueryString(query) {
     var result = '';
 
