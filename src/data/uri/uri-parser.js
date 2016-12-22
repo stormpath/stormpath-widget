@@ -12,9 +12,27 @@ class UriParser {
       value: ''
     };
 
-    let start = this._uri.indexOf(name + '=');
+    let start = this._uri.indexOf('?');
+    start = this._uri.indexOf(name + '=', start);
     if (start === -1) {
       return result;
+    }
+
+    let end = this._uri.length;
+    let nextParam = this._uri.indexOf('&', start);
+    if (nextParam > -1) {
+      end = nextParam;
+    }
+
+    result.value = this._uri.substring(start + name.length + 1, end);
+
+    var trimmedStart = this._uri.substring(0, start);
+    var trimmedEnd = this._uri.substring(end + 1);
+    result.new = trimmedStart + trimmedEnd;
+
+    if (result.new[result.new.length - 1] === '&'
+     || result.new[result.new.length - 1] === '?') {
+      result.new = result.new.slice(0, -1);
     }
 
     return result;
