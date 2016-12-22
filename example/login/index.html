@@ -31,8 +31,8 @@
         unauthenticatedContainer.style.display = 'none';
         logoutButton.addEventListener('click', () => stormpath.logout());
 
-        if ((/^\?sptoken\=/).test(window.location.search)) {
-          stormpath.showEmailVerification(stormpathContainer);
+        if ((/#verify/).test(window.location.href)) {
+          stormpath.showEmailVerification();
         }
       }
 
