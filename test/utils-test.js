@@ -1,7 +1,13 @@
-import assert from 'assert';
+import { assert } from 'chai';
 import utils from '../src/utils';
 
 describe('utils', () => {
+  describe('.getWindowQueryString()', () => {
+    it('should return the query string of the current window', () => {
+      assert.equal(utils.getWindowQueryString(), window.location.search);
+    });
+  });
+
   describe('.encodeQueryString(query)', () => {
     describe('when query is undefined', () => {
       it('should return \'\'', () => {
