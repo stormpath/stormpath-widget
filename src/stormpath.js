@@ -146,6 +146,27 @@ class Stormpath extends EventEmitter {
     }
   }
 
+  _render(componentId, targetElement, data) {
+    const modalMode = targetElement === undefined;
+
+    data = data || {};
+    data.userService = this.userService;
+
+    if (modalMode) {
+      data.modal = this.modal;
+    }
+
+    Rivets.init(
+      Stormpath.prefix + '-' + componentId,
+      modalMode ? this.modal.element : targetElement,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
+  }
+
   getAccount() {
     return this.userService.getAccount();
   }
@@ -159,62 +180,21 @@ class Stormpath extends EventEmitter {
   }
 
   showLogin(renderTo) {
-    const modalMode = renderTo === undefined;
-
-    const data = {
-      userService: this.userService,
-      modal: modalMode ? this.modal : null
-    };
-
-    Rivets.init(
-      Stormpath.prefix + '-' + LoginComponent.id,
-      modalMode ? this.modal.element : renderTo,
-      data
-    );
-
-    if (modalMode) {
-      this.modal.show('Log in');
-    }
+    this._render(LoginComponent.id, renderTo);
   }
 
   showRegistration(renderTo) {
-    const modalMode = renderTo === undefined;
-
-    const data = {
-      userService: this.userService,
-      modal: modalMode ? this.modal : null
-    };
-
-    Rivets.init(
-      Stormpath.prefix + '-' + RegistrationComponent.id,
-      modalMode ? this.modal.element : renderTo,
-      data
-    );
-
-    if (modalMode) {
-      this.modal.show();
-    }
+    this._render(RegistrationComponent.id, renderTo);
   }
 
   showEmailVerification(renderTo, token) {
-    const modalMode = renderTo === undefined;
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
 
     const data = {
-      userService: this.userService,
-      modal: modalMode ? this.modal : null,
       token: token || parsedQueryString.sptoken
     };
 
-    Rivets.init(
-      Stormpath.prefix + '-' + VerifyEmailComponent.id,
-      modalMode ? this.modal.element : renderTo,
-      data
-    );
-
-    if (modalMode) {
-      this.modal.show();
-    }
+    this._render(VerifyEmailComponent.id, renderTo, data);
   }
 
   logout() {
