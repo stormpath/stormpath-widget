@@ -32,7 +32,7 @@ class TokenStorage extends EventEmitter {
       const runInSeconds = Math.max(parsedJwt.body.exp - currentTimestamp - runSecondsInAdvance, 1);
 
       this.refreshTokenTimeoutId = setTimeout(
-        this._onRefreshTokenExpired.bind(this, refreshToken),
+        this._requestTokenRefresh.bind(this, refreshToken),
         runInSeconds * 1000 // in milliseconds
       );
 
@@ -40,7 +40,7 @@ class TokenStorage extends EventEmitter {
     });
   }
 
-  _onRefreshTokenExpired(refreshToken) {
+  _requestTokenRefresh(refreshToken) {
     const requestData = {
       grant_type: 'refresh_token',
       refresh_token: refreshToken
