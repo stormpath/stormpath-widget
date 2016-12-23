@@ -43,6 +43,10 @@ class LoginComponent {
     new CapsLockDetector(document).on('capslock', this.onCapsLock.bind(this));
   }
 
+  _onlySupportedAccountStores(stores) {
+    return stores.filter((store) => store.authorizeUri);
+  }
+
   onError(state, err) {
     this.error = err;
     this.state = state;
@@ -50,7 +54,7 @@ class LoginComponent {
 
   onViewModelLoaded(data) {
     this.fields = data.form.fields;
-    this.accountStores = data.accountStores;
+    this.accountStores = this._onlySupportedAccountStores(data.accountStores);
     this.state = 'ready';
   }
 
