@@ -173,7 +173,7 @@ class Stormpath extends EventEmitter {
     );
 
     if (modalMode) {
-      this.modal.show();
+      this.modal.show('Log in');
     }
   }
 

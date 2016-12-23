@@ -1,7 +1,12 @@
-@modal-width: 350px;
-@modal-height: 400px;
+@modal-width: 320px;
+@modal-height: 420px;
 @modal-radius: 5px;
 @modal-z: 10;
+
+@color-header: rgb(239, 242, 244);
+@color-text: rgb(54, 64, 81);
+@color-primary: rgb(27, 159, 252);
+@color-disabled: rgb(183, 194, 205);
 
 .sp-overlay {
   display: none;
@@ -22,6 +27,13 @@
   display: none;
   outline: none;
 
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+
+  color: @color-text;
+
   &.sp-active {
     display: block;
     background-color: white;
@@ -33,20 +45,93 @@
     margin-top: round(@modal-height / -2);
     margin-left: round(@modal-width / -2);
     border-radius: @modal-radius;
-    text-align: center;
     z-index: @modal-z + 1;
   }
 
-  .sp-modal-close-btn {
-    float: right;
-    background-color: rgb(200,200,200);
-    color: #777;
-    border-style: none;
-    font-size: 1.5em;
-    padding-top: 0;
-    padding-bottom: 3px;
-    padding-left: 6px;
-    padding-right: 6px;
+  .sp-modal-header {
+    position: relative;
+    background-color: @color-header;
+    text-align: center;
+    font-size: 0.9rem;
     border-top-right-radius: @modal-radius;
+    border-top-left-radius: @modal-radius;
+    width: 100%;
+    padding: 20px 0 15px 0;
+  }
+
+  .sp-modal-close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: @color-header;
+    color: @color-disabled;
+    border-style: none;
+    font-size: 2rem;
+    font-weight: 300;
+  }
+
+  .sp-modal-content {
+    margin: 30px;
+    font-size: 0.8rem;
+
+    .sp-form-group {
+      padding: 5px 0 15px 0;
+    }
+
+    .sp-light {
+      color: @color-disabled;
+    }
+
+    .sp-right {
+      float: right;
+    }
+
+    button, input {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    input {
+      font-size: 1rem;
+    }
+
+    input[type=text], input[type=password] {
+      border-radius: 3px;
+      border-style: solid;
+      border-color: @color-disabled;
+      border-width: 1px;
+      height: 2rem;
+      padding-left: 5px;
+    }
+
+    button {
+      font-size: 1.25rem;
+      font-weight: 300;
+      background-color: @color-primary;
+      color: white;
+      border: none;
+      height: 2.5rem;
+    }
+
+    label, a {
+      font-weight: 600;
+      padding-bottom: 5px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    a {
+      color: @color-primary;
+      text-decoration: none;
+    }
+
+    hr {
+      color: @color-disabled;
+      border-style: solid none none none;
+      padding: 5px 0 15px 0;
+    }
   }
 }

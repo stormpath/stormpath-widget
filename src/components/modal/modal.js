@@ -13,10 +13,14 @@ class ModalComponent {
     this._modalElement = this._createModalElement();
   }
 
-  show() {
+  show(title) {
     if (this._visible) {
       return;
     }
+
+    this._modalElement
+      .getElementsByClassName('sp-modal-title')[0]
+      .innerHTML = title || '';
 
     utils.addClass(this._overlayElement, 'sp-active');
     utils.addClass(this._modalElement, 'sp-active');
