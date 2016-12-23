@@ -8,7 +8,7 @@ class CapsLockDetector extends EventEmitter {
       if (!event.getModifierState) {
         return;
       }
-      
+
       this.emit('capslock', event.getModifierState('CapsLock'));
     });
   }
