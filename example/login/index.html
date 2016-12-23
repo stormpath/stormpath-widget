@@ -92,6 +92,10 @@
           console.log('User just logged out!');
         });
 
+        stormpath.on('loginError', (error) => {
+          console.log('An error occured during social login: ', error);
+        });
+
         initializeView(stormpath);
       }
 
