@@ -83,7 +83,7 @@ class ClientApiUserService extends EventEmitter {
     return this.httpProvider.getJson('/login');
   }
 
-  getRegisterViewModel() {
+  getRegistrationViewModel() {
     return this.httpProvider.getJson('/register');
   }
 
@@ -115,6 +115,12 @@ class ClientApiUserService extends EventEmitter {
           });
         });
       });
+    });
+  }
+
+  verifyEmail(token) {
+    return this.httpProvider.getJson('/verify', {
+      sptoken: token
     });
   }
 

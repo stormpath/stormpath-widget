@@ -44,6 +44,57 @@ class Utils {
     }
   }
 
+  getAllPropertyNames(obj) {
+    let names = [];
+
+    do {
+      names.push.apply(names, Object.getOwnPropertyNames(obj));
+      obj = Object.getPrototypeOf(obj);
+    } while (obj !== Object.prototype);
+
+    return names.filter(name => name !== 'constructor');
+  }
+
+  decoratePublicMethods(decorator, decorated) {
+    this.getAllPropertyNames(decorated.constructor.prototype).forEach((name) => {
+      const member = decorated[name];
+
+      // Skip constructors and private members.
+      if (name === 'constructor' || name[0] === '_') {
+        return;
+      }
+
+      // Skip members overridden in decorator.
+      if (name in decorator) {
+        return;
+      }
+
+      // Skip any members that aren't functions.
+      if (typeof member !== 'function') {
+        return;
+      }
+
+      decorator[name] = member.bind(decorated);
+    });
+  }
+
+  getWindowQueryString() {
+    return window.location.search;
+  }
+
+  encodeQueryString(query) {
+    var result = '';
+
+    for (var key in query) {
+      if (result !== '') {
+        result += '&';
+      }
+      result += key + '=' + encodeURIComponent(query[key]);
+    }
+
+    return result;
+  }
+
   parseQueryString(queryString) {
     let result = {};
 

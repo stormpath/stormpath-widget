@@ -4,7 +4,7 @@ module.exports = function (config) {
     frameworks: ['mocha'],
     files: ['./test/**/*.js'],
     webpack: require('./webpack.config'),
-    reporters: ['progress'],
+    reporters: ['progress', 'mocha'],
     preprocessors: {
       './test/**/*.js': ['webpack', 'sourcemap']
     },
@@ -18,7 +18,8 @@ module.exports = function (config) {
       require('karma-webpack'),
       'karma-mocha',
       'karma-phantomjs-launcher',
-      'karma-sourcemap-loader'
+      'karma-sourcemap-loader',
+      'karma-mocha-reporter'
     ],
     webpackMiddleware: {
       noInfo: true

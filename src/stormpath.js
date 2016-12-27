@@ -14,10 +14,16 @@ import {
 } from './components';
 
 import {
+  VerifyEmailComponent
+} from './components';
+
+import {
+  CachedUserService,
   ClientApiUserService,
   CookieUserService,
   HttpProvider,
   LocalStorage,
+  MemoryStorage,
   MockUserService,
   TokenStorage,
 } from './data';
@@ -30,6 +36,7 @@ class Stormpath extends EventEmitter {
   tokenStorage = null;
 
   options = {
+    appUri: null,
     authStrategy: null,
 
     templates: {
@@ -52,6 +59,10 @@ class Stormpath extends EventEmitter {
       [RegistrationComponent.id]: {
         component: RegistrationComponent,
         view: () => RegistrationComponent.view
+      },
+      [VerifyEmailComponent.id]: {
+        component: VerifyEmailComponent,
+        view: () => VerifyEmailComponent.view
       }
     }
   };
@@ -62,10 +73,15 @@ class Stormpath extends EventEmitter {
     // This needs to be fixed so that provided options override default.
     this.options = options = extend(this.options, options);
 
-    // If we haven't set an auth strategy and point our appUri to a Stormpath app endpoint,
-    // then automatically use the token auth strategy.
-    if (!options.authStrategy && options.appUri.indexOf('.apps.stormpath.io') > -1) {
-      options.authStrategy = 'token';
+    if (!options.authStrategy) {
+      // If we haven't set an auth strategy and point our appUri to a Stormpath app endpoint,
+      // then automatically use the token auth strategy.
+      if (options.appUri && options.appUri.indexOf('.apps.stormpath.io') > -1) {
+        options.authStrategy = 'token';
+      // Else, default to using cookie.
+      } else {
+        options.authStrategy = 'cookie';
+      }
     }
 
     this.modal = new ModalComponent();
@@ -74,6 +90,7 @@ class Stormpath extends EventEmitter {
 
     this._initializeUserServiceEvents();
     this._initializeRivets(options.templates);
+    this._preloadViewModels();
   }
 
   _createUserService(options) {
@@ -91,10 +108,16 @@ class Stormpath extends EventEmitter {
         userService = new MockUserService();
         break;
 
-      default:
+      case 'cookie':
         userService = new CookieUserService(httpProvider);
         break;
+
+      default:
+        throw new Error('Invalid authStrategy \'' + options.authStrategy + '\'.');
     }
+
+    // Decorate our user service with caching
+    userService = new CachedUserService(userService, new MemoryStorage());
 
     return userService;
   }
@@ -110,6 +133,11 @@ class Stormpath extends EventEmitter {
 
     // Make an initial request to getState() in order to trigger our first user events.
     this.userService.getState();
+  }
+
+  _preloadViewModels() {
+    this.userService.getLoginViewModel();
+    this.userService.getRegistrationViewModel();
   }
 
   _initializeRivets(templates) {
@@ -216,6 +244,27 @@ class Stormpath extends EventEmitter {
 
     Rivets.init(
       Stormpath.prefix + '-' + RegistrationComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
+  }
+
+  showEmailVerification(renderTo, token) {
+    const modalMode = renderTo === undefined;
+    const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
+
+    const data = {
+      userService: this.userService,
+      modal: modalMode ? this.modal : null,
+      token: token || parsedQueryString.sptoken
+    };
+
+    Rivets.init(
+      Stormpath.prefix + '-' + VerifyEmailComponent.id,
       modalMode ? this.modal.element : renderTo,
       data
     );

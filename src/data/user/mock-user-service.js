@@ -72,6 +72,10 @@ class MockUserService extends EventEmitter {
     });
   }
 
+  verifyEmail() {
+    return Promise.resolve();
+  }
+
   login(username, password) {
     return new Promise((accept, reject) => {
       if (username === 'test' && password === 'test') {

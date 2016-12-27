@@ -27,7 +27,7 @@ class RegistrationComponent {
         return;
       }
 
-      this.userService.getRegisterViewModel()
+      this.userService.getRegistrationViewModel()
         .then(this.onViewModelLoaded.bind(this))
         .catch(this.onError.bind(this, 'loading_error'));
     });
