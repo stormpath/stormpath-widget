@@ -60,7 +60,7 @@ class TokenStorage extends EventEmitter {
   setAccessToken(value) {
     return this.storage.set('stormpath.access_token', value).then(() => {
       this.emit('set', 'access_token', value);
-    });;
+    });
   }
 
   removeAccessToken() {
@@ -78,7 +78,7 @@ class TokenStorage extends EventEmitter {
       .then(this._manageRefreshTokenExpiration.bind(this, value))
       .then(() => {
         this.emit('set', 'refresh_token', value);
-      });;
+      });
   }
 
   removeRefreshToken() {

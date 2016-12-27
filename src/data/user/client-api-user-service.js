@@ -19,7 +19,6 @@ class ClientApiUserService extends EventEmitter {
 
   _setState(newState, force, ...args) {
     if (this.mostRecentState !== newState || force) {
-      console.log('Setting state', newState, force);
       this.mostRecentState = newState;
       this.emit(newState, ...args);
     }
