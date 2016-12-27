@@ -1,5 +1,5 @@
 import {expect} from 'chai';
-import UriParser from '../src/data/uri';
+import UriParser from '../src/data/uri/uri-parser';
 
 describe('UriParser', () => {
   it('should be a constructor', () => {
