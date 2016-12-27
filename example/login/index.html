@@ -66,6 +66,14 @@
           document.getElementById('unauthenticated').style.display = 'block';
         });
 
+        stormpath.on('forgotPasswordSent', (data) => {
+          console.log('User just requested to reset his password!', data);
+        });
+
+        stormpath.on('changedPassword', () => {
+          console.log('User just changed his password!');
+        });
+
         stormpath.once('registered', function (account) {
           console.log('User just created a new account!', account);
         });

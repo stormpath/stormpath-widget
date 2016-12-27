@@ -105,6 +105,8 @@ class Stormpath extends EventEmitter {
     this.userService.on('registered', () => this.emit('registered'));
     this.userService.on('authenticated', () => this.emit('authenticated'));
     this.userService.on('unauthenticated', () => this.emit('unauthenticated'));
+    this.userService.on('forgotPasswordSent', () => this.emit('forgotPasswordSent'));
+    this.userService.on('passwordChanged', () => this.emit('passwordChanged'));
 
     // Make an initial request to getState() in order to trigger our first user events.
     this.userService.getState();
@@ -143,14 +145,16 @@ class Stormpath extends EventEmitter {
     return this.tokenStorage.getAccessToken();
   }
 
-  showChangePassword(renderTo, sptoken) {
+  showChangePassword(renderTo, token) {
     const modalMode = renderTo === undefined;
     const parsedQueryString = utils.parseQueryString(window.location.search);
 
     const data = {
       userService: this.userService,
+      showLogin: this.showLogin.bind(this, renderTo),
+      showForgotPassword: this.showForgotPassword.bind(this, renderTo),
       modal: modalMode ? this.modal : null,
-      sptoken: sptoken || parsedQueryString.sptoken
+      token: token || parsedQueryString.sptoken
     };
 
     Rivets.init(

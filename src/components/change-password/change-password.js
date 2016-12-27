@@ -1,11 +1,3 @@
-import Rivets from 'rivets';
-
-import {
-  LoginComponent,
-} from '../';
-
-import Stormpath from '../../stormpath';
-
 import utils from '../../utils';
 import view from 'html!./change-password.html';
 import style from '!style-loader!css-loader!less-loader!./change-password.less';
@@ -28,31 +20,33 @@ class ChangePasswordComponent {
   }];
 
   state = 'unknown';
-  modal = null;
-  validation_error = null;
 
   constructor(data) {
     this.userService = data.userService;
-    this.modal = data.modal;
-    this.sptoken = data.sptoken;
-    this.verifyToken();
+    this.showLogin = data.showLogin;
+    this.showForgotPassword = data.showForgotPassword;
+    this.token = data.token;
+    this._beginVerifyToken();
+  }
+
+  _setState = (state) => {
+    this.state = state;
+  }
+
+  _beginVerifyToken() {
+    this._setState('verifying');
+    this.userService.verifyPasswordResetToken(this.token)
+      .then(this._setState.bind(this, 'verified'))
+      .catch(this._setState.bind(this, 'invalid_token'));
   }
 
   onError(state, err) {
     this.error = err;
-    this.state = state;
+    this._setState(state);
   }
 
-  onChanged() {
-    this.state = 'changed';
-  }
-
-  showLogin() {
-    Rivets.init(
-      Stormpath.prefix + '-' + LoginComponent.id,
-      this.modal.element,
-      this
-    );
+  onPasswordChanged() {
+    this._setState('changed');
   }
 
   onFormSubmit = (event) => {
@@ -63,28 +57,21 @@ class ChangePasswordComponent {
     const passwordConfirm = fields.passwordConfirm.value;
 
     if (password !== passwordConfirm) {
-      this.onError('validation_error', { message: 'Passwords do not match' });
-      return;
+      return this.onError('validation_error', {
+        message: 'Passwords do not match'
+      });
     }
 
-    this.state = 'sending';
+    this._setState('sending');
 
-    this.userService.changePassword({
-      sptoken: this.sptoken,
+    const request = {
+      sptoken: this.token,
       password: password
-    })
-      .then(this.onChanged.bind(this))
+    };
+
+    this.userService.changePassword(request)
+      .then(this.onPasswordChanged.bind(this))
       .catch(this.onError.bind(this, 'request_error'));
-  }
-
-
-  applyState = (state) => this.state = state;
-
-  verifyToken() {
-    this.state = 'verifying';
-    this.userService.verifyPasswordResetToken(this.sptoken)
-      .then(this.applyState.bind(this, 'verified'))
-      .catch(this.applyState.bind(this, 'invalid-token'));
   }
 }
 
