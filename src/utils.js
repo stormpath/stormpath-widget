@@ -1,6 +1,10 @@
 class Utils {
   // Takes an object array and remaps it to an object based on a key.
   mapArrayToObject(source, key) {
+    if (!Array.isArray(source) || typeof key !== 'string') {
+      return false;
+    }
+
     const result = {};
 
     source.forEach((item) => result[item[key]] = item);
@@ -20,7 +24,7 @@ class Utils {
   // Adds a class (only once) to an element
   addClass(el, className) {
     if (this._hasClass(el, className)) {
-      return;
+      return false;
     }
 
     if (el.classList) {
@@ -28,12 +32,14 @@ class Utils {
     } else {
       el.className += ' ' + className;
     }
+
+    return true;
   }
 
   // Removes a class from an element
   removeClass(el, className) {
     if (!this._hasClass(el, className)) {
-      return;
+      return false;
     }
 
     if (el.classList) {
@@ -42,9 +48,15 @@ class Utils {
       let reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
       el.className = el.className.replace(reg, ' ');
     }
+
+    return true;
   }
 
   getAllPropertyNames(obj) {
+    if (typeof obj !== 'object') {
+      return false;
+    }
+
     let names = [];
 
     do {
@@ -56,6 +68,10 @@ class Utils {
   }
 
   decoratePublicMethods(decorator, decorated) {
+    if (typeof decorator !== 'object' || typeof decorated !== 'object') {
+      return false;
+    }
+
     this.getAllPropertyNames(decorated.constructor.prototype).forEach((name) => {
       const member = decorated[name];
 
@@ -76,6 +92,8 @@ class Utils {
 
       decorator[name] = member.bind(decorated);
     });
+
+    return true;
   }
 
   getWindowQueryString() {
