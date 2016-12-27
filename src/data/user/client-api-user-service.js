@@ -132,6 +132,22 @@ class ClientApiUserService extends EventEmitter {
     });
   }
 
+  sendForgotPasswordEmail(data) {
+    return this.httpProvider.postJson('/forgot', data).then(() => {
+      this._setState('forgotPasswordSent', true, data);
+    });
+  }
+
+  changePassword(data) {
+    return this.httpProvider.postJson('/change', data).then(() => {
+      this._setState('passwordChanged', true);
+    });
+  }
+
+  verifyPasswordResetToken(token) {
+    return this.httpProvider.getJson('/change?sptoken=' + token);
+  }
+
   logout() {
     return this.tokenStorage.getRefreshToken().then((refreshToken) => {
       return this.httpProvider.postForm('/oauth/revoke', {

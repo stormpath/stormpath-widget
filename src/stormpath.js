@@ -9,6 +9,11 @@ import {
   FormFieldComponent,
   LoginComponent,
   RegistrationComponent,
+  ChangePasswordComponent,
+  ForgotPasswordComponent
+} from './components';
+
+import {
   VerifyEmailComponent
 } from './components';
 
@@ -35,9 +40,17 @@ class Stormpath extends EventEmitter {
     authStrategy: null,
 
     templates: {
+      [ChangePasswordComponent.id]: {
+        component: ChangePasswordComponent,
+        view: () => ChangePasswordComponent.view
+      },
       [FormFieldComponent.id]: {
         component: FormFieldComponent,
         view: () => FormFieldComponent.view
+      },
+      [ForgotPasswordComponent.id]: {
+        component: ForgotPasswordComponent,
+        view: () => ForgotPasswordComponent.view
       },
       [LoginComponent.id]: {
         component: LoginComponent,
@@ -115,6 +128,8 @@ class Stormpath extends EventEmitter {
     this.userService.on('registered', () => this.emit('registered'));
     this.userService.on('authenticated', () => this.emit('authenticated'));
     this.userService.on('unauthenticated', () => this.emit('unauthenticated'));
+    this.userService.on('forgotPasswordSent', () => this.emit('forgotPasswordSent'));
+    this.userService.on('passwordChanged', () => this.emit('passwordChanged'));
 
     // Make an initial request to getState() in order to trigger our first user events.
     this.userService.getState();
@@ -177,6 +192,48 @@ class Stormpath extends EventEmitter {
     }
 
     return this.tokenStorage.getAccessToken();
+  }
+
+  showChangePassword(renderTo, token) {
+    const modalMode = renderTo === undefined;
+    const parsedQueryString = utils.parseQueryString(window.location.search);
+
+    const data = {
+      userService: this.userService,
+      showLogin: this.showLogin.bind(this, renderTo),
+      showForgotPassword: this.showForgotPassword.bind(this, renderTo),
+      modal: modalMode ? this.modal : null,
+      token: token || parsedQueryString.sptoken
+    };
+
+    Rivets.init(
+      Stormpath.prefix + '-' + ChangePasswordComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
+  }
+
+  showForgotPassword(renderTo) {
+    const modalMode = renderTo === undefined;
+
+    const data = {
+      userService: this.userService,
+      modal: modalMode ? this.modal : null
+    };
+
+    Rivets.init(
+      Stormpath.prefix + '-' + ForgotPasswordComponent.id,
+      modalMode ? this.modal.element : renderTo,
+      data
+    );
+
+    if (modalMode) {
+      this.modal.show();
+    }
   }
 
   showLogin(renderTo) {

@@ -17,12 +17,14 @@
 
         // Authenticated
         var authenticatedContainer = document.getElementById('authenticated');
+        var forgotPasswordButton = document.getElementById('forgot-password-button');
         var loginButton = document.getElementById('login-button');
         var registerButton = document.getElementById('register-button');
 
         authenticatedContainer.style.display = 'none';
         loginButton.addEventListener('click', () => stormpath.showLogin());
         registerButton.addEventListener('click', () => stormpath.showRegistration());
+        forgotPasswordButton.addEventListener('click', () => stormpath.showForgotPassword());
 
         // Unauthenticated
         var unauthenticatedContainer = document.getElementById('unauthenticated');
@@ -42,6 +44,10 @@
           // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
           appUri: 'https://lawful-heron.apps.stormpath.io'
         });
+
+        if ((/#change-password/).test(window.location.href)) {
+          stormpath.showChangePassword();
+        }
 
         stormpath.on('authenticated', () => {
           console.log('We\'re authenticated!');
@@ -63,6 +69,14 @@
 
           document.getElementById('authenticated').style.display = 'none';
           document.getElementById('unauthenticated').style.display = 'block';
+        });
+
+        stormpath.on('forgotPasswordSent', (data) => {
+          console.log('User just requested to reset his password!', data);
+        });
+
+        stormpath.on('changedPassword', () => {
+          console.log('User just changed his password!');
         });
 
         stormpath.once('registered', function (account) {
@@ -92,6 +106,7 @@
     </div>
     <div id="unauthenticated">
       <button id="login-button">Login</button> or <button id="register-button">Create a new account</button>
+      or <button id="forgot-password-button">Forgot Password</button>
       <hr>
     </div>
     <div id="stormpath-container"></div>
