@@ -74,12 +74,17 @@ class ClientApiUserService extends EventEmitter {
   }
 
   onBeforeRequest(request) {
+    if (request.skipAuthorizationHeader) {
+      return Promise.resolve();
+    }
+
     return this.tokenStorage.getAccessToken()
       .then((accessToken) => {
         if (accessToken) {
           if (!request.headers) {
             request.headers = {};
           }
+
           request.headers['Authorization'] = 'Bearer ' + accessToken;
         }
       })
@@ -99,11 +104,19 @@ class ClientApiUserService extends EventEmitter {
   }
 
   getLoginViewModel() {
-    return this.httpProvider.getJson('/login');
+    const options = {
+      skipAuthorizationHeader: true
+    };
+
+    return this.httpProvider.getJson('/login', null, options);
   }
 
   getRegistrationViewModel() {
-    return this.httpProvider.getJson('/register');
+    const options = {
+      skipAuthorizationHeader: true
+    };
+
+    return this.httpProvider.getJson('/register', null, options);
   }
 
   login(username, password) {
@@ -122,9 +135,7 @@ class ClientApiUserService extends EventEmitter {
 
   tokenLogin(token) {
     if (token === undefined) {
-      return new Promise((_, reject) => {
-        reject(new Error('Token cannot be empty.'));
-      });
+      return Promise.reject(new Error('Token cannot be empty.'));
     }
 
     return this.httpProvider.postForm('/oauth/token', {

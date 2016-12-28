@@ -120,7 +120,7 @@ class Stormpath extends EventEmitter {
 
     switch (options.authStrategy) {
       case 'token':
-        this.tokenStorage = new TokenStorage(this.storage);
+        this.tokenStorage = new TokenStorage(this.storage, httpProvider);
         userService = new ClientApiUserService(httpProvider, this.tokenStorage);
         break;
 
