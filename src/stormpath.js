@@ -26,7 +26,6 @@ import {
   MemoryStorage,
   MockUserService,
   TokenStorage,
-  UriParser,
 } from './data';
 
 class Stormpath extends EventEmitter {
@@ -189,24 +188,25 @@ class Stormpath extends EventEmitter {
   }
 
   _handleCallbackResponse() {
-    let parser = new UriParser(window.location.toString());
-    if (parser.hasParameter('error') || parser.hasParameter('error_description')) {
+    const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
+    if (parsedQueryString.error || parsedQueryString.error_description) {
       // TODO render human-readable errors in UI somewhere
       // the full list of error codes is here: https://tools.ietf.org/html/rfc6749#section-4.1.2.1
-      let result = parser.extract('error');
-      this.emit('loginError', result.value);
+      this.emit('loginError', parsedQueryString.error);
     }
 
-    if (!parser.hasParameter('jwtResponse')) {
+    if (!parsedQueryString.jwtResponse) {
       return;
     }
 
-    let result = parser.extract('jwtResponse');
+    let assertionToken = parsedQueryString.jwtResponse;
     if (window.history.replaceState) {
-      window.history.replaceState(null, null, result.new);
+      var cleanedLocation = window.location.toString()
+        .replace('jwtResponse=' + assertionToken, '');
+      window.history.replaceState(null, null, cleanedLocation);
     }
 
-    this.userService.tokenLogin(result.value);
+    this.userService.tokenLogin(assertionToken);
     // TODO handle errors during token exchange?
   }
 
