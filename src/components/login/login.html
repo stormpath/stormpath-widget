@@ -13,14 +13,14 @@
     </fieldset>
     <fieldset class="sp-form-group sp-login-password">
       <sp-form-field
-        sp-each-field="fields"
+        rv-each-field="fields"
         model="field"
         name-prefix="'login-field'">
       </sp-form-field>
       <a href="#todo">Forgot password?</a>
     </fieldset>
     <div class="sp-form-group">
-      <button type="submit" sp-on-click="onFormSubmit">Log in</button>
+      <button type="submit" rv-on-click="onFormSubmit">Log in</button>
     </div>
     <hr>
     <div class="sp-form-group">
