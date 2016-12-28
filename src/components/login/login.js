@@ -2,8 +2,6 @@ import utils from '../../utils';
 import view from 'html!./login.html';
 import style from '!style-loader!css-loader!less-loader!./login.less';
 
-import CapsLockDetector from '../caps-lock-detector/caps-lock-detector';
-
 class LoginComponent {
   static id = 'login-component';
   static view = view;
@@ -13,7 +11,6 @@ class LoginComponent {
   accountStores = [];
   state = 'unknown';
   modal = null;
-  capsWarning = true;
 
   constructor(data) {
     this.userService = data.userService;
@@ -39,8 +36,6 @@ class LoginComponent {
         .then(this.onViewModelLoaded.bind(this))
         .catch(this.onError.bind(this, 'loading_error'));
     });
-
-    new CapsLockDetector(document).on('capslock', this.onCapsLock.bind(this));
   }
 
   _onlySupportedAccountStores(stores) {
@@ -89,10 +84,6 @@ class LoginComponent {
     this.userService.login(username, password)
       .then(this.onAuthenticated.bind(this))
       .catch(this.onError.bind(this, 'login_error'));
-  }
-
-  onCapsLock(state) {
-    this.capsWarning = state;
   }
 }
 

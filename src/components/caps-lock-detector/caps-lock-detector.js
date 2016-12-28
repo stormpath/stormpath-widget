@@ -1,15 +1,21 @@
 import EventEmitter from 'events';
 
 class CapsLockDetector extends EventEmitter {
-  constructor(document) {
+  constructor(el) {
     super();
 
-    document.addEventListener('keydown', (event) => {
+    this._state = false;
+
+    el.addEventListener('keydown', (event) => {
       if (!event.getModifierState) {
         return;
       }
 
-      this.emit('capslock', event.getModifierState('CapsLock'));
+      const newState = event.getModifierState('CapsLock');
+      if (this._state !== newState) {
+        this._state = newState;
+        this.emit('capslock', this._state);
+      }
     });
   }
 }
