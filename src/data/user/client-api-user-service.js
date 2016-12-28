@@ -55,12 +55,17 @@ class ClientApiUserService extends EventEmitter {
   }
 
   onBeforeRequest(request) {
+    if (request.skipAuthorizationHeader) {
+      return Promise.resolve();
+    }
+
     return this.tokenStorage.getAccessToken()
       .then((accessToken) => {
         if (accessToken) {
           if (!request.headers) {
             request.headers = {};
           }
+
           request.headers['Authorization'] = 'Bearer ' + accessToken;
         }
       })
@@ -80,11 +85,19 @@ class ClientApiUserService extends EventEmitter {
   }
 
   getLoginViewModel() {
-    return this.httpProvider.getJson('/login');
+    const options = {
+      skipAuthorizationHeader: true
+    };
+
+    return this.httpProvider.getJson('/login', null, options);
   }
 
   getRegistrationViewModel() {
-    return this.httpProvider.getJson('/register');
+    const options = {
+      skipAuthorizationHeader: true
+    };
+
+    return this.httpProvider.getJson('/register', null, options);
   }
 
   login(username, password) {
@@ -99,20 +112,13 @@ class ClientApiUserService extends EventEmitter {
       username,
       password
     }).then((response) => {
-      return this.tokenStorage.setAccessToken(response.access_token).then(() => {
-        let waitFor;
-
-        if (response.refresh_token) {
-          waitFor = this.tokenStorage.setRefreshToken(response.refresh_token);
-        } else {
-          waitFor = Promise.resolve();
-        }
-
-        return waitFor.then(() => {
-          return this.me().then((account) => {
-            this._setState('loggedIn', true, account);
-            this._setState('authenticated');
-          });
+      return Promise.all([
+        this.tokenStorage.setAccessToken(response.access_token),
+        this.tokenStorage.setRefreshToken(response.refresh_token)
+      ]).then(() => {
+        return this.me().then((account) => {
+          this._setState('loggedIn', true, account);
+          this._setState('authenticated');
         });
       });
     });
