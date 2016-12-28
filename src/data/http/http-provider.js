@@ -12,7 +12,7 @@ class HttpProvider {
     this.requestInterceptor = requestInterceptor;
   }
 
-  getJson(path, queryParameters) {
+  getJson(path, queryParameters, options) {
     if (queryParameters) {
       path += '?' + utils.encodeQueryString(queryParameters);
     }
@@ -20,20 +20,22 @@ class HttpProvider {
     return this._createRequest({
       method: 'GET',
       path: path,
-      json: true
+      json: true,
+      ...options
     });
   }
 
-  postJson(path, data) {
+  postJson(path, data, options) {
     return this._createRequest({
       method: 'POST',
       path: path,
       body: data,
-      json: true
+      json: true,
+      ...options
     });
   }
 
-  postForm(path, data) {
+  postForm(path, data, options) {
     return this._createRequest({
       method: 'POST',
       path: path,
@@ -41,7 +43,8 @@ class HttpProvider {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json'
-      }
+      },
+      ...options
     });
   }
 
@@ -54,6 +57,10 @@ class HttpProvider {
   }
 
   _createResponseError(err) {
+    if (!err) {
+      return this._createResponseError('Unknown error.');
+    }
+
     let type;
     let message;
 
