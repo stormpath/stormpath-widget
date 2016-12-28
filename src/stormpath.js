@@ -91,6 +91,11 @@ class Stormpath extends EventEmitter {
     this._initializeUserServiceEvents();
     this._initializeRivets(options.templates);
     this._preloadViewModels();
+
+    // Asynchronously handle any callback response.
+    // This needs to happen after the ctor is done so any code after
+    // new Stormpath() can set up event hooks watching for `loginError`
+    setTimeout(this._handleCallbackResponse.bind(this));
   }
 
   _createUserService(options) {
@@ -180,6 +185,29 @@ class Stormpath extends EventEmitter {
     if (modalMode) {
       this.modal.show();
     }
+  }
+
+  _handleCallbackResponse() {
+    const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
+    if (parsedQueryString.error || parsedQueryString.error_description) {
+      // TODO render human-readable errors in UI somewhere
+      // the full list of error codes is here: https://tools.ietf.org/html/rfc6749#section-4.1.2.1
+      this.emit('loginError', parsedQueryString.error);
+    }
+
+    if (!parsedQueryString.jwtResponse) {
+      return;
+    }
+
+    let assertionToken = parsedQueryString.jwtResponse;
+    if (window.history.replaceState) {
+      var cleanedLocation = window.location.toString()
+        .replace('jwtResponse=' + assertionToken, '');
+      window.history.replaceState(null, null, cleanedLocation);
+    }
+
+    this.userService.tokenLogin(assertionToken)
+      .catch((e) => this.emit('loginError', e.message));
   }
 
   getAccount() {

@@ -2,7 +2,10 @@ module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['mocha'],
-    files: ['./test/**/*.js'],
+    files: [
+      // Don't watch these, webpack is always watching
+      { pattern: './test/**/*.js', watched: false }
+    ],
     webpack: require('./webpack.config'),
     reporters: ['progress', 'mocha'],
     preprocessors: {

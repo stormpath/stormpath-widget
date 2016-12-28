@@ -17,6 +17,25 @@ class ClientApiUserService extends EventEmitter {
     }
   }
 
+  _onLoginSuccessful(response) {
+    return this.tokenStorage.setAccessToken(response.access_token).then(() => {
+      let waitFor;
+
+      if (response.refresh_token) {
+        waitFor = this.tokenStorage.setRefreshToken(response.refresh_token);
+      } else {
+        waitFor = Promise.resolve();
+      }
+
+      waitFor.then(() => {
+        return this.me().then((account) => {
+          this._setState('loggedIn', true, account);
+          this._setState('authenticated');
+        });
+      });
+    });
+  }
+
   getAccount() {
     return new Promise((accept) => {
       accept(this.account);
@@ -98,24 +117,20 @@ class ClientApiUserService extends EventEmitter {
       grant_type: 'password',
       username,
       password
-    }).then((response) => {
-      return this.tokenStorage.setAccessToken(response.access_token).then(() => {
-        let waitFor;
+    }).then(this._onLoginSuccessful.bind(this));
+  }
 
-        if (response.refresh_token) {
-          waitFor = this.tokenStorage.setRefreshToken(response.refresh_token);
-        } else {
-          waitFor = Promise.resolve();
-        }
-
-        return waitFor.then(() => {
-          return this.me().then((account) => {
-            this._setState('loggedIn', true, account);
-            this._setState('authenticated');
-          });
-        });
+  tokenLogin(token) {
+    if (token === undefined) {
+      return new Promise((_, reject) => {
+        reject(new Error('Token cannot be empty.'));
       });
-    });
+    }
+
+    return this.httpProvider.postForm('/oauth/token', {
+      grant_type: 'stormpath_token',
+      token
+    }).then(this._onLoginSuccessful.bind(this));
   }
 
   verifyEmail(token) {

@@ -5,14 +5,20 @@
   <div sp-show="state | is 'login_error'">{error.message}</div>
   <form sp-show="state | in 'ready,login_error'">
     <div class="sp-form-group" sp-show="capsWarning">Caps lock is on!</div>
-    <div class="sp-form-group">
+    <fieldset class="sp-login-social">
+      <a sp-each-dir="accountStores"
+        sp-href="dir.authorizeUri"
+        sp-class="dir.provider.providerId | prefix 'sp-login-provider sp-login-'">
+        Log in with {dir.name}</a>
+    </fieldset>
+    <fieldset class="sp-form-group sp-login-password">
       <sp-form-field
         sp-each-field="fields"
         model="field"
         name-prefix="'login-field'">
       </sp-form-field>
       <a href="#todo">Forgot password?</a>
-    </div>
+    </fieldset>
     <div class="sp-form-group">
       <button type="submit" sp-on-click="onFormSubmit">Log in</button>
     </div>
