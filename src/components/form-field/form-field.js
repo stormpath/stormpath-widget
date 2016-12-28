@@ -6,6 +6,7 @@ class FormFieldComponent {
 
   namePrefix = '';
   field = {};
+  capsWarning = true;
 
   constructor(data) {
     this.field = data.model;

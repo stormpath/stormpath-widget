@@ -13,7 +13,7 @@ class LoginComponent {
   accountStores = [];
   state = 'unknown';
   modal = null;
-  capsWarning = false;
+  capsWarning = true;
 
   constructor(data) {
     this.userService = data.userService;
@@ -47,13 +47,27 @@ class LoginComponent {
     return stores.filter((store) => store.authorizeUri);
   }
 
+  _extendFieldViewModels(fields) {
+    if (!fields) {
+      return fields;
+    }
+
+    for (var field of fields) {
+      if (field.type === 'password') {
+        field['isPassword'] = true;
+      }
+    }
+
+    return fields;
+  }
+
   onError(state, err) {
     this.error = err;
     this.state = state;
   }
 
   onViewModelLoaded(data) {
-    this.fields = data.form.fields;
+    this.fields = this._extendFieldViewModels(data.form.fields);
     this.accountStores = this._onlySupportedAccountStores(data.accountStores);
     this.state = 'ready';
   }

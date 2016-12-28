@@ -5,7 +5,6 @@
   <div sp-show="state | is 'authenticated'">You are authenticated</div>
   <div sp-show="state | is 'login_error'">{error.message}</div>
   <form sp-show="state | in 'ready,login_error'">
-    <div class="sp-form-group" sp-show="capsWarning">Caps lock is on!</div>
     <fieldset class="sp-login-social">
       <a sp-each-dir="accountStores"
         sp-href="dir.authorizeUri"
