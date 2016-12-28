@@ -206,8 +206,8 @@ class Stormpath extends EventEmitter {
       window.history.replaceState(null, null, cleanedLocation);
     }
 
-    this.userService.tokenLogin(assertionToken);
-    // TODO handle errors during token exchange?
+    this.userService.tokenLogin(assertionToken)
+      .catch((e) => this.emit('loginError', e.message));
   }
 
   getAccount() {
