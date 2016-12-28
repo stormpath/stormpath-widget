@@ -3,6 +3,7 @@
 @modal-radius: 5px;
 @modal-z: 10;
 
+@color-background: rgb(255, 255, 255);
 @color-header: rgb(239, 242, 244);
 @color-text: rgb(54, 64, 81);
 @color-primary: rgb(27, 159, 252);
@@ -24,6 +25,7 @@
 }
 
 .sp-modal {
+  background-color: @color-background;
   display: none;
   outline: none;
 
@@ -86,6 +88,21 @@
       position: relative;
     }
 
+    .sp-social-separator {
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid @color-disabled;
+      line-height: 0.1em;
+      margin: 10px 0 20px;
+      padding-bottom: 0;
+
+      span {
+        background-color: @color-background;
+        color: darken(@color-disabled, 10%);
+        padding: 0 15px;
+      }
+    }
+
     .sp-caps-lock-indicator {
       background:
         url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAAsTAAALEwEAmpwYAAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAADWklEQVQ4EVVTW2gcVRj+zjmTmdlrkg27aZJm3TbdNI0KVVRojJZSjFCsiPXB5kF8rqhvCqKyWooPFuxLKIJVwQtYVGpRMBY0to0VlNYWYpdkm2zSbrLZbN3sfc7ZmTmeaYzoD2fmv33/7Zyf4B+SKWgkBdsTrZeQpGMYYZ2DCReUyNvprDuJX8wJzHr2TV8JEE++o/D+VSBmf9N/0k2/WZbNb6WUVzZO8zvppN+uiLPD7xeALf/F/AsujyPp/LBvRjqnFOi8B7Sl/LMl5Yw6Hn9R6T6RrckD6eIhDG0GuVPCGhDqOJ2c0p547n74tnC0XAaXaSA6VJkgtKU+dRuM2LDLpn3266tLhy7vHQDKzIuUehevGg8/Og5TF67I6RIlBlJWva0rcBGNyiIWM5QWbqrAjWwr2I0+30CGH5uUU9pFlZ119R4GakBljtCwRtCmAS5VWRlEtYR0+hm0dz+Orp4AWcrOkKA4Cr276/A5xN+jPUcw5BBnB6pqPPUCW1+4idXrCxBFJVszKC6biPSNIZfL4MvTH6F/8D62Yo2BN9cGdrwS26VxjUUhrTYIjuvXauTanAVKCTpjTezbX4Uhm2i6Dpjmh+mLgIsWgcuhemcWaUQ1i5vcsgT8loN4b7vcPthJqAE0BIEUIXS0/Y58/gxivU9jW3I7ivMX5Db+IeGOmmBpiWv51UC2q7r+V4Q3IgEtIOGo/iVFe1DNQKo8ZAh3d5zEWv4KqrUAEs73MsTUUEudZV5bXtAOnCnc+GOnbzoumgczy6utq7OUxRM+6EEBTRdwvSC2D63qp1jJASO7t9rQelildHt67+diTqVTpRTYiYVZfjC6VTelzPOpr3Rj9MaTkHU/iHopLmng510WHtivCQO2kc2UUCm2nQBUEimVD6n9eOkF+kYkGDj62IOmkQ5FxT3BEeY32xlRz73WWHcCo786O5N5XeRD6mbs1OgH1jkPy1IE9K0pyFO/yfNPxcN1kNIjibBtGmSc0v5EC9GIS/yuFo59xlYK3LqV6Xj9oYnyMa9yVZ26L0Vqu6jaRNfjp4/07RY89/xg/Z1ne+N7upUVt7KXCnPh177wGXd9vGdi8fL/MJsrmVJBvECe0aOfcO/Q/PDLx+eHXzzu8RvajWSe76b8Nxj6mCWtHY9qAAAAAElFTkSuQmCC')
@@ -103,6 +120,11 @@
 
     .sp-right {
       float: right;
+    }
+
+    fieldset {
+      margin: 0;
+      border: none;
     }
 
     button, input {
