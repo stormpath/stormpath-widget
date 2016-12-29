@@ -31,14 +31,12 @@
     display: block;
     background-color: white;
     width: @modal-width;
-    height: @modal-height;
     position: fixed;
-    top: 50%;
+    top: 10%;
     left: 50%;
-    margin-top: round(@modal-height / -2);
     margin-left: round(@modal-width / -2);
-    border-radius: @modal-radius;
     z-index: @modal-z + 1;
+    overflow: hidden;
   }
 
   .sp-modal-header {
@@ -46,8 +44,6 @@
     background-color: @color-header;
     text-align: center;
     font-size: 0.9rem;
-    border-top-right-radius: @modal-radius;
-    border-top-left-radius: @modal-radius;
     width: 100%;
     padding: 20px 0 15px 0;
   }
