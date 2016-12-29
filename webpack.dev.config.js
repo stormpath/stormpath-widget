@@ -23,6 +23,10 @@ module.exports = {
         retainLines: true,
         cacheDirectory: true
       }
+    },
+    {
+      test: /\.svg/,
+      loader: 'svg-url-loader'
     }]
   },
 

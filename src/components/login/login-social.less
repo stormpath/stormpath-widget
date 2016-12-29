@@ -1,6 +1,6 @@
 @import "../variables.less";
 
-@social-icon-width: 25px;
+@social-icon-width: 24px;
 @social-icon-padding: 25px;
 
 @color-google: #fff;
@@ -61,7 +61,6 @@
       background-repeat: no-repeat;
       background-position-x: 12px;
       background-position-y: center;
-      background-size: @social-icon-width;
     }
 
     .generator-social-states(@name, @initialColor) {
@@ -77,11 +76,9 @@
 
     .sp-login-provider.sp-login-google {
       background-color: @color-google;
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAmCAMAAACf4xmcAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAABWWlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyI+CiAgICAgICAgIDx0aWZmOk9yaWVudGF0aW9uPjE8L3RpZmY6T3JpZW50YXRpb24+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgpMwidZAAABOFBMVEU0qFM1pls6qFA7q1k9j8FBrV5ChfRCrl9DhfRGr2JIsGRLoaNLsWZNjPROqkhOs2lStGxUtW5ZlPVclvVcuXVel/Veundgnt5nvn5rv4J4xY16xo97xo+CyZWGsfeGsfiMtPiSuPicv/mvtCKvy/q03r+60vu84sbC1/vC5cvO3/zS69nVuBPV7dvX7t3Y7t7j8+jn9Oro8P3p9ezqQzXqRjPqSz3rT0LrUEPrU0fsUy/sVknsWEvsXVHtXlLtX1PuaF3ual/ub2TvcmjvdWnvdWvwenDwgHfw9f7xgnnyi4Lyi4PzwR70jRf3pQ73ubT36734wr74xsL5uBj5y8f51GT61dL62NX7vAX7vxP7xzD7xzH7yz/81mf85eT85uT86Of86+n8/fz98vH9/v3+7sP+/Pz///+PweasAAAA4ElEQVQ4y2NIJwowjCqjp7Jwb0cLMzuvELzKEpxNoMApHreyMEsTOHDFqSzRHCRv7+lua2LikIxTmQtQkU0QiBXolozTbam+pibWcQR9GhvhZ+VPOECiIyKC00AMeSjQwKosMiIiBsxggwJF4pQpYFUWFRHhkwRiiAKBEFCZElZloRE6fKowjgpQmRpWZQHKTAxcBhC2hzAbG4cH9uCVZGBg4NEEsfTFgYbJ4YgFY1agOgYBKRkRBkYWNl4jXFGvzckAB9xauBOSoQRMlaAe3mSpKyvGzswvrZ4ymk8HnzIAIzQSbCdXwmgAAAAASUVORK5CYII=');
+      background-image: url('../../assets/google-color.svg');
       .image-properties();
       color: lighten(@color-text, 20%);
-      background-size: 38px;
-      background-position-x: 6px;
       box-shadow: inset 0 0 0 2px lighten(@color-text, 60%);
     }
 
@@ -89,7 +86,7 @@
 
     .sp-login-provider.sp-login-facebook {
       background-color: @color-facebook;
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB0AAAAdCAYAAABWk2cPAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2hpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDowNTgwMTE3NDA3MjA2ODExODA4M0NDMTM4MEMyQTVFQiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDo0MjZEODI3QTVEMEMxMUUyOUZGRkIyMDc2OThGM0E1MCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDo0MjZEODI3OTVEMEMxMUUyOUZGRkIyMDc2OThGM0E1MCIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M2IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6OTY3NDM2QkUxQTIwNjgxMTgwODNDQzEzODBDMkE1RUIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6MDU4MDExNzQwNzIwNjgxMTgwODNDQzEzODBDMkE1RUIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5G4CYMAAAA30lEQVR42mL4//8/IxAXA/Hn/7QFn6H2MDBAGfQExSBffmFgYOBmoB/4CrL0PwOdARPDAABqWfoJiDuA2ASIuYCYEYh5gVgJm2JqBO9FIA4A4gc45P9T29IPQKwFxM/xqPlP7eDtJWAhTeJ0LRo/E4jfQ333H5svqRG8rED8B4kP8rUEIU2UWsqIxv+HRYzm+ZRx2BQOjGiYkDw7WpzTxafqQMxCb0u1BiJOsVrKQqIh/wmk1v/DJvWOWjpq6eCy9Cud7fwKsrSBzpY2MCD1Zb6Q0UVgQMP4wBdYXwYgwACQuoAnMUwSdgAAAABJRU5ErkJggg==');
+      background-image: url('../../assets/facebook.svg');
       .image-properties();
     }
 
@@ -97,7 +94,7 @@
 
     .sp-login-provider.sp-login-github {
       background-color: @color-github;
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NDkxMSwgMjAxMy8xMC8yOS0xMTo0NzoxNiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RERCMUIwOUY4NkNFMTFFM0FBNTJFRTMzNTJEMUJDNDYiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RERCMUIwOUU4NkNFMTFFM0FBNTJFRTMzNTJEMUJDNDYiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkU1MTc4QTJBOTlBMDExRTI5QTE1QkMxMDQ2QTg5MDREIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkU1MTc4QTJCOTlBMDExRTI5QTE1QkMxMDQ2QTg5MDREIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+jUqS1wAAApVJREFUeNq0l89rE1EQx3e3gVJoSPzZeNEWPKgHoa0HBak0iHiy/4C3WvDmoZ56qJ7txVsPQu8qlqqHIhRKJZceesmhioQEfxTEtsoSpdJg1u/ABJ7Pmc1m8zLwgWTmzcw3L+/te+tHUeQltONgCkyCi2AEDHLsJ6iBMlgHL8FeoqokoA2j4CloRMmtwTmj7erHBXPgCWhG6a3JNXKdCiDl1cidVbXZkJoXQRi5t5BrxwoY71FzU8S4JuAIqFkJ2+BFSlEh525b/hr3+k/AklDkNsf6wTT4yv46KIMNpsy+iMdMc47HNWxbsgVcUn7FmLAzzoFAWDsBx+wVP6bUpp5ewI+DOeUx0Wd9D8F70BTGNjkWtqnhmT1JQAHcUgZd8Lo3rQb1LAT8eJVUfgGvHQigGp+V2Z0iAUUl8QH47kAA1XioxIo+bRN8OG8F/oBjwv+Z1nJgX5jpdzQDw0LCjsPmrcW7I/iHScCAEDj03FtD8A0EyuChHgg4KTlJQF3wZ7WELppnBX+dBFSVpJsOBWi1qiRgSwnOgoyD5hmuJdkWCVhTgnTvW3AgYIFrSbZGh0UW/Io5Vp+DQoK7o80pztWMemZbgxeNwCNwDbw1fIfgGZjhU6xPaJgBV8BdsMw5cbZoHsenwYFxkZzl83xTSKTiviCAfCsJLysH3POfC8m8NegyGAGfLP/VmGmfSChgXroR0RSWjEFv2J/nG84cuKFMf4sTCZqXuJd4KaXFVjEG3+tw4eXbNK/YC9oXXs3O8NY8y99L4BXY5cvLY/Bb2VZ58EOJVcB18DHJq9lRsKr8inyKGVjlmh29mtHs3AHfuhCwy1vXT/Nu2GKQt+UHsGdctyX6eQyNvc+5sfX9Dl7Pe2J/BRgAl2CpwmrsHR0AAAAASUVORK5CYII=');
+      background-image: url('../../assets/github.svg');
       .image-properties();
     }
 
@@ -105,7 +102,7 @@
 
     .sp-login-provider.sp-login-linkedin {
       background-color: @color-linkedin;
-      background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACUAAAAcCAMAAADRNYZUAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoTWFjaW50b3NoKSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpGRTJBMTUxMjFDNzgxMUUyQjkxNEY3RUNEMkY1ODRBRCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoxMEI1QUU5NDFDNzkxMUUyQjkxNEY3RUNEMkY1ODRBRCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkZFMkExNTEwMUM3ODExRTJCOTE0RjdFQ0QyRjU4NEFEIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkZFMkExNTExMUM3ODExRTJCOTE0RjdFQ0QyRjU4NEFEIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+3CCIxQAAAEtQTFRFAAAA////8fHx////8fHx////////8fHx////8fHx8fHx////8fHx////8fHx8fHx8fHx8fHx////8fHx8fHx8fHx8fHx8fHx////G8pqAwAAABh0Uk5TAAAQEBIWICItM0NDU1lmeIW6wMrL2u39e+i+jgAAAJhJREFUOMut1IEKgyAQBuBz1XJbVy7b7d7/Sae0KCHvbrAfRA4+9BQUmpkrmRu3BaoosV2xkGuhKAQ6U8Va1AK0pKkAKeE/yrajrfsyFGM8VbmvdbrzlIv+KSoYYc1LVFtGk7qI6kb8Hr51XeW2F1Ut+S5UxYfarjwiek15TBK9otDhIw1dYWdRTl/r2Fct5RkF9dOrNf0AH+WCOEAiYlybAAAAAElFTkSuQmCC');
+      background-image: url('../../assets/linkedin.svg');
       .image-properties();
     }
 
@@ -119,6 +116,8 @@
 
     .sp-login-provider.sp-login-twitter {
       background-color: @color-twitter;
+      background-image: url('../../assets/twitter.svg');
+      .image-properties();
     }
 
     .generator-social-states(twitter, @color-twitter);

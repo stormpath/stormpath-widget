@@ -47,6 +47,7 @@
     "promise-polyfill": "^6.0.2",
     "rivets": "^0.9.6",
     "style-loader": "^0.13.1",
+    "svg-url-loader": "^1.1.0",
     "webpack": "^1.14.0",
     "xhr": "^2.3.1",
     "xtend": "^4.0.1"
