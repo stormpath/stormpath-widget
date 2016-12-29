@@ -1,3 +1,7 @@
+@import "../variables.less";
+@social-icon-width: 29px;
+@social-icon-padding: 25px;
+
 .sp-login-component {
 
   .sp-login-social {
@@ -12,13 +16,15 @@
       border: none;
       text-decoration: none;
       cursor: pointer;
-      text-align: center;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       padding: 0;
       color: white;
       -webkit-transition: background-color 0.2s 0ms;
       transition: background-color 0.2s 0ms;
-      padding-left: 38px;
+      padding-left: @social-icon-width + @social-icon-padding;
+      width: @form-width - (@social-icon-width + @social-icon-padding);
     }
 
     .sp-login-provider:active {
