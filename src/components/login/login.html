@@ -5,13 +5,15 @@
   <div rv-show="state | is 'authenticated'">You are authenticated</div>
   <div rv-show="state | is 'login_error'">{error.message}</div>
   <form rv-show="state | in 'ready,login_error'">
-    <fieldset class="sp-form-group sp-login-social">
+    <fieldset class="sp-form-group sp-login-social" rv-show="accountStores">
       <a rv-each-dir="accountStores"
         rv-href="dir.authorizeUri"
         rv-class="dir.provider.providerId | prefix 'sp-login-provider sp-login-'">
         Log in with {dir.name}</a>
+
+        <div class="sp-social-separator"><span>or</span></div>
     </fieldset>
-    <div class="sp-form-group sp-social-separator" rv-if="accountStores"><span>or</span></div>
+
     <fieldset class="sp-form-group sp-login-password">
       <sp-form-field
         rv-each-field="fields"
@@ -20,10 +22,12 @@
       </sp-form-field>
       <a href="#todo">Forgot password?</a>
     </fieldset>
+
     <div class="sp-form-group">
       <button type="submit" rv-on-click="onFormSubmit">Log in</button>
     </div>
     <hr>
+
     <div class="sp-form-group">
       <span class="sp-light">Don't have an account?</span> <a class="sp-right" href="#todo">Sign up</a>
     </div>

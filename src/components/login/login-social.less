@@ -14,6 +14,21 @@
 
   .sp-login-social {
 
+    .sp-social-separator {
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid @color-disabled;
+      line-height: 0.1em;
+      margin: 35px 0 10px;
+      padding-bottom: 0;
+
+      span {
+        background-color: @color-background;
+        color: darken(@color-disabled, 10%);
+        padding: 0 15px;
+      }
+    }
+
     .sp-login-provider {
       display: block;
       // TODO merge/mixin these from <button>?

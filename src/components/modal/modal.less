@@ -56,6 +56,11 @@
     display: none; // Handled by JS
   }
 
+  .sp-modal-title {
+    font-weight: 400;
+    font-size: 1rem;
+  }
+
   .sp-modal-close-btn {
     position: absolute;
     top: 5px;
@@ -72,26 +77,11 @@
     font-size: 0.8rem;
 
     .sp-form-group {
-      padding: 5px 0 15px 0;
+      padding: 0 0 20px 0;
     }
 
     .sp-form-field-group {
       position: relative;
-    }
-
-    .sp-social-separator {
-      width: 100%;
-      text-align: center;
-      border-bottom: 1px solid @color-disabled;
-      line-height: 0.1em;
-      margin: 10px 0 20px;
-      padding-bottom: 0;
-
-      span {
-        background-color: @color-background;
-        color: darken(@color-disabled, 10%);
-        padding: 0 15px;
-      }
     }
 
     .sp-caps-lock-indicator {
