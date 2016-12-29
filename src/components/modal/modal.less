@@ -3,6 +3,9 @@
 @modal-radius: 5px;
 @modal-z: 10;
 
+@form-width: @modal-width - 60;
+@input-padding-left: 5px;
+
 @color-background: rgb(255, 255, 255);
 @color-header: rgb(239, 242, 244);
 @color-text: rgb(54, 64, 81);
@@ -122,13 +125,17 @@
       float: right;
     }
 
+    form {
+      width: @form-width;
+    }
+
     fieldset {
       margin: 0;
       border: none;
     }
 
     button, input {
-      width: 100%;
+      width: @form-width;
       margin-bottom: 15px;
     }
 
@@ -142,7 +149,8 @@
       border-color: @color-disabled;
       border-width: 1px;
       height: 2rem;
-      padding-left: 5px;
+      padding-left: @input-padding-left;
+      width: @form-width - @input-padding-left;
     }
 
     button {
