@@ -7,10 +7,12 @@ class ForgotPasswordComponent {
   static view = view;
   static style = style;
 
+  state = 'ready';
+
   fields = [{
-    label: 'Username or Email',
-    name: 'login',
-    placeholder: 'foo@example.com',
+    label: 'Email',
+    name: 'email',
+    placeholder: '',
     required: true,
     type: 'text'
   }];
@@ -32,13 +34,19 @@ class ForgotPasswordComponent {
     event.preventDefault();
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
-    const login = fields.login.value;
+    const email = fields.email.value || '';
+
+    if (email.indexOf('@') === -1) {
+      this.state = 'validation_error';
+      this.error = new Error('Invalid email address');
+      return;
+    }
 
     this.state = 'sending';
 
     this.userService.sendForgotPasswordEmail({ email: login })
       .then(this.onSent.bind(this))
-      .catch(this.onError.bind(this, 'login_error'));
+      .catch(this.onError.bind(this, 'validation_error'));
   }
 }
 

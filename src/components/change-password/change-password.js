@@ -8,16 +8,16 @@ class ChangePasswordComponent {
   static style = style;
 
   fields = [{
-    label: 'New Password',
+    label: 'Password',
     name: 'password',
     required: true,
     type: 'password'
-  }, {
+  }/*, {
     label: 'Confirm New Password',
     name: 'passwordConfirm',
     required: true,
     type: 'password'
-  }];
+  }*/];
 
   state = 'unknown';
 
@@ -41,6 +41,10 @@ class ChangePasswordComponent {
   }
 
   onError(state, err) {
+    if (err.status === 400 || err.status === 404) {
+      return this._setState('invalid_token');
+    }
+
     this.error = err;
     this._setState(state);
   }
@@ -52,15 +56,18 @@ class ChangePasswordComponent {
   onFormSubmit = (event) => {
     event.preventDefault();
 
+    this._setState('changed');
+    return;
+
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const password = fields.password.value;
-    const passwordConfirm = fields.passwordConfirm.value;
 
+    /*const passwordConfirm = fields.passwordConfirm.value;
     if (password !== passwordConfirm) {
       return this.onError('validation_error', {
         message: 'Passwords do not match'
       });
-    }
+    }*/
 
     this._setState('sending');
 
@@ -71,7 +78,7 @@ class ChangePasswordComponent {
 
     this.userService.changePassword(request)
       .then(this.onPasswordChanged.bind(this))
-      .catch(this.onError.bind(this, 'request_error'));
+      .catch(this.onError.bind(this, 'validation_error'));
   }
 }
 
