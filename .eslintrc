@@ -83,6 +83,7 @@
     "array-bracket-spacing": [2, "never"],
     "no-spaced-func": [2],
     "space-in-parens": [2, "never"],
-    "space-infix-ops": 2
+    "space-infix-ops": 2,
+    "valid-typeof": [0]
   }
 }
