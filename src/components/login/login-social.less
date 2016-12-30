@@ -76,13 +76,15 @@
       background-position-y: center;
     }
 
-    .sp-login-more-btn {
+    .sp-login-btn.sp-login-btn-more-expand {
       background-color: white;
       background-image: url('../../assets/more.svg');
       .image-properties();
     }
 
-    .generator-social-states(@name, @initialColor) {
+    .generator-button-states(more-expand, white);
+
+    .generator-button-states(@name, @initialColor) {
       .sp-login-btn.sp-login-btn-@{name}:hover,
       .sp-login-btn.sp-login-btn-@{name}:focus {
         background-color: darken(@initialColor, 5%);
@@ -101,7 +103,7 @@
       box-shadow: inset 0 0 0 2px lighten(@color-text, 60%);
     }
 
-    .generator-social-states(google, @color-google);
+    .generator-button-states(google, @color-google);
 
     .sp-login-btn.sp-login-btn-facebook {
       background-color: @color-facebook;
@@ -109,7 +111,7 @@
       .image-properties();
     }
 
-    .generator-social-states(facebook, @color-facebook);
+    .generator-button-states(facebook, @color-facebook);
 
     .sp-login-btn.sp-login-btn-github {
       background-color: @color-github;
@@ -117,7 +119,7 @@
       .image-properties();
     }
 
-    .generator-social-states(github, @color-github);
+    .generator-button-states(github, @color-github);
 
     .sp-login-btn.sp-login-btn-linkedin {
       background-color: @color-linkedin;
@@ -125,13 +127,13 @@
       .image-properties();
     }
 
-    .generator-social-states(linkedin, @color-linkedin);
+    .generator-button-states(linkedin, @color-linkedin);
 
     .sp-login-btn.sp-login-btn-saml {
       background-color: @color-saml;
     }
 
-    .generator-social-states(saml, @color-saml);
+    .generator-button-states(saml, @color-saml);
 
     .sp-login-btn.sp-login-btn-twitter {
       background-color: @color-twitter;
@@ -139,6 +141,6 @@
       .image-properties();
     }
 
-    .generator-social-states(twitter, @color-twitter);
+    .generator-button-states(twitter, @color-twitter);
   }
 }
