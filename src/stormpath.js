@@ -6,7 +6,9 @@ import utils from './utils';
 
 import {
   ModalComponent,
+  FormFieldsComponent,
   FormFieldComponent,
+  PasswordFormFieldComponent,
   LoginComponent,
   RegistrationComponent,
   ChangePasswordComponent,
@@ -44,9 +46,17 @@ class Stormpath extends EventEmitter {
         component: ChangePasswordComponent,
         view: () => ChangePasswordComponent.view
       },
+      [FormFieldsComponent.id]: {
+        component: FormFieldsComponent,
+        view: () => FormFieldsComponent.view
+      },
       [FormFieldComponent.id]: {
         component: FormFieldComponent,
         view: () => FormFieldComponent.view
+      },
+      [PasswordFormFieldComponent.id]: {
+        component: PasswordFormFieldComponent,
+        view: () => PasswordFormFieldComponent.view
       },
       [ForgotPasswordComponent.id]: {
         component: ForgotPasswordComponent,
@@ -152,7 +162,7 @@ class Stormpath extends EventEmitter {
     Rivets.formatters['gt'] = (x, y) => x > y;
 
     Rivets.binders.required = (el, val) => el.required = val === true;
-    Rivets.formatters.prefix = (name, prefix) => prefix + name;
+    Rivets.formatters.prefix = utils.prefix;
 
     for (var id in templates) {
       const options = templates[id];

@@ -305,4 +305,41 @@ describe('utils', () => {
       });
     });
   });
+
+  describe('.prefix(name, prefix, separator)', () => {
+    describe('when prefix is undefined', () => {
+      it('should return name', () => {
+        const prefixed = utils.prefix('foo');
+        assert.equal(prefixed, 'foo');
+      });
+    });
+
+    describe('when prefix is empty', () => {
+      it('should return name', () => {
+        const prefixed = utils.prefix('foo', '');
+        assert.equal(prefixed, 'foo');
+      });
+    });
+
+    describe('when prefix is nonempty', () => {
+      it('should return name prepended with prefix', () => {
+        const prefixed = utils.prefix('foo', 'bar');
+        assert.equal(prefixed, 'barfoo');
+      });
+    });
+
+    describe('when separator is a char', () => {
+      it('should return name prepended with separator and prefix', () => {
+        const prefixed = utils.prefix('foo', 'bar', '-');
+        assert.equal(prefixed, 'bar-foo');
+      });
+    });
+
+    describe('when separator is a string', () => {
+      it('should return name prepended with separator and prefix', () => {
+        const prefixed = utils.prefix('foo', 'bar', '--');
+        assert.equal(prefixed, 'bar--foo');
+      });
+    });
+  });
 });

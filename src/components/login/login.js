@@ -95,8 +95,8 @@ class LoginComponent {
     }
   }
 
-  onFormSubmit = (event) => {
-    event.preventDefault();
+  onFormSubmit = (e) => {
+    e.preventDefault();
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const username = fields.login.value;

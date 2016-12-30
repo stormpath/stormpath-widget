@@ -1,0 +1,6 @@
+<div rv-each-field="fields" class="sp-form-field-group">
+  <label rv-for="field.name | prefix namePrefix '-'">{field.label}</label>
+
+  <sp-form-field rv-if="field.type | isnt 'password'" model="field" name-prefix="namePrefix"></sp-form-field>
+  <sp-password-form-field rv-if="field.type | is 'password'" model="field" name-prefix="namePrefix"></sp-password-form-field>
+</div>
