@@ -1,7 +1,7 @@
 @import "../variables.less";
 
 @social-icon-width: 24px;
-@social-icon-padding: 25px;
+@social-icon-padding: 24px;
 
 @color-google: #fff;
 @color-facebook: #3b5998;
@@ -12,21 +12,33 @@
 
 .sp-login-component {
 
+  .sp-social-separator {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid @color-disabled;
+    line-height: 0.1em;
+    margin: 15px 0 10px;
+    padding-bottom: 0;
+
+    span {
+      background-color: @color-background;
+      color: darken(@color-disabled, 10%);
+      padding: 0 15px;
+    }
+  }
+
   .sp-login-social {
 
-    .sp-social-separator {
-      width: 100%;
-      text-align: center;
-      border-bottom: 1px solid @color-disabled;
-      line-height: 0.1em;
-      margin: 35px 0 10px;
-      padding-bottom: 0;
+    padding-bottom: 15px;
 
-      span {
-        background-color: @color-background;
-        color: darken(@color-disabled, 10%);
-        padding: 0 15px;
-      }
+    &.sp-login-social-sm {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      width: @form-width;
+      padding-bottom: 0;
     }
 
     .sp-login-provider {
@@ -51,10 +63,11 @@
       padding-left: @social-icon-width + @social-icon-padding;
       width: @form-width;
       margin-bottom: 5px;
+    }
 
-      &.sp-login-provider-sm {
-        width: @social-icon-width * 2;
-      }
+    &.sp-login-social-sm .sp-login-provider {
+      width: @social-icon-width * 2;
+      margin: 0 8px 16px 8px;
     }
 
     .image-properties() {

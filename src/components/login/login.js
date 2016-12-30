@@ -9,6 +9,7 @@ class LoginComponent {
 
   fields = [];
   accountStores = [];
+  smallButtons = false;
   state = 'unknown';
   modal = null;
 
@@ -64,6 +65,7 @@ class LoginComponent {
   onViewModelLoaded(data) {
     this.fields = this._extendFieldViewModels(data.form.fields);
     this.accountStores = this._onlySupportedAccountStores(data.accountStores);
+    this.smallButtons = this.accountStores.length > 1;
     this.state = 'ready';
   }
 
