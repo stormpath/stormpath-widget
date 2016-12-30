@@ -6,12 +6,20 @@ class LoginComponent {
   static id = 'login-component';
   static view = view;
   static style = style;
+  static maxInitialButtons = 4;
 
   fields = [];
   accountStores = [];
-  smallButtons = false;
   state = 'unknown';
   modal = null;
+
+  // This is necessary because currently Rivets cannot bind to top-level primitives
+  // (see https://github.com/mikeric/rivets/issues/700#issuecomment-267177540)
+  props = {
+    smallButtons: false,
+    showButtons: LoginComponent.maxInitialButtons,
+    showMoreButton: false,
+  };
 
   constructor(data) {
     this.userService = data.userService;
@@ -57,6 +65,11 @@ class LoginComponent {
     return fields;
   }
 
+  toggleMore(e, model) {
+    model.props.showMoreButton = false;
+    model.props.showButtons = 99;
+  }
+
   onError(state, err) {
     this.error = err;
     this.state = state;
@@ -65,7 +78,13 @@ class LoginComponent {
   onViewModelLoaded(data) {
     this.fields = this._extendFieldViewModels(data.form.fields);
     this.accountStores = this._onlySupportedAccountStores(data.accountStores);
-    this.smallButtons = this.accountStores.length > 1;
+
+    this.props.smallButtons = this.accountStores.length > 1;
+    this.props.showMoreButton = this.accountStores.length > LoginComponent.maxInitialButtons;
+    if (this.props.showMoreButton) {
+      this.props.showButtons--;
+    }
+
     this.state = 'ready';
   }
 

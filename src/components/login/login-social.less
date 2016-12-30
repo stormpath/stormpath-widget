@@ -41,7 +41,7 @@
       padding-bottom: 0;
     }
 
-    .sp-login-provider {
+    .sp-login-btn {
       display: block;
       // TODO merge/mixin these from <button>?
       height: 3rem;
@@ -65,7 +65,7 @@
       margin-bottom: 5px;
     }
 
-    &.sp-login-social-sm .sp-login-provider {
+    &.sp-login-social-sm .sp-login-btn {
       width: @social-icon-width * 2;
       margin: 0 8px 16px 8px;
     }
@@ -76,18 +76,24 @@
       background-position-y: center;
     }
 
+    .sp-login-more-btn {
+      background-color: white;
+      background-image: url('../../assets/more.svg');
+      .image-properties();
+    }
+
     .generator-social-states(@name, @initialColor) {
-      .sp-login-provider.sp-login-@{name}:hover,
-      .sp-login-provider.sp-login-@{name}:focus {
+      .sp-login-btn.sp-login-btn-@{name}:hover,
+      .sp-login-btn.sp-login-btn-@{name}:focus {
         background-color: darken(@initialColor, 5%);
       }
 
-      .sp-login-provider.sp-login-@{name}:active {
+      .sp-login-btn.sp-login-btn-@{name}:active {
         background-color: darken(@initialColor, 15%);
       }
     }
 
-    .sp-login-provider.sp-login-google {
+    .sp-login-btn.sp-login-btn-google {
       background-color: @color-google;
       background-image: url('../../assets/google-color.svg');
       .image-properties();
@@ -97,7 +103,7 @@
 
     .generator-social-states(google, @color-google);
 
-    .sp-login-provider.sp-login-facebook {
+    .sp-login-btn.sp-login-btn-facebook {
       background-color: @color-facebook;
       background-image: url('../../assets/facebook.svg');
       .image-properties();
@@ -105,7 +111,7 @@
 
     .generator-social-states(facebook, @color-facebook);
 
-    .sp-login-provider.sp-login-github {
+    .sp-login-btn.sp-login-btn-github {
       background-color: @color-github;
       background-image: url('../../assets/github.svg');
       .image-properties();
@@ -113,7 +119,7 @@
 
     .generator-social-states(github, @color-github);
 
-    .sp-login-provider.sp-login-linkedin {
+    .sp-login-btn.sp-login-btn-linkedin {
       background-color: @color-linkedin;
       background-image: url('../../assets/linkedin.svg');
       .image-properties();
@@ -121,13 +127,13 @@
 
     .generator-social-states(linkedin, @color-linkedin);
 
-    .sp-login-provider.sp-login-saml {
+    .sp-login-btn.sp-login-btn-saml {
       background-color: @color-saml;
     }
 
     .generator-social-states(saml, @color-saml);
 
-    .sp-login-provider.sp-login-twitter {
+    .sp-login-btn.sp-login-btn-twitter {
       background-color: @color-twitter;
       background-image: url('../../assets/twitter.svg');
       .image-properties();

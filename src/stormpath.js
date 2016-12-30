@@ -149,6 +149,7 @@ class Stormpath extends EventEmitter {
     Rivets.formatters['is'] = (a, b) => a === b;
     Rivets.formatters['isnt'] = (a, b) => a !== b;
     Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
+    Rivets.formatters['gt'] = (x, y) => x > y;
 
     Rivets.binders.required = (el, val) => el.required = val === true;
     Rivets.formatters.prefix = (name, prefix) => prefix + name;
