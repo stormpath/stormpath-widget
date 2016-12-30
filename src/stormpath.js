@@ -168,7 +168,7 @@ class Stormpath extends EventEmitter {
       const options = templates[id];
       Rivets.components[Stormpath.prefix + '-' + id] = {
         template: options.view,
-        initialize: (el, data) => new options.component(data)
+        initialize: (el, data) => new options.component(data, el)
       };
     }
   }
