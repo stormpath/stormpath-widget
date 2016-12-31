@@ -2,7 +2,6 @@
   <div class="sp-title">Log in</div>
   <div rv-show="state | is 'loading'">Loading view model</div>
   <div rv-show="state | is 'loading_error'">Error: {error.message}</div>
-  <div rv-show="state | is 'login_error'">{error.message}</div>
   <form rv-show="state | in 'ready,login_error'">
     <fieldset class="sp-form-group" rv-show="accountStores">
       <div class="sp-login-social" rv-class-sp-login-social-sm="props.smallButtons">
@@ -18,6 +17,8 @@
       </div>
       <div class="sp-social-separator"><span>or</span></div>
     </fieldset>
+
+    <div class="sp-error" rv-show="state | is 'login_error'">{error.message}</div>
 
     <fieldset class="sp-form-group sp-login-password">
       <sp-form-fields fields="fields" name-prefix="'sp-form-login'"></sp-form-fields>
