@@ -11,7 +11,7 @@ class PasswordFormFieldComponent extends FormFieldComponent {
     this.element = el;
   }
 
-  toggleVisibility(_, model) {
+  togglePasswordVisibility(_, model) {
     const passwordFieldElement = model.element.querySelector('#' + model.namePrefix + '-password');
     if (!passwordFieldElement) {
       throw new Error('Could not toggle password field.');
