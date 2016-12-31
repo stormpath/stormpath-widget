@@ -76,14 +76,6 @@
       background-position-y: center;
     }
 
-    .sp-login-btn.sp-login-btn-more-expand {
-      background-color: white;
-      background-image: url('../../assets/more.svg');
-      .image-properties();
-    }
-
-    .generator-button-states(more-expand, white);
-
     .generator-button-states(@name, @initialColor) {
       .sp-login-btn.sp-login-btn-@{name}:hover,
       .sp-login-btn.sp-login-btn-@{name}:focus {
@@ -94,6 +86,14 @@
         background-color: darken(@initialColor, 15%);
       }
     }
+
+    .sp-login-btn.sp-login-btn-more-expand {
+      background-color: white;
+      background-image: url('../../assets/more.svg');
+      .image-properties();
+    }
+
+    .generator-button-states(more-expand, white);
 
     .sp-login-btn.sp-login-btn-google {
       background-color: @color-google;

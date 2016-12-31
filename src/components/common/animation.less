@@ -1,0 +1,50 @@
+.generator-spinner(@name, @bgColor) {
+  @spinner-radius: 14px;
+
+  .sp-spinner-@{name} {
+    width: 0px;
+    height: 0px;
+    border-radius: @spinner-radius;
+    border: @spinner-radius solid rgba(255, 255, 255, 1);
+    border-top-color: transparent;
+    margin: 0 auto;
+    position: relative;
+    -webkit-animation: waitSpin 1.5s infinite linear;
+    animation: waitSpin 1.5s infinite linear;
+
+    &:after {
+      background-color: @bgColor;
+      border-radius: 50%;
+      width: @spinner-radius + 8;
+      height: @spinner-radius + 8;
+      position: absolute;
+      content: '';
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      left: (@spinner-radius + 8) / -2;
+    }
+  }
+}
+
+@-webkit-keyframes waitSpin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes waitSpin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
