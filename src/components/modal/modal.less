@@ -1,4 +1,4 @@
-@import "../variables.less";
+@import "../common/variables.less";
 
 .sp-overlay {
   display: none;
@@ -97,13 +97,10 @@
       border: none;
     }
 
-    button, input {
-      width: @form-width;
-      margin-bottom: 15px;
-    }
-
     input {
+      width: @form-width;
       font-size: 1rem;
+      margin-bottom: 15px;
     }
 
     input[type=text], input[type=password] {
@@ -117,12 +114,20 @@
     }
 
     button {
+      width: @form-width;
+      margin-bottom: 15px;
       font-size: 1.25rem;
       font-weight: 300;
       background-color: @color-primary;
       color: white;
       border: none;
       height: 3rem;
+      -webkit-transition: background-color @anim-duration;
+      transition: background-color @anim-duration;
+    }
+
+    button:disabled {
+      background-color: lighten(@color-primary, 30%);
     }
 
     label, a {

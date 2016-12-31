@@ -1,4 +1,4 @@
-@import "../variables.less";
+@import "../common/variables.less";
 
 @social-icon-width: 24px;
 @social-icon-padding: 24px;
@@ -56,8 +56,8 @@
       text-overflow: ellipsis;
       padding: 0;
       color: white;
-      -webkit-transition: background-color .218s,border-color .218s,box-shadow .218s;
-      transition: background-color .218s,border-color .218s,box-shadow .218s;
+      -webkit-transition: background-color @anim-duration,border-color @anim-duration,box-shadow @anim-duration;
+      transition: background-color @anim-duration,border-color @anim-duration,box-shadow @anim-duration;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
       padding-left: @social-icon-width + @social-icon-padding;
