@@ -24,8 +24,10 @@ class TokenStorage extends EventEmitter {
 
     return this.httpProvider.postForm('/oauth/token', requestData, options)
       .then((result) => {
-        return this.setAccessToken(result.access_token)
-          .then(this.setRefreshToken(result.refresh_token));
+        return Promise.all([
+          this.setAccessToken(result.access_token),
+          this.setRefreshToken(result.refresh_token)
+        ]);
       });
   }
 
@@ -76,9 +78,10 @@ class TokenStorage extends EventEmitter {
   }
 
   removeAll() {
-    return this.storage.remove('stormpath.access_token').then(() => {
-      return this.storage.remove('stormpath.refresh_token');
-    });
+    return Promise.all([
+      this.storage.remove('stormpath.access_token'),
+      this.storage.remove('stormpath.refresh_token')
+    ]);
   }
 }
 
