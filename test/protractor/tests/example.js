@@ -1,9 +1,5 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import { expect } from 'chai';
 import ExampleApp from '../page-objects/example-app';
-
-const expect = chai.expect;
-chai.use(chaiAsPromised);
 
 describe('Example App', () => {
   const app = new ExampleApp();

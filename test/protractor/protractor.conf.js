@@ -1,5 +1,9 @@
 import q from 'q';
+import chai, { expect } from 'chai';
+import chaiAsPromised from 'chai-as-promised';
 import ExampleServer from './example-server';
+
+chai.use(chaiAsPromised);
 
 export const config = {
   directConnect: true,

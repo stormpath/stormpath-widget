@@ -1,10 +1,6 @@
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
+import { expect } from 'chai';
 import ExampleApp from '../page-objects/example-app';
 import LoginComponentObject from '../page-objects/login-component';
-
-const expect = chai.expect;
-chai.use(chaiAsPromised);
 
 describe('Login Component', () => {
   const app = new ExampleApp();
@@ -14,7 +10,7 @@ describe('Login Component', () => {
     app.loadAt(browser.params.exampleAppUri).then(done);
   });
 
-  it('Should appear when invoked by showLogin()', () => {
+  it('should appear when invoked by showLogin()', () => {
     app.clickLoginButton();
     expect(loginComponent.isVisible()).to.eventually.equal(true);
 
