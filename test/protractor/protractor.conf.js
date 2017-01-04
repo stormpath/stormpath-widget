@@ -1,5 +1,5 @@
 import q from 'q';
-import chai, { expect } from 'chai';
+import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import ExampleServer from './example-server';
 
