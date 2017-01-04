@@ -1,7 +1,5 @@
 class LoginComponentObject {
-
   constructor() {
-
   }
 
   isVisible() {
@@ -9,4 +7,4 @@ class LoginComponentObject {
   }
 }
 
-module.exports = LoginComponentObject;
+export default LoginComponentObject;

@@ -1,20 +1,18 @@
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import ExampleApp from '../page-objects/example-app';
+
 const expect = chai.expect;
-
-const ExampleApp = require('../page-objects/example-app');
-
 chai.use(chaiAsPromised);
 
-describe('Example App', function () {
+describe('Example App', () => {
   const app = new ExampleApp();
 
-  beforeEach(function (done) {
+  beforeEach((done) => {
     app.loadAt(browser.params.exampleAppUri).then(done);
   });
 
-  it('should have a Login button', function () {
+  it('should have a Login button', () => {
     expect(app.hasLoginButton()).to.eventually.equal(true);
   });
-
 });

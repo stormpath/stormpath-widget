@@ -1,6 +1,6 @@
-const express = require('express');
-const path = require('path');
-const q = require('q');
+import q from 'q';
+import path from 'path';
+import express from 'express';
 
 class ExampleServer {
   constructor(port) {
@@ -9,11 +9,11 @@ class ExampleServer {
 
     app.use('/', express.static(path.join(__dirname, '..', '..', 'example', 'login')));
 
-    app.get('/js/app.js', function (req, res) {
+    app.get('/js/app.js', (req, res) => {
       res.sendFile(path.join(__dirname, '..', '..', 'dist', 'stormpath.js'));
     });
 
-    app.listen(3000, function () {
+    app.listen(3000, () => {
       /* eslint no-console: 0 */
       console.log('Server running on port ' + port);
       deferred.resolve();
@@ -23,4 +23,4 @@ class ExampleServer {
   }
 }
 
-module.exports = ExampleServer;
+export default ExampleServer;

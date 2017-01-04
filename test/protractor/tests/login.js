@@ -1,21 +1,20 @@
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import ExampleApp from '../page-objects/example-app';
+import LoginComponentObject from '../page-objects/login-component';
+
 const expect = chai.expect;
-
-const ExampleApp = require('../page-objects/example-app');
-const LoginComponentObject = require('../page-objects/login-component');
-
 chai.use(chaiAsPromised);
 
-describe('Login Component', function () {
+describe('Login Component', () => {
   const app = new ExampleApp();
   const loginComponent = new LoginComponentObject();
 
-  beforeEach(function (done) {
+  beforeEach((done) => {
     app.loadAt(browser.params.exampleAppUri).then(done);
   });
 
-  it('Should appear when invoked by showLogin()', function () {
+  it('Should appear when invoked by showLogin()', () => {
     app.clickLoginButton();
     expect(loginComponent.isVisible()).to.eventually.equal(true);
 
@@ -24,5 +23,4 @@ describe('Login Component', function () {
 
     browser.sleep(1000);
   });
-
 });

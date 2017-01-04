@@ -1,15 +1,17 @@
-var q = require('q');
-const ExampleServer = require('./example-server');
+import q from 'q';
+import ExampleServer from './example-server';
 
-exports.config = {
+export const config = {
   directConnect: true,
   framework: 'mocha',
   specs: ['./tests/*.js'],
   exclude: [],
+
   mochaOpts: {
     reporter: 'spec',
     timeout: 20000
   },
+
   params:{
     // anything in here gets attached to browser.params
   },
@@ -21,13 +23,14 @@ exports.config = {
     name: 'chrome-tests'
   },
 
-  onPrepare: function () {
+  onPrepare: () => {
     browser.ignoreSynchronization = true;
     const port = process.env.PORT || 3000;
     browser.params.exampleAppUri = process.env.EXAMPLE_APP_URI || 'http://localhost:' + port;
     return new ExampleServer(port);
   },
-  onCleanUp: function (exitCode) {
+
+  onCleanUp: (exitCode) => {
     // Boilerplate promise, will be used later when we
     // need to do any cleanup
     var deferred = q.defer();
@@ -35,5 +38,5 @@ exports.config = {
     deferred.resolve(exitCode);
 
     return deferred.promise;
-  },
+  }
 };

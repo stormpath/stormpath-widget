@@ -1,11 +1,9 @@
 class ExampleApp {
-
   clickLoginButton() {
     this.loginButton().click();
   }
 
   loadAt(url) {
-
     browser.get(url);
 
     // Allow the view models to settle
@@ -21,4 +19,4 @@ class ExampleApp {
   }
 }
 
-module.exports = ExampleApp;
+export default ExampleApp;
