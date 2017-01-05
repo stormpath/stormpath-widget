@@ -16,7 +16,7 @@ class ExampleServer {
     app.listen(3000, () => {
       /* eslint no-console: 0 */
       console.log('Server running on port ' + port);
-      deferred.resolve();
+      // deferred.resolve();
     });
 
     return deferred.promise;

@@ -67,9 +67,11 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.8.0",
     "mocha": "^3.2.0",
+    "ngrok": "^2.2.4",
     "protractor": "^4.0.14",
     "q": "^1.4.1",
     "sinon": "^1.17.6",
+    "stormpath": "^0.19.0",
     "webpack-dev-middleware": "^1.8.4"
   }
 }
