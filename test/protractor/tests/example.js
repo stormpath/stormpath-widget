@@ -5,7 +5,7 @@ describe('Example App', () => {
   const app = new ExampleApp();
 
   beforeEach((done) => {
-    app.loadAt(browser.params.exampleAppUri).then(done);
+    app.loadAt(browser.params.exampleAppDomain).then(done);
   });
 
   it('should have a Login button', () => {

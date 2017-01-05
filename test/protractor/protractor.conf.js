@@ -1,9 +1,14 @@
 import q from 'q';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import ngrok from 'ngrok';
+import stormpath from 'stormpath';
+
 import ExampleServer from './example-server';
 
 chai.use(chaiAsPromised);
+
+const spClient = new stormpath.Client();
 
 export const config = {
   directConnect: true,
@@ -29,18 +34,57 @@ export const config = {
 
   onPrepare: () => {
     browser.ignoreSynchronization = true;
-    const port = process.env.PORT || 3000;
-    browser.params.exampleAppUri = process.env.EXAMPLE_APP_URI || 'http://localhost:' + port;
-    return new ExampleServer(port);
-  },
+    const port = Math.floor(Math.random() * 1000) + 3000;
 
-  onCleanUp: (exitCode) => {
-    // Boilerplate promise, will be used later when we
-    // need to do any cleanup
     var deferred = q.defer();
 
-    deferred.resolve(exitCode);
+    ngrok.connect(port, (err, url) => {
+
+      var exampleAppDomain = browser.params.exampleAppDomain = url;
+
+      spClient.getApplication(process.env.STORMPATH_APPLICATION_HREF, { expand: 'webConfig'}, (err, application) => {
+        var clientApiDomain = 'https://' + application.webConfig.domainName;
+
+        application.authorizedOriginUris.push(exampleAppDomain);
+
+        application.save((err) => {
+          if (err) {
+            return deferred.reject(err);
+          }
+
+          return new ExampleServer(port, clientApiDomain).then(deferred.resolve, deferred.reject);
+        });
+
+      });
+    });
+
+    return deferred.promise;
+  },
+
+
+  onCleanUp: (exitCode) => {
+
+    var deferred = q.defer();
+
+    // Remove the ngrox proxy url from this application
+
+    spClient.getApplication(process.env.STORMPATH_APPLICATION_HREF, (err, application) => {
+
+      if (err) {
+        return deferred.reject(err);
+      }
+
+      application.authorizedOriginUris = application.authorizedOriginUris.filter((uri) => !uri.match(browser.params.exampleAppDomain));
+
+      application.save((err) => {
+        if (err) {
+          return deferred.reject(err);
+        }
+        deferred.resolve(exitCode);
+      });
+    });
 
     return deferred.promise;
   }
+
 };

@@ -7,7 +7,7 @@ describe('Login Component', () => {
   const loginComponent = new LoginComponentObject();
 
   beforeEach((done) => {
-    app.loadAt(browser.params.exampleAppUri).then(done);
+    app.loadAt(browser.params.exampleAppDomain).then(done);
   });
 
   it('should appear when invoked by showLogin()', () => {
