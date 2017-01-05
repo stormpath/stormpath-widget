@@ -56,9 +56,6 @@ class ChangePasswordComponent {
   onFormSubmit = (event) => {
     event.preventDefault();
 
-    this._setState('changed');
-    return;
-
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const password = fields.password.value;
 

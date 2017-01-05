@@ -36,6 +36,7 @@ class ForgotPasswordComponent {
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const email = fields.email.value || '';
 
+    // Very simple email verification at the moment...
     if (email.indexOf('@') === -1) {
       this.state = 'validation_error';
       this.error = new Error('Invalid email address');
@@ -44,7 +45,7 @@ class ForgotPasswordComponent {
 
     this.state = 'sending';
 
-    this.userService.sendForgotPasswordEmail({ email: login })
+    this.userService.sendForgotPasswordEmail({ email: email })
       .then(this.onSent.bind(this))
       .catch(this.onError.bind(this, 'validation_error'));
   }
