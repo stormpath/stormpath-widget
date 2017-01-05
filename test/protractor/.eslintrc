@@ -1,0 +1,7 @@
+{
+  "globals": {
+    "browser": true,
+    "by": true,
+    "element": true
+  }
+}

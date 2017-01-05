@@ -1,6 +1,7 @@
 module.exports = function (config) {
   config.set({
     basePath: '',
+    exclude: ['./test/protractor/**/*'],
     frameworks: ['mocha'],
     files: [
       // Don't watch these, webpack is always watching
