@@ -57,6 +57,13 @@ class TokenStorage extends EventEmitter {
             .then(() => {
               this.refreshTokenPromiseCache = null;
               return readFromStorage();
+            }).catch((err) => {
+              if (err.status >= 400 && err.status < 500) {
+                return this.removeAll().then(() => {
+                  return Promise.reject(err);
+                });
+              }
+              return Promise.reject(err);
             });
         });
       }
