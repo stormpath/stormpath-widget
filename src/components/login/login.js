@@ -52,20 +52,6 @@ class LoginComponent {
     return stores.filter((store) => store.authorizeUri);
   }
 
-  _extendFieldViewModels(fields) {
-    if (!fields) {
-      return fields;
-    }
-
-    for (var field of fields) {
-      if (field.type === 'password') {
-        field['isPassword'] = true;
-      }
-    }
-
-    return fields;
-  }
-
   toggleMore(e, model) {
     model.props.showMoreButton = false;
     model.props.showButtons = 99;
@@ -78,7 +64,7 @@ class LoginComponent {
   }
 
   onViewModelLoaded(data) {
-    this.fields = this._extendFieldViewModels(data.form.fields);
+    this.fields = data.form.fields;
     this.accountStores = this._onlySupportedAccountStores(data.accountStores);
 
     this.props.smallButtons = this.accountStores.length > 1;
