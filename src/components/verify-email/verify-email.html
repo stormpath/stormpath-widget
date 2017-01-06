@@ -4,8 +4,8 @@
   <div rv-show="state | is 'verifying'">We are verifying your account.</div>
   <div rv-show="state | is 'verified'">
     <p>
-      <span class="icon-success"></span>
-      <span class="text-success">Email Verified</span>
+      <span class="sp-icon-success"></span>
+      <span class="sp-text-success">Email Verified</span>
     </p>
     <p>
       All set! You can now log in to your account.
@@ -15,15 +15,15 @@
   <div rv-show="state | is 'post_error'">Sorry, an unknown error has occurred.</div>
   <div rv-show="state | is 'sent'">
     <p>
-      <span class="icon-success"></span>
-      <span class="text-success">Email Sent</span>
+      <span class="sp-icon-success"></span>
+      <span class="sp-text-success">Email Sent</span>
     </p>
     We’ve sent a link to verify your email to {login}. Please check your email and click that link to continue.
   </div>
   <div rv-show="state | in 'error,sending'">
     <p>
-      <span class="icon-warning"></span>
-      <span class="text-warning">Expired or invalid link.</span>
+      <span class="sp-icon-warning"></span>
+      <span class="sp-text-warning">Expired or invalid link.</span>
     </p>
     <p>
       <span>This link expired for your security. Enter your email address, and we’ll send you a new link to verify it.</span>

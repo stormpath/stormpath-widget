@@ -2,7 +2,6 @@ import extend from 'xtend';
 import Rivets from 'rivets';
 import EventEmitter from 'events';
 
-import style from '!style-loader!css-loader!less-loader!./widget.less';
 import utils from './utils';
 
 import {
