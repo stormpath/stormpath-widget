@@ -144,6 +144,18 @@ class Utils {
 
     return result;
   }
+
+  prefix(name, prefix, separator) {
+    let prefixed = prefix || '';
+
+    if (separator && separator.length) {
+      if (prefixed[prefixed.length - separator.length - 1] !== separator) {
+        prefixed += separator;
+      }
+    }
+
+    return prefixed + name;
+  }
 }
 
 export default new Utils();

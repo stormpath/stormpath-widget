@@ -13,14 +13,12 @@ class ModalComponent {
     this._modalElement = this._createModalElement();
   }
 
-  show(title) {
+  show() {
     if (this._visible) {
       return;
     }
 
-    this._modalElement
-      .getElementsByClassName('sp-modal-title')[0]
-      .innerHTML = title || '';
+    this._applyTitle();
 
     utils.addClass(this._overlayElement, 'sp-active');
     utils.addClass(this._modalElement, 'sp-active');
@@ -90,6 +88,22 @@ class ModalComponent {
       .getElementsByClassName('sp-modal-content')[0];
 
     return modalDiv;
+  }
+
+  _applyTitle() {
+    // The title of the component is contained in div in the component view.
+    // For modals, we want to move that up into the modal title div.
+    let title = '&nbsp;'; // TODO do we want some default title text?
+
+    let titleDiv = this._modalElement.getElementsByClassName('sp-title')[0];
+    if (titleDiv) {
+      title = titleDiv.innerHTML;
+    }
+
+    let modalTitleDiv =  this._modalElement.getElementsByClassName('sp-modal-title')[0];
+    if (modalTitleDiv) {
+      modalTitleDiv.innerHTML = title;
+    }
   }
 
   _addToBody = (el) => document.body.insertBefore(el, null);

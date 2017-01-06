@@ -4,12 +4,12 @@ class FormFieldComponent {
   static id = 'form-field';
   static view = view;
 
-  namePrefix = '';
   field = {};
+  namePrefix = '';
 
   constructor(data) {
     this.field = data.model;
-    this.namePrefix = data.namePrefix + '-';
+    this.namePrefix = data.namePrefix;
   }
 }
 

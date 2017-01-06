@@ -1,12 +1,4 @@
-@modal-width: 320px;
-@modal-height: 420px;
-@modal-radius: 5px;
-@modal-z: 10;
-
-@color-header: rgb(239, 242, 244);
-@color-text: rgb(54, 64, 81);
-@color-primary: rgb(27, 159, 252);
-@color-disabled: rgb(183, 194, 205);
+@import "../common/variables.less";
 
 .sp-overlay {
   display: none;
@@ -24,6 +16,7 @@
 }
 
 .sp-modal {
+  background-color: @color-background;
   display: none;
   outline: none;
 
@@ -38,14 +31,12 @@
     display: block;
     background-color: white;
     width: @modal-width;
-    height: @modal-height;
     position: fixed;
-    top: 50%;
+    top: 10%;
     left: 50%;
-    margin-top: round(@modal-height / -2);
     margin-left: round(@modal-width / -2);
-    border-radius: @modal-radius;
     z-index: @modal-z + 1;
+    overflow: hidden;
   }
 
   .sp-modal-header {
@@ -53,10 +44,17 @@
     background-color: @color-header;
     text-align: center;
     font-size: 0.9rem;
-    border-top-right-radius: @modal-radius;
-    border-top-left-radius: @modal-radius;
     width: 100%;
     padding: 20px 0 15px 0;
+  }
+
+  .sp-title {
+    display: none; // Handled by JS
+  }
+
+  .sp-modal-title {
+    font-weight: 400;
+    font-size: 1rem;
   }
 
   .sp-modal-close-btn {
@@ -75,7 +73,11 @@
     font-size: 0.8rem;
 
     .sp-form-group {
-      padding: 5px 0 15px 0;
+      padding: 0 0 20px 0;
+    }
+
+    .sp-form-field-group {
+      position: relative;
     }
 
     .sp-light {
@@ -86,31 +88,47 @@
       float: right;
     }
 
-    button, input {
-      width: 100%;
-      margin-bottom: 15px;
+    form {
+      width: @form-width;
+    }
+
+    fieldset {
+      margin: 0;
+      border: none;
     }
 
     input {
+      width: @form-width;
       font-size: 1rem;
+      margin-bottom: 15px;
     }
 
     input[type=text], input[type=password] {
-      border-radius: 3px;
       border-style: solid;
       border-color: @color-disabled;
       border-width: 1px;
       height: 2rem;
-      padding-left: 5px;
+      padding-left: @input-padding-left;
+      width: @form-width - @input-padding-left;
     }
 
     button {
+      width: @form-width;
+      margin-bottom: 15px;
       font-size: 1.25rem;
       font-weight: 300;
       background-color: @color-primary;
       color: white;
       border: none;
-      height: 2.5rem;
+      height: 3rem;
+      -webkit-transition: background-color @quick-transition-duration;
+      transition: background-color @quick-transition-duration;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button:disabled {
+      background-color: @color-primary-disabled;
     }
 
     label, a {

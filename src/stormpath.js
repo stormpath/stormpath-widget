@@ -6,10 +6,13 @@ import utils from './utils';
 
 import {
   ModalComponent,
+  FormFieldsComponent,
   FormFieldComponent,
+  PasswordFormFieldComponent,
   LoginComponent,
   RegistrationComponent,
   ChangePasswordComponent,
+  SubmitButtonComponent,
   ForgotPasswordComponent
 } from './components';
 
@@ -44,9 +47,17 @@ class Stormpath extends EventEmitter {
         component: ChangePasswordComponent,
         view: () => ChangePasswordComponent.view
       },
+      [FormFieldsComponent.id]: {
+        component: FormFieldsComponent,
+        view: () => FormFieldsComponent.view
+      },
       [FormFieldComponent.id]: {
         component: FormFieldComponent,
         view: () => FormFieldComponent.view
+      },
+      [PasswordFormFieldComponent.id]: {
+        component: PasswordFormFieldComponent,
+        view: () => PasswordFormFieldComponent.view
       },
       [ForgotPasswordComponent.id]: {
         component: ForgotPasswordComponent,
@@ -59,6 +70,10 @@ class Stormpath extends EventEmitter {
       [RegistrationComponent.id]: {
         component: RegistrationComponent,
         view: () => RegistrationComponent.view
+      },
+      [SubmitButtonComponent.id]: {
+        component: SubmitButtonComponent,
+        view: () => SubmitButtonComponent.view
       },
       [VerifyEmailComponent.id]: {
         component: VerifyEmailComponent,
@@ -146,22 +161,19 @@ class Stormpath extends EventEmitter {
   }
 
   _initializeRivets(templates) {
-    Rivets.configure({
-      prefix: Stormpath.prefix
-    });
-
     Rivets.formatters['is'] = (a, b) => a === b;
     Rivets.formatters['isnt'] = (a, b) => a !== b;
     Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
+    Rivets.formatters['gt'] = (x, y) => x > y;
+    Rivets.formatters.prefix = utils.prefix;
 
     Rivets.binders.required = (el, val) => el.required = val === true;
-    Rivets.formatters.prefix = (name, prefix) => prefix + name;
 
     for (var id in templates) {
       const options = templates[id];
       Rivets.components[Stormpath.prefix + '-' + id] = {
         template: options.view,
-        initialize: (el, data) => new options.component(data)
+        initialize: (el, data) => new options.component(data, el)
       };
     }
   }

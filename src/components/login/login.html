@@ -1,30 +1,32 @@
 <div class="sp-login-component">
-  <div sp-show="state | is 'loading'">Loading view model</div>
-  <div sp-show="state | is 'loading_error'">Error: {error.message}</div>
-  <div sp-show="state | is 'authenticated'">You are authenticated</div>
-  <div sp-show="state | is 'login_error'">{error.message}</div>
-  <form sp-show="state | in 'ready,login_error'">
-    <div class="sp-form-group" sp-show="capsWarning">Caps lock is on!</div>
-    <fieldset class="sp-login-social">
-      <a sp-each-dir="accountStores"
-        sp-href="dir.authorizeUri"
-        sp-class="dir.provider.providerId | prefix 'sp-login-provider sp-login-'">
-        Log in with {dir.name}</a>
+  <div class="sp-title">Log in</div>
+  <div rv-show="state | is 'loading'">Loading view model</div>
+  <div rv-show="state | is 'loading_error'">Error: {error.message}</div>
+  <form rv-show="state | in 'ready,login_error'" rv-on-submit="onFormSubmit">
+    <fieldset class="sp-form-group" rv-show="accountStores">
+      <div class="sp-login-social" rv-class-sp-login-social-sm="props.smallButtons">
+        <a rv-each-dir="accountStores"
+          rv-href="dir.authorizeUri"
+          rv-class="dir.provider.providerId | prefix 'sp-login-btn sp-login-btn-'"
+          rv-show="props.showButtons | gt index">
+          Log in with {dir.name}</a>
+
+        <a class="sp-login-btn sp-login-btn-more-expand"
+           rv-show="props.showMoreButton"
+           rv-on-click="toggleMore">More</a>
+      </div>
+      <div class="sp-social-separator"><span>or</span></div>
     </fieldset>
+
+    <div class="sp-error" rv-show="state | is 'login_error'">{error.message}</div>
+
     <fieldset class="sp-form-group sp-login-password">
-      <sp-form-field
-        sp-each-field="fields"
-        model="field"
-        name-prefix="'login-field'">
-      </sp-form-field>
+      <sp-form-fields fields="fields" name-prefix="'sp-form-login'"></sp-form-fields>
       <a href="#todo">Forgot password?</a>
     </fieldset>
-    <div class="sp-form-group">
-      <button type="submit" sp-on-click="onFormSubmit">Log in</button>
-    </div>
+    
+    <sp-submit-button label="'Log in'" submitting="props.isSubmitting"></sp-submit-button>
     <hr>
-    <div class="sp-form-group">
-      <span class="sp-light">Don't have an account?</span> <a class="sp-right" href="#todo">Sign up</a>
-    </div>
+    <span class="sp-light">Don't have an account?</span> <a class="sp-right" href="#todo">Sign up</a>
   </form>
 </div>

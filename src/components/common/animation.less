@@ -1,0 +1,61 @@
+@import "variables.less";
+
+.sp-anim-container {
+  position: relative; // Workaround IE child opacity bug
+}
+
+@-webkit-keyframes waitSpin {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes waitSpin {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.sp-opacity-hidden {
+  opacity: 0;
+}
+
+.sp-anim-fade-in-from-top {
+  animation: fadeInFromTop @long-transition-duration;
+}
+
+@keyframes fadeInFromTop {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.sp-anim-fade-out-to-bottom {
+  animation: fadeOutToBottom @long-transition-duration;
+}
+
+@keyframes fadeOutToBottom {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+}

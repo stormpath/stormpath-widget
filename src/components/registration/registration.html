@@ -1,15 +1,16 @@
 <div class="sp-registration-component">
-  <div sp-show="state | is 'loading'">Loading view model</div>
-  <div sp-show="state | is 'loading_error'">Error: {error.message}</div>
-  <div sp-show="state | is 'account_enabled'">Your account has been created. You are now ready to login.</div>
-  <div sp-show="state | is 'account_pending'">Your account has been created. Please check your email for a verification link.</div>
-  <form sp-show="state | in 'ready,validation_error'">
+  <div class="sp-title">Sign up</div>
+  <div rv-show="state | is 'loading'">Loading view model</div>
+  <div rv-show="state | is 'loading_error'">Error: {error.message}</div>
+  <div rv-show="state | is 'account_enabled'">Your account has been created. You are now ready to login.</div>
+  <div rv-show="state | is 'account_pending'">Your account has been created. Please check your email for a verification link.</div>
+  <form rv-show="state | in 'ready,validation_error'">
     <sp-form-field
-      sp-each-field="fields"
+      rv-each-field="fields"
       model="field"
       name-prefix="'registration-field'">
     </sp-form-field>
-    <div sp-show="state | is 'validation_error'">{error.message}</div>
-    <button sp-on-click="onFormSubmit">Register</button>
+    <div rv-show="state | is 'validation_error'">{error.message}</div>
+    <button rv-on-click="onFormSubmit">Register</button>
   </form>
 </div>

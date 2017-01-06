@@ -1,6 +1,7 @@
 <div class="sp-verify-email-component">
-  <div sp-show="state | is 'invalid'">No email verification token provided. Please verify that you've setup this component correctly.</div>
-  <div sp-show="state | is 'verifying'">We are verifying your account.</div>
-  <div sp-show="state | is 'verified'">Your account has has been verified!</div>
-  <div sp-show="state | is 'error'">This email verification link is not valid.</div>
+  <div class="sp-title">Verify email</div>
+  <div rv-show="state | is 'invalid'">No email verification token provided. Please verify that you've setup this component correctly.</div>
+  <div rv-show="state | is 'verifying'">We are verifying your account.</div>
+  <div rv-show="state | is 'verified'">Your account has has been verified!</div>
+  <div rv-show="state | is 'error'">This email verification link is not valid.</div>
 </div>
