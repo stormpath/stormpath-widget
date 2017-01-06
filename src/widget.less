@@ -1,0 +1,42 @@
+// General styling that can be used across all components
+
+@color-success: #00CC6D;
+@color-warning: #FFAB19;
+
+body {
+  line-height: 1.2rem;
+}
+
+form {
+  button {
+    margin: .5rem 0;
+  }
+}
+
+.svg-icon(@uri, @size) {
+  background-image: url(@uri);
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  width: @size;
+  height: @size;
+  display: inline-block;
+  position: relative;
+  top: 2px;
+}
+
+.sp-icon-warning {
+  .svg-icon('./assets/warning.svg', 14px);
+}
+
+.sp-icon-success {
+  .svg-icon('./assets/success.svg', 14px);
+}
+
+.sp-text-warning {
+  color: @color-warning;
+}
+
+.sp-text-success {
+  color: @color-success;
+}
