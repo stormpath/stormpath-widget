@@ -92,7 +92,7 @@ class Stormpath extends EventEmitter {
     if (!options.authStrategy) {
       // If we haven't set an auth strategy and point our appUri to a Stormpath app endpoint,
       // then automatically use the token auth strategy.
-      if (options.appUri && options.appUri.indexOf('.apps.stormpath.io') > -1) {
+      if (options.appUri && options.appUri.indexOf('.stormpath.io') > -1) {
         options.authStrategy = 'token';
       // Else, default to using cookie.
       } else {

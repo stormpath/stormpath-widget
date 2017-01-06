@@ -41,7 +41,7 @@ class ChangePasswordComponent {
   }
 
   onError(state, err) {
-    if (err.status === 400 || err.status === 404) {
+    if (err.status === 404) {
       return this._setState('invalid_token');
     }
 
