@@ -28,19 +28,12 @@
     <p>
       <span>This link expired for your security. Enter your email address, and we’ll send you a new link to verify it.</span>
     </p>
-    <form rv-show="state | isnt 'sent'">
-      <div rv-each-field="fields">
-        <label rv-for="field.name | prefix 'forgot-password-field-'">{field.label}</label>
-        <input rv-id="field.name | prefix 'forgot-password-field-'"
-               rv-type="field.type"
-               rv-name="field.name"
-               rv-value="field.value"
-               rv-placeholder="field.placeholder"
-               rv-required="field.required"
-               rv-disabled="state | is 'sending'" />
-      </div>
+    <form rv-show="state | isnt 'sent'" rv-on-submit="onFormSubmit">
+      <fieldset class="sp-form-group">
+        <sp-form-fields fields="fields" name-prefix="'sp-form-email-verification'"></sp-form-fields>
+      </fieldset>
       <div rv-show="state | is 'error'">{error.message}</div>
-      <button rv-on-click="onFormSubmit" rv-disabled="state | is 'sending'">Send verification link</button>
+      <sp-submit-button label="'Send verification link'" submitting="states.isSubmitting"></sp-submit-button>
     </form>
   </div>
 </div>

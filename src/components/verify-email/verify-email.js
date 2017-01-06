@@ -18,6 +18,10 @@ class VerifyEmailComponent {
     type: 'text'
   }];
 
+  states = {
+    isSubmitting: false
+  };
+
   constructor(data) {
     this.userService = data.userService;
     this.token = data.token;
@@ -56,12 +60,14 @@ class VerifyEmailComponent {
   }
 
   onFormSubmit = (event) => {
+
     event.preventDefault();
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const login = this.login = fields.login.value;
 
     this.state = 'sending';
+    this.states.isSubmitting = true;
 
     this.userService.sendVerificationEmail({ login: login })
       .then(this.onSent.bind(this))
