@@ -2,7 +2,16 @@
   <div class="sp-title">Verify email</div>
   <div rv-show="state | is 'invalid'">No email verification token provided. Please verify that you've setup this component correctly.</div>
   <div rv-show="state | is 'verifying'">We are verifying your account.</div>
-  <div rv-show="state | is 'verified'">Your account has has been verified!</div>
+  <div rv-show="state | is 'verified'">
+    <p>
+      <span class="icon-success"></span>
+      <span class="text-success">Email Verified</span>
+    </p>
+    <p>
+      All set! You can now log in to your account.
+    </p>
+    <button rv-on-click="showLogin">Log in now</button>
+  </div>
   <div rv-show="state | is 'post_error'">Sorry, an unknown error has occurred.</div>
   <div rv-show="state | is 'sent'">
     <p>
@@ -11,7 +20,7 @@
     </p>
     We’ve sent a link to verify your email to {login}. Please check your email and click that link to continue.
   </div>
-  <div rv-show="state | is 'error'">
+  <div rv-show="state | in 'error,sending'">
     <p>
       <span class="icon-warning"></span>
       <span class="text-warning">Expired or invalid link.</span>

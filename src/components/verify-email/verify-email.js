@@ -22,6 +22,7 @@ class VerifyEmailComponent {
     this.userService = data.userService;
     this.token = data.token;
     this.beginVerification();
+    this.showLogin = data.showLogin;
   }
 
   beginVerification() {
@@ -35,6 +36,11 @@ class VerifyEmailComponent {
     this.userService.verifyEmail(this.token)
       .then(this.onVerificationSuccess.bind(this))
       .catch(this.onVerificationError.bind(this));
+  }
+
+  onError(state, err) {
+    this.error = err;
+    this.state = state;
   }
 
   onSent() {

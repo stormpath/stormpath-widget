@@ -289,7 +289,8 @@ class Stormpath extends EventEmitter {
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
 
     const data = {
-      token: token || parsedQueryString.sptoken
+      token: token || parsedQueryString.sptoken,
+      showLogin: this.showLogin.bind(this, renderTo)
     };
 
     this._render(VerifyEmailComponent.id, renderTo, data);
