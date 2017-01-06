@@ -7,15 +7,14 @@ class SubmitButtonComponent {
   static style = style;
 
   label = '';
-  clicked = false;
+  submitting = false;
 
   constructor(data) {
-    console.log(data);
     this.label = data.label;
+    this.submitting = data.submitting;
   }
 
   handler(e, model) {
-    console.log(e, model);
     model.clicked = true;
   }
 }

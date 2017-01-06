@@ -24,8 +24,8 @@
       <sp-form-fields fields="fields" name-prefix="'sp-form-login'"></sp-form-fields>
       <a href="#todo">Forgot password?</a>
     </fieldset>
-
-    <sp-submit-button label="'Log in'"></sp-submit-button>
+    
+    <sp-submit-button label="'Log in'" submitting="props.isSubmitting"></sp-submit-button>
     <hr>
     <span class="sp-light">Don't have an account?</span> <a class="sp-right" href="#todo">Sign up</a>
   </form>

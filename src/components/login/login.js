@@ -19,6 +19,7 @@ class LoginComponent {
     smallButtons: false,
     showButtons: LoginComponent.maxInitialButtons,
     showMoreButton: false,
+    isSubmitting: false,
   };
 
   constructor(data) {
@@ -73,6 +74,7 @@ class LoginComponent {
   onError(state, err) {
     this.error = err;
     this.state = state;
+    this.props.isSubmitting = false;
   }
 
   onViewModelLoaded(data) {
@@ -95,17 +97,10 @@ class LoginComponent {
     }
   }
 
-  onFormSubmit = (e) => {
-    console.log(e);
-
+  onFormSubmit = (e, model) => {
     e.preventDefault();
-    e.target.disabled = true;
 
-    console.log(e.target);
-
-    //utils.addClass(e.target.)
-
-    return;
+    model.props.isSubmitting = true;
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const username = fields.login.value;
