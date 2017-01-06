@@ -14,11 +14,12 @@ class ModalComponent {
   }
 
   show() {
+
+    this._applyTitle();
+
     if (this._visible) {
       return;
     }
-
-    this._applyTitle();
 
     utils.addClass(this._overlayElement, 'sp-active');
     utils.addClass(this._modalElement, 'sp-active');
