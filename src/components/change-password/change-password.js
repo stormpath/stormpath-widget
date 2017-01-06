@@ -12,12 +12,7 @@ class ChangePasswordComponent {
     name: 'password',
     required: true,
     type: 'password'
-  }/*, {
-    label: 'Confirm New Password',
-    name: 'passwordConfirm',
-    required: true,
-    type: 'password'
-  }*/];
+  }];
 
   state = 'unknown';
 
@@ -58,13 +53,6 @@ class ChangePasswordComponent {
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const password = fields.password.value;
-
-    /*const passwordConfirm = fields.passwordConfirm.value;
-    if (password !== passwordConfirm) {
-      return this.onError('validation_error', {
-        message: 'Passwords do not match'
-      });
-    }*/
 
     this._setState('sending');
 
