@@ -1,5 +1,9 @@
 @import "variables.less";
 
+.sp-anim-container {
+  position: relative; // Workaround IE child opacity bug
+}
+
 @-webkit-keyframes waitSpin {
   from {
     -webkit-transform: rotate(0deg);
