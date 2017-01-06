@@ -153,6 +153,12 @@ class ClientApiUserService extends EventEmitter {
     });
   }
 
+  sendVerificationEmail(data) {
+    return this.httpProvider.postJson('/verify', data).then(() => {
+      this._setState('verifyEmailSent', true, data);
+    });
+  }
+
   changePassword(data) {
     return this.httpProvider.postJson('/change', data).then(() => {
       this._setState('passwordChanged', true);

@@ -1,3 +1,4 @@
+import utils from '../../utils';
 import view from 'html!./verify-email.html';
 import style from '!style-loader!css-loader!less-loader!./verify-email.less';
 
@@ -8,6 +9,14 @@ class VerifyEmailComponent {
 
   state = null;
   token = null;
+
+  fields = [{
+    label: 'Username or Email',
+    name: 'login',
+    placeholder: 'foo@example.com',
+    required: true,
+    type: 'text'
+  }];
 
   constructor(data) {
     this.userService = data.userService;
@@ -28,12 +37,29 @@ class VerifyEmailComponent {
       .catch(this.onVerificationError.bind(this));
   }
 
+  onSent() {
+    this.state = 'sent';
+  }
+
   onVerificationSuccess() {
     this.state = 'verified';
   }
 
   onVerificationError() {
     this.state = 'error';
+  }
+
+  onFormSubmit = (event) => {
+    event.preventDefault();
+
+    const fields = utils.mapArrayToObject(this.fields, 'name');
+    const login = this.login = fields.login.value;
+
+    this.state = 'sending';
+
+    this.userService.sendVerificationEmail({ login: login })
+      .then(this.onSent.bind(this))
+      .catch(this.onError.bind(this, 'post_error'));
   }
 }
 
