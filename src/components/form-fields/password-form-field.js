@@ -12,7 +12,7 @@ class PasswordFormFieldComponent extends FormFieldComponent {
   }
 
   togglePasswordVisibility(e, model) {
-    const el = e.target;
+    const toggleElement = e.target;
 
     const passwordFieldElement = model.element.querySelector('#' + model.namePrefix + '-password');
     if (!passwordFieldElement) {
@@ -21,11 +21,13 @@ class PasswordFormFieldComponent extends FormFieldComponent {
 
     if (passwordFieldElement.type === 'password') {
       passwordFieldElement.type = 'text';
-      el.innerHTML = 'Hide';
+      toggleElement.innerHTML = 'Hide';
     } else {
       passwordFieldElement.type = 'password';
-      el.innerHTML = 'Show';
+      toggleElement.innerHTML = 'Show';
     }
+
+    passwordFieldElement.focus();
   }
 }
 
