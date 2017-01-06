@@ -11,7 +11,9 @@ class PasswordFormFieldComponent extends FormFieldComponent {
     this.element = el;
   }
 
-  togglePasswordVisibility(_, model) {
+  togglePasswordVisibility(e, model) {
+    const el = e.target;
+
     const passwordFieldElement = model.element.querySelector('#' + model.namePrefix + '-password');
     if (!passwordFieldElement) {
       throw new Error('Could not toggle password field.');
@@ -19,8 +21,10 @@ class PasswordFormFieldComponent extends FormFieldComponent {
 
     if (passwordFieldElement.type === 'password') {
       passwordFieldElement.type = 'text';
+      el.innerHTML = 'Hide';
     } else {
       passwordFieldElement.type = 'password';
+      el.innerHTML = 'Show';
     }
   }
 }
