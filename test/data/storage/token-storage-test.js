@@ -21,6 +21,7 @@ describe('TokenStorage', () => {
       accessTokenB: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIn0.EMXmaqCC8awlLl-AVjakgZk6T2cWr2ahETLDEXiUTao',
       refreshTokenA: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.e30.t-IDcSemACt8x4iTMCda8Yhe3iZaWbvV5XKSTbuAn0M',
       refreshTokenB: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiJ9.uqUjcPA4itDBTuBtVlevfppYnYh8xFW7rAgQAHqX5aM',
+      invalidRefreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiJ9.uqUjcPA4itDBTuB123tVlevfppYnYh8xFW7rAgQAHqX5aM',
       nonExpiredAccessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ',
       expiredAccessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImV4cCI6MX0.-x_DAYIg4R4R9oZssqgWyJP_oWO1ESj8DgKrGCk7i5o'
     };
@@ -45,7 +46,7 @@ describe('TokenStorage', () => {
           mockStorage.set('stormpath.access_token', mockToken).then(done);
         });
 
-        describe('when stormpath.refresh_token key in storage', () => {
+        describe('and stormpath.refresh_token key in storage', () => {
           let sandbox;
           let tokenRefreshMockResult;
           let testResult;
@@ -85,7 +86,48 @@ describe('TokenStorage', () => {
           });
         });
 
-        describe('when stormpath.refresh_token key not in storage', () => {
+        describe('and invalid stormpath.refresh_token key in storage', () => {
+          let sandbox;
+          let testError;
+
+          beforeEach((done) => {
+            sandbox = sinon.sandbox.create();
+
+            const refreshError = new Error('Unable to refresh.');
+            refreshError.status = 400;
+
+            sandbox.stub(mockHttpProvider, 'postForm')
+              .withArgs('/oauth/token')
+              .returns(Promise.reject(refreshError));
+
+            mockStorage.set('stormpath.refresh_token', mockTokens.invalidRefreshToken).then(() => {
+              tokenStorage.getAccessToken()
+                .then(() => done())
+                .catch((err) => {
+                  testError = err;
+                  done();
+                });
+            });
+          });
+
+          afterEach(() => {
+            sandbox.restore();
+          });
+
+          it('should throw an error', () => {
+            assert.isOk(testError);
+          });
+
+          it('should remove storage key stormpath.access_token', (done) => {
+            assert.becomes(mockStorage.get('stormpath.access_token'), undefined).notify(done);
+          });
+
+          it('should remove storage key stormpath.refresh_token', (done) => {
+            assert.becomes(mockStorage.get('stormpath.refresh_token'), undefined).notify(done);
+          });
+        });
+
+        describe('and stormpath.refresh_token key not in storage', () => {
           it('should return access token from storage', (done) => {
             assert.becomes(tokenStorage.getAccessToken(), mockToken)
               .notify(done);
