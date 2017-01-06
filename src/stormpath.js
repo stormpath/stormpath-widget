@@ -12,6 +12,7 @@ import {
   LoginComponent,
   RegistrationComponent,
   ChangePasswordComponent,
+  SubmitButtonComponent,
   ForgotPasswordComponent
 } from './components';
 
@@ -69,6 +70,10 @@ class Stormpath extends EventEmitter {
       [RegistrationComponent.id]: {
         component: RegistrationComponent,
         view: () => RegistrationComponent.view
+      },
+      [SubmitButtonComponent.id]: {
+        component: SubmitButtonComponent,
+        view: () => SubmitButtonComponent.view
       },
       [VerifyEmailComponent.id]: {
         component: VerifyEmailComponent,
@@ -160,9 +165,9 @@ class Stormpath extends EventEmitter {
     Rivets.formatters['isnt'] = (a, b) => a !== b;
     Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
     Rivets.formatters['gt'] = (x, y) => x > y;
+    Rivets.formatters.prefix = utils.prefix;
 
     Rivets.binders.required = (el, val) => el.required = val === true;
-    Rivets.formatters.prefix = utils.prefix;
 
     for (var id in templates) {
       const options = templates[id];

@@ -122,8 +122,10 @@
       color: white;
       border: none;
       height: 3rem;
-      -webkit-transition: background-color @anim-duration;
-      transition: background-color @anim-duration;
+      -webkit-transition: background-color @quick-transition-duration;
+      transition: background-color @quick-transition-duration;
+      position: relative;
+      overflow: hidden;
     }
 
     button:disabled {

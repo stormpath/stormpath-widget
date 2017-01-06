@@ -96,8 +96,15 @@ class LoginComponent {
   }
 
   onFormSubmit = (e) => {
+    console.log(e);
+
     e.preventDefault();
     e.target.disabled = true;
+
+    console.log(e.target);
+
+    //utils.addClass(e.target.)
+
     return;
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
