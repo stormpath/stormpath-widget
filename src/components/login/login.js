@@ -24,6 +24,7 @@ class LoginComponent {
 
   constructor(data) {
     this.userService = data.userService;
+    this.showForgotPassword = data.showForgotPassword;
     this.modal = data.modal;
 
     this.state = 'loading';
