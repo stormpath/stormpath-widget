@@ -56,6 +56,7 @@ class HttpProvider {
   _createResponseError(err) {
     let type;
     let message;
+    let status;
 
     if (typeof err === 'string') {
       const parsedError = this._tryParseJson(err);
@@ -65,7 +66,8 @@ class HttpProvider {
     }
 
     if (typeof err === 'object') {
-      type = err.type ? err.type : 'uknown';
+      status = err.status ? err.status : undefined;
+      type = err.type ? err.type : 'unknown';
       message = err.message ? err.message : JSON.stringify(err);
     } else {
       type = 'unknown';
@@ -74,6 +76,7 @@ class HttpProvider {
 
     const newError = new Error(message);
 
+    newError.status = status;
     newError.type = type;
 
     return newError;

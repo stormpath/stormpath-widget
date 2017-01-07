@@ -7,13 +7,21 @@ class ForgotPasswordComponent {
   static view = view;
   static style = style;
 
+  state = 'ready';
+
   fields = [{
-    label: 'Username or Email',
-    name: 'login',
-    placeholder: 'foo@example.com',
+    label: 'Email',
+    name: 'email',
+    placeholder: '',
     required: true,
-    type: 'text'
+    type: 'email'
   }];
+
+  // This is necessary because currently Rivets cannot bind to top-level primitives
+  // (see https://github.com/mikeric/rivets/issues/700#issuecomment-267177540)
+  props = {
+    isSubmitting: false
+  };
 
   constructor(data) {
     this.userService = data.userService;
@@ -22,23 +30,26 @@ class ForgotPasswordComponent {
   onError(state, err) {
     this.error = err;
     this.state = state;
+    this.props.isSubmitting = false;
   }
 
   onSent() {
     this.state = 'sent';
   }
 
-  onFormSubmit = (event) => {
+  onFormSubmit = (event, model) => {
     event.preventDefault();
 
+    model.props.isSubmitting = true;
+
     const fields = utils.mapArrayToObject(this.fields, 'name');
-    const login = fields.login.value;
+    const email = this.email = fields.email.value || '';
 
     this.state = 'sending';
 
-    this.userService.sendForgotPasswordEmail({ email: login })
+    this.userService.sendForgotPasswordEmail({ email: email })
       .then(this.onSent.bind(this))
-      .catch(this.onError.bind(this, 'login_error'));
+      .catch(this.onError.bind(this, 'post_error'));
   }
 }
 

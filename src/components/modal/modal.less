@@ -29,6 +29,15 @@
 
   color: @color-text;
 
+  p {
+    padding: 5px 0;
+  }
+
+  a {
+    // Froces a cursor pointer for <a> tags that have no href
+    cursor: pointer;
+  }
+
   &.sp-active {
     display: block;
     background-color: white;
@@ -105,7 +114,7 @@
       margin-bottom: 15px;
     }
 
-    input[type=text], input[type=password] {
+    input[type=text], input[type=password], input[type=email] {
       border-style: solid;
       border-color: @color-disabled;
       border-width: 1px;

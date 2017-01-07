@@ -8,16 +8,17 @@ class ChangePasswordComponent {
   static style = style;
 
   fields = [{
-    label: 'New Password',
+    label: 'Password',
     name: 'password',
     required: true,
     type: 'password'
-  }, {
-    label: 'Confirm New Password',
-    name: 'passwordConfirm',
-    required: true,
-    type: 'password'
   }];
+
+  // This is necessary because currently Rivets cannot bind to top-level primitives
+  // (see https://github.com/mikeric/rivets/issues/700#issuecomment-267177540)
+  props = {
+    isSubmitting: false
+  };
 
   state = 'unknown';
 
@@ -41,6 +42,13 @@ class ChangePasswordComponent {
   }
 
   onError(state, err) {
+
+    this.props.isSubmitting = false;
+
+    if (err.status === 404) {
+      return this._setState('invalid_token');
+    }
+
     this.error = err;
     this._setState(state);
   }
@@ -49,18 +57,13 @@ class ChangePasswordComponent {
     this._setState('changed');
   }
 
-  onFormSubmit = (event) => {
+  onFormSubmit = (event, model) => {
     event.preventDefault();
+
+    model.props.isSubmitting = true;
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const password = fields.password.value;
-    const passwordConfirm = fields.passwordConfirm.value;
-
-    if (password !== passwordConfirm) {
-      return this.onError('validation_error', {
-        message: 'Passwords do not match'
-      });
-    }
 
     this._setState('sending');
 
@@ -71,7 +74,7 @@ class ChangePasswordComponent {
 
     this.userService.changePassword(request)
       .then(this.onPasswordChanged.bind(this))
-      .catch(this.onError.bind(this, 'request_error'));
+      .catch(this.onError.bind(this, 'validation_error'));
   }
 }
 
