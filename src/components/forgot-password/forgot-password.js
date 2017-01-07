@@ -14,7 +14,7 @@ class ForgotPasswordComponent {
     name: 'email',
     placeholder: '',
     required: true,
-    type: 'text'
+    type: 'email'
   }];
 
   // This is necessary because currently Rivets cannot bind to top-level primitives
@@ -45,18 +45,11 @@ class ForgotPasswordComponent {
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const email = this.email = fields.email.value || '';
 
-    // Very simple email verification at the moment...
-    if (email.indexOf('@') === -1) {
-      this.state = 'validation_error';
-      this.error = new Error('Invalid email address');
-      return;
-    }
-
     this.state = 'sending';
 
     this.userService.sendForgotPasswordEmail({ email: email })
       .then(this.onSent.bind(this))
-      .catch(this.onError.bind(this, 'validation_error'));
+      .catch(this.onError.bind(this, 'post_error'));
   }
 }
 
