@@ -279,7 +279,8 @@ class Stormpath extends EventEmitter {
   showLogin(renderTo) {
 
     this._render(LoginComponent.id, renderTo, {
-      showForgotPassword: this.showForgotPassword.bind(this, renderTo)
+      showForgotPassword: this.showForgotPassword.bind(this, renderTo),
+      showRegistration: this.showRegistration.bind(this, renderTo)
     });
   }
 
