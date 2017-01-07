@@ -5,6 +5,7 @@ import EventEmitter from 'events';
 import utils from './utils';
 
 import {
+  ContainerComponent,
   ModalComponent,
   FormFieldsComponent,
   FormFieldComponent,
@@ -43,6 +44,10 @@ class Stormpath extends EventEmitter {
     authStrategy: null,
 
     templates: {
+      [ContainerComponent.id]: {
+        component: ContainerComponent,
+        view: () => ContainerComponent.view
+      },
       [ChangePasswordComponent.id]: {
         component: ChangePasswordComponent,
         view: () => ChangePasswordComponent.view
