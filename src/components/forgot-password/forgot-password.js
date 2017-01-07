@@ -17,6 +17,12 @@ class ForgotPasswordComponent {
     type: 'text'
   }];
 
+  // This is necessary because currently Rivets cannot bind to top-level primitives
+  // (see https://github.com/mikeric/rivets/issues/700#issuecomment-267177540)
+  props = {
+    isSubmitting: false
+  };
+
   constructor(data) {
     this.userService = data.userService;
   }
@@ -24,17 +30,20 @@ class ForgotPasswordComponent {
   onError(state, err) {
     this.error = err;
     this.state = state;
+    this.props.isSubmitting = false;
   }
 
   onSent() {
     this.state = 'sent';
   }
 
-  onFormSubmit = (event) => {
+  onFormSubmit = (event, model) => {
     event.preventDefault();
 
+    model.props.isSubmitting = true;
+
     const fields = utils.mapArrayToObject(this.fields, 'name');
-    const email = fields.email.value || '';
+    const email = this.email = fields.email.value || '';
 
     // Very simple email verification at the moment...
     if (email.indexOf('@') === -1) {

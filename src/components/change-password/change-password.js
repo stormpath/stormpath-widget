@@ -14,6 +14,12 @@ class ChangePasswordComponent {
     type: 'password'
   }];
 
+  // This is necessary because currently Rivets cannot bind to top-level primitives
+  // (see https://github.com/mikeric/rivets/issues/700#issuecomment-267177540)
+  props = {
+    isSubmitting: false
+  };
+
   state = 'unknown';
 
   constructor(data) {
@@ -36,6 +42,9 @@ class ChangePasswordComponent {
   }
 
   onError(state, err) {
+
+    this.props.isSubmitting = false;
+
     if (err.status === 404) {
       return this._setState('invalid_token');
     }
@@ -48,8 +57,10 @@ class ChangePasswordComponent {
     this._setState('changed');
   }
 
-  onFormSubmit = (event) => {
+  onFormSubmit = (event, model) => {
     event.preventDefault();
+
+    model.props.isSubmitting = true;
 
     const fields = utils.mapArrayToObject(this.fields, 'name');
     const password = fields.password.value;
