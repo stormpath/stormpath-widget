@@ -6,11 +6,11 @@
   <div rv-show="state | is 'account_pending'">Your account has been created. Please check your email for a verification link.</div>
   <form rv-show="state | in 'ready,validation_error'" rv-on-submit="onFormSubmit">
 
-    <fieldset class="sp-form-group sp-login-password">
-      <sp-form-fields fields="fields" name-prefix="'sp-form-login'"></sp-form-fields>
+    <fieldset class="sp-form-group sp-registration-password">
+      <sp-form-fields fields="fields" name-prefix="'sp-form-registration'"></sp-form-fields>
     </fieldset>
 
-    <div class="sp-error" rv-show="state | is 'validation_error'">{error.message}</div>
+    <div class="sp-error-text" rv-show="state | is 'validation_error'">{error.message}</div>
     <sp-submit-button label="'Log in'" submitting="props.isSubmitting"></sp-submit-button>
   </form>
 </div>
