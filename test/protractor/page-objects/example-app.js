@@ -9,9 +9,6 @@ class ExampleApp {
     // Clear storage to ensure we have a clean slate.
     return WindowProxy.clearStorage().then(() => {
       browser.get(url);
-
-      // Allow the view models to settle.
-      //return browser.sleep(2000);
     });
   }
 
