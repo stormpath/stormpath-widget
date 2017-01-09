@@ -1,8 +1,8 @@
 class WindowProxy {
   static clearStorage() {
     return browser.executeScript(() => window.location).then((location) => {
-      // If no page is loaded in the scenario then calling clearStorage will cause exception
-      // so guard against this by checking hostname (If no page loaded then hostname == '').
+      // If no page is loaded in the scenario then clearing storage will cause an exception.
+      // So avoid this by checking if a hostname is present.
       if (!location.hostname) {
         return Promise.resolve();
       }

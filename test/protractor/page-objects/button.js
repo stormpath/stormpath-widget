@@ -17,7 +17,7 @@ class ButtonObject extends DomObject {
           });
         }
 
-        return promise.resolve(resolved);
+        return Promise.resolve(resolved);
       }
       return Promise.resolve(result);
     });
