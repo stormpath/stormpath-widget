@@ -1,4 +1,3 @@
-import DomObject from './dom';
 import InputObject from './input';
 import ButtonObject from './button';
 import OverlayObject from './overlay';
@@ -21,7 +20,7 @@ class RegistrationComponentObject extends OverlayObject {
   }
 
   registerButton() {
-    return new ButtonObject(by.css('form button[rv-on-click=onFormSubmit]'))
+    return new ButtonObject(by.css('form button[rv-on-click=onFormSubmit]'));
   }
 }
 

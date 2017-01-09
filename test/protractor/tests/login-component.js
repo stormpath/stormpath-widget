@@ -140,7 +140,7 @@ describe('Login Component', () => {
         });
 
         it('should trigger loggedIn event', () => {
-          return expect(StormpathInstanceProxy.pollAsyncResult(loggedInEventAsyncId)).to.eventually.be.ok;
+          return expect(StormpathInstanceProxy.getAsyncResult(loggedInEventAsyncId)).to.eventually.be.ok;
         });
 
         describe('stormpath.getAccessToken()', () => {

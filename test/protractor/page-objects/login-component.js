@@ -13,7 +13,7 @@ class LoginComponentObject extends OverlayObject {
   }
 
   loginButton() {
-    return new ButtonObject(by.css('form button[type=submit]'))
+    return new ButtonObject(by.css('form button[type=submit]'));
   }
 
   errorMessage() {

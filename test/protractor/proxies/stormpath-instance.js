@@ -32,8 +32,15 @@ class StormpathInstanceProxy {
   // This is a hack because selenium blocks directly it detects anything
   // it needs to "wait on". I.e. if we return a promise that isn't directly
   // resolved it seems that it waits for that indefinitely.
-  static pollAsyncResult(asyncId) {
-    return new Promise((accept) => {
+  static getAsyncResult(asyncId, timeout = 10 * 1000) {
+    return new Promise((accept, reject) => {
+      let retryTimeoutId;
+
+      const expireTimeoutId = setTimeout(() => {
+        clearTimeout(retryTimeoutId);
+        reject(new Error('Timeout out while waiting for async result.'));
+      }, timeout);
+
       const checkResult = () => {
         return browser.executeAsyncScript((asyncId, callback) => {
           if (!(asyncId in window._protractorAsyncCallbacks)) {
@@ -46,14 +53,17 @@ class StormpathInstanceProxy {
           callback(result);
         }, asyncId).then((result) => {
           if (result === false) {
-            return setTimeout(checkResult, 500);
+            retryTimeoutId = setTimeout(checkResult, 500);
+            return;
           }
+
+          clearTimeout(expireTimeoutId);
 
           accept(result);
         });
       };
 
-      setTimeout(checkResult, 500);
+      retryTimeoutId = setTimeout(checkResult, 500);
     });
   }
 }
