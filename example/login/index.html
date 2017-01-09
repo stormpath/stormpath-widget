@@ -42,6 +42,8 @@
           appUri: 'YOUR_CLIENT_API_DOMAIN'
         });
 
+        window.stormpathInstance = stormpath;
+
         if ((/#change-password/).test(window.location.href)) {
           stormpath.showChangePassword();
         }

@@ -1,21 +1,43 @@
+import ButtonObject from './button';
+import LoginComponentObject from './login-component';
+import RegistrationComponentObject from './registration-component';
+import ForgotPasswordComponentObject from './forgot-password-component';
+import WindowProxy from '../proxies/window';
+
 class ExampleApp {
-  clickLoginButton() {
-    this.loginButton().click();
-  }
-
   loadAt(url) {
-    browser.get(url);
+    // Clear storage to ensure we have a clean slate.
+    return WindowProxy.clearStorage().then(() => {
+      browser.get(url);
 
-    // Allow the view models to settle
-    return browser.sleep(2000);
+      // Allow the view models to settle.
+      //return browser.sleep(2000);
+    });
   }
 
   loginButton() {
-    return element(by.id('login-button')).isDisplayed();
+    return new ButtonObject(
+      by.id('login-button'),
+      () => new LoginComponentObject(by.css('.sp-modal'))
+    );
   }
 
-  hasLoginButton() {
-    return element(by.id('login-button')).isDisplayed();
+  registerButton() {
+    return new ButtonObject(
+      by.id('register-button'),
+      () => new RegistrationComponentObject(by.css('.sp-modal'))
+    );
+  }
+
+  forgotPasswordButton() {
+    return new ButtonObject(
+      by.id('forgot-password-button'),
+      () => new ForgotPasswordComponentObject(by.css('.sp-modal'))
+    );
+  }
+
+  logoutButton() {
+    return new ButtonObject(by.id('logout-button'));
   }
 }
 
