@@ -8,18 +8,18 @@ class ButtonObject extends DomObject {
 
   click() {
     return this.element.click().then((result) => {
-      if (this.onClickResolver) {
-        const resolved = this.onClickResolver();
-
-        if (resolved.waitUntilVisible) {
-          return resolved.waitUntilVisible().then(() => {
-            return Promise.resolve(resolved);
-          });
-        }
-
-        return Promise.resolve(resolved);
+      if (!this.onClickResolver) {
+        return result;
       }
-      return Promise.resolve(result);
+
+      const resolved = this.onClickResolver();
+
+      if (!resolved.waitUntilVisible) {
+        return resolved;
+      }
+
+      return resolved.waitUntilVisible()
+        .then(() => resolved);
     });
   }
 }
