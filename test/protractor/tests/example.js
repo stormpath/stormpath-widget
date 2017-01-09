@@ -9,6 +9,6 @@ describe('Example App', () => {
   });
 
   it('should have a Login button', () => {
-    expect(app.hasLoginButton()).to.eventually.equal(true);
+    expect(app.loginButton().isVisible()).to.eventually.equal(true);
   });
 });
