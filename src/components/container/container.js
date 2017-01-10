@@ -10,6 +10,7 @@ class ContainerComponent {
 
   constructor(data, el) {
     this._element = el;
+    this.test = data.test;
   }
 }
 
