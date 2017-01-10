@@ -51,7 +51,7 @@ class Stormpath extends EventEmitter {
     this._initializeUserServiceEvents();
     this._preloadViewModels();
 
-    this._baseComponent = new BaseComponent(
+    this.baseComponent = new BaseComponent(
       Stormpath.prefix,
       Rivets,
       this.userService);
@@ -146,16 +146,16 @@ class Stormpath extends EventEmitter {
 
   showChangePassword(renderTo, token) {
     const parsedQueryString = utils.parseQueryString(window.location.search);
-    this._baseComponent.showChangePassword(renderTo, token || parsedQueryString.sptoken);
+    this.baseComponent.showChangePassword(renderTo, token || parsedQueryString.sptoken);
   }
 
-  showForgotPassword = (renderTo) => this._baseComponent.showForgotPassword(renderTo);
-  showLogin = (renderTo) => this._baseComponent.showLogin(renderTo);
-  showRegistration = (renderTo) => this._baseComponent.showRegistration(renderTo);
+  showForgotPassword = (renderTo) => this.baseComponent.showForgotPassword(renderTo);
+  showLogin = (renderTo) => this.baseComponent.showLogin(renderTo);
+  showRegistration = (renderTo) => this.baseComponent.showRegistration(renderTo);
 
   showEmailVerification(renderTo, token) {
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
-    this._baseComponent.showEmailVerification(renderTo, token || parsedQueryString.sptoken);
+    this.baseComponent.showEmailVerification(renderTo, token || parsedQueryString.sptoken);
   }
 
   logout() {
