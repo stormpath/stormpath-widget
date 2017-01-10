@@ -1,29 +1,31 @@
 @import "animation.less";
 
-@spinner-radius: 14px;
 
-.sp-spinner {
+.generator-spinner(@radius, @color, @bgColor) {
+
   width: 0px;
   height: 0px;
-  border-radius: @spinner-radius;
-  border: @spinner-radius solid rgba(255, 255, 255, 1);
+  border-radius: @radius;
+  border: @radius solid @color;
   border-top-color: transparent;
   margin: auto;
-  position: absolute;
-  right: 0;
-  left: 0;
+  position: relative;
   -webkit-animation: waitSpin 1.5s infinite linear;
   animation: waitSpin 1.5s infinite linear;
 
+  @innerRadius: @radius * 1.6;
+
   &:after {
+    background-color: @bgColor;
     border-radius: 50%;
-    width: @spinner-radius + 8;
-    height: @spinner-radius + 8;
+    width: @innerRadius;
+    height: @innerRadius;
     position: absolute;
     content: '';
     margin: auto;
     top: 0;
     bottom: 0;
-    left: (@spinner-radius + 8) / -2;
+    left: @innerRadius / -2;
   }
+
 }
