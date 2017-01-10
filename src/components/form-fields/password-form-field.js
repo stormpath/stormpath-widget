@@ -20,10 +20,12 @@ class PasswordFormFieldComponent extends FormFieldComponent {
     }
 
     if (passwordFieldElement.type === 'password') {
-      passwordFieldElement.type = 'text';
+      passwordFieldElement.setAttribute('type', 'text');
+      passwordFieldElement.setAttribute('autocomplete', 'off');
       toggleElement.innerHTML = 'Hide';
     } else {
-      passwordFieldElement.type = 'password';
+      passwordFieldElement.removeAttribute('autocomplete');
+      passwordFieldElement.setAttribute('type', 'password');
       toggleElement.innerHTML = 'Show';
     }
 
