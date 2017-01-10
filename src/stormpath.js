@@ -1,7 +1,7 @@
 import extend from 'xtend';
 import EventEmitter from 'events';
 
-import View from './view';
+import ViewManager from './view-manager';
 import utils from './utils';
 
 import {
@@ -50,7 +50,7 @@ class Stormpath extends EventEmitter {
     this._initializeUserServiceEvents();
     this._preloadViewModels();
 
-    this.view = new View(
+    this.viewManager = new ViewManager(
       Stormpath.prefix,
       options.templates,
       this.userService
@@ -149,24 +149,24 @@ class Stormpath extends EventEmitter {
 
   showChangePassword(renderTo, token) {
     const parsedQueryString = utils.parseQueryString(window.location.search);
-    this.view.showChangePassword(renderTo, token || parsedQueryString.sptoken);
+    this.viewManager.showChangePassword(renderTo, token || parsedQueryString.sptoken);
   }
 
   showForgotPassword(renderTo) {
-    return this.view.showForgotPassword(renderTo);
+    return this.viewManager.showForgotPassword(renderTo);
   }
 
   showLogin(renderTo) {
-    return this.view.showLogin(renderTo);
+    return this.viewManager.showLogin(renderTo);
   }
 
   showRegistration(renderTo) {
-    return this.view.showRegistration(renderTo);
+    return this.viewManager.showRegistration(renderTo);
   }
 
   showEmailVerification(renderTo, token) {
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
-    this.view.showEmailVerification(renderTo, token || parsedQueryString.sptoken);
+    this.viewManager.showEmailVerification(renderTo, token || parsedQueryString.sptoken);
   }
 
   logout() {

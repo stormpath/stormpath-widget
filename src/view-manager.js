@@ -17,7 +17,7 @@ import {
   VerifyEmailComponent
 } from './components';
 
-class View {
+class ViewManager {
   static defaultTemplates = {
     [ContainerComponent.id]: {
       component: ContainerComponent,
@@ -65,7 +65,7 @@ class View {
     this.prefix = prefix;
     this.userService = userService;
     this.modal = new ModalComponent();
-    this._initializeRivets(extend(View.defaultTemplates, templates));
+    this._initializeRivets(extend(ViewManager.defaultTemplates, templates));
   }
 
   _initializeRivets(templates) {
@@ -151,4 +151,4 @@ class View {
   }
 }
 
-export default View;
+export default ViewManager;
