@@ -22,7 +22,7 @@
         var registerButton = document.getElementById('register-button');
 
         authenticatedContainer.style.display = 'none';
-        loginButton.addEventListener('click', function() { stormpath.showLogin(stormpathContainer); });
+        loginButton.addEventListener('click', function() { stormpath.showLogin(); });
         registerButton.addEventListener('click', function() { stormpath.showRegistration(stormpathContainer); });
         forgotPasswordButton.addEventListener('click', function() { stormpath.showForgotPassword(stormpathContainer); });
 
