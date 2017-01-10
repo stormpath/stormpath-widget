@@ -1,4 +1,3 @@
-export BaseComponent from './base/base';
 export ContainerComponent from './container/container';
 export ModalComponent from './modal/modal';
 export FormFieldsComponent from './form-fields/form-fields';

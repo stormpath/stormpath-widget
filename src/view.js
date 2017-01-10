@@ -1,20 +1,24 @@
-import utils from '../../utils';
-import ModalComponent from '../modal/modal';
-import ContainerComponent from '../container/container';
+import extend from 'xtend';
+import Rivets from 'rivets';
 
-import ChangePasswordComponent from '../change-password/change-password';
-import ForgotPasswordComponent from '../forgot-password/forgot-password';
-import FormFieldsComponent from '../form-fields/form-fields';
-import FormFieldComponent from '../form-fields/form-field';
-import LoginComponent from '../login/login';
-import PasswordFormFieldComponent from '../form-fields/password-form-field';
-import RegistrationComponent from '../registration/registration';
-import SubmitButtonComponent from '../submit-button/submit-button';
-import VerifyEmailComponent from '../verify-email/verify-email';
+import utils from './utils';
 
-class BaseComponent {
+import {
+  ModalComponent,
+  ContainerComponent,
+  ChangePasswordComponent,
+  ForgotPasswordComponent,
+  FormFieldsComponent,
+  FormFieldComponent,
+  LoginComponent,
+  PasswordFormFieldComponent,
+  RegistrationComponent,
+  SubmitButtonComponent,
+  VerifyEmailComponent
+} from './components';
 
-  static templates = {
+class View {
+  static defaultTemplates = {
     [ContainerComponent.id]: {
       component: ContainerComponent,
       view: () => ContainerComponent.view
@@ -57,60 +61,57 @@ class BaseComponent {
     }
   };
 
-  _initializeRivets(templates) {
-    this.rivets.formatters['is'] = (a, b) => a === b;
-    this.rivets.formatters['isnt'] = (a, b) => a !== b;
-    this.rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
-    this.rivets.formatters['gt'] = (x, y) => x > y;
-    this.rivets.formatters.prefix = utils.prefix;
+  constructor(prefix, templates, userService) {
+    this.prefix = prefix;
+    this.userService = userService;
+    this.modal = new ModalComponent();
+    this._initializeRivets(extend(View.defaultTemplates, templates));
+  }
 
-    this.rivets.binders.required = (el, val) => el.required = val === true;
+  _initializeRivets(templates) {
+    Rivets.formatters['is'] = (a, b) => a === b;
+    Rivets.formatters['isnt'] = (a, b) => a !== b;
+    Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
+    Rivets.formatters['gt'] = (x, y) => x > y;
+    Rivets.formatters.prefix = utils.prefix;
+
+    Rivets.binders.required = (el, val) => el.required = val === true;
 
     for (var id in templates) {
       const options = templates[id];
-      this.rivets.components[this.prefix + '-' + id] = {
+      Rivets.components[this.prefix + '-' + id] = {
         template: options.view,
         initialize: (el, data) => new options.component(data, el)
       };
     }
   }
 
-  constructor(prefix, rivets, userService) {
-    this.prefix = prefix;
-    this.rivets = rivets;
-    this.userService = userService;
+  _createContainer(element) {
+    const containerHandle = Rivets.init(
+      utils.prefix(ContainerComponent.id, this.prefix, '-'),
+      element,
+      {} // TODO: Data for the container.
+    );
 
-    this._initializeRivets(BaseComponent.templates);
+    return containerHandle.models._element.children[0];
   }
 
   _render(viewComponentId, targetElement, data) {
     let element = targetElement;
     let modal = null;
+
     if (!element) {
-      modal = new ModalComponent();
-      element = modal.element;
+      modal = this.modal;
+      element = this.modal.element;
     }
 
-    // Set up the container
-    var containerHandle = this.rivets.init(
-      utils.prefix(ContainerComponent.id, this.prefix, '-'),
-      element,
-      {} // TODO data for the container
-    );
-    var containerElement = containerHandle.models._element.children[0];
-
-    // Render the view
     data = data || {};
     data.userService = this.userService;
+    data.modal = modal; // TODO: See if we can remove this.
 
-    // TODO see if we can remove this
-    if (modal) {
-      data.modal = this.modal;
-    }
-
-    this.rivets.init(
+    Rivets.init(
       utils.prefix(viewComponentId, this.prefix, '-'),
-      containerElement,
+      this._createContainer(element),
       data
     );
 
@@ -150,4 +151,4 @@ class BaseComponent {
   }
 }
 
-export default BaseComponent;
+export default View;
