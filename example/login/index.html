@@ -23,8 +23,8 @@
 
         authenticatedContainer.style.display = 'none';
         loginButton.addEventListener('click', function() { stormpath.showLogin(stormpathContainer); });
-        registerButton.addEventListener('click', function() { stormpath.showRegistration(); });
-        forgotPasswordButton.addEventListener('click', function() { stormpath.showForgotPassword(); });
+        registerButton.addEventListener('click', function() { stormpath.showRegistration(stormpathContainer); });
+        forgotPasswordButton.addEventListener('click', function() { stormpath.showForgotPassword(stormpathContainer); });
 
         // Unauthenticated
         var unauthenticatedContainer = document.getElementById('unauthenticated');
