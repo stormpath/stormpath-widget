@@ -1,5 +1,6 @@
 @import "../common/variables.less";
 @import "../common/spinner.less";
+@import "../common/base.less";
 
 .sp-container {
   background-color: @color-background;
@@ -11,11 +12,6 @@
   width: @container-width;
   min-height: @container-width;
   padding: (@spacing - 10px) 0 (@spacing - 10px) @spacing;
-
-  a {
-    // Froces a cursor pointer for <a> tags that have no href
-    cursor: pointer;
-  }
 
   .sp-title {
     font-weight: 400;
@@ -44,7 +40,6 @@
     //width: 100%;
   }
 
->>>>>>> Fix spacing in login form
   fieldset {
     margin: 0;
     border: none;
