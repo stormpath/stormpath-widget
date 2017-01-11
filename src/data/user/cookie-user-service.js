@@ -15,7 +15,7 @@ class CookieUserService extends EventEmitter {
     }
   }
 
-  _onLoginSuccessful(response) {
+  _onLoginSuccessful() {
     return this.me().then((account) => {
       this._setState('loggedIn', true, account);
       this._setState('authenticated');
