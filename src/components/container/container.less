@@ -10,17 +10,41 @@
   color: @color-text;
   width: @container-width;
   min-height: @container-width;
-  padding: @spacing;
-
-  p {
-    padding: 5px 0;
-  }
+  padding: (@spacing - 10px) 0 (@spacing - 10px) @spacing;
 
   a {
     // Froces a cursor pointer for <a> tags that have no href
     cursor: pointer;
   }
 
+  .sp-title {
+    font-weight: 400;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: @spacing - 5;
+  }
+
+  .sp-form-group {
+    padding: 0 0 (@spacing - 10px) 0;
+  }
+
+  .sp-form-field-group {
+    position: relative;
+  }
+
+  .sp-light {
+    color: @color-disabled;
+  }
+
+  .sp-right {
+    float: right;
+  }
+
+  form {
+    //width: 100%;
+  }
+
+>>>>>>> Fix spacing in login form
   fieldset {
     margin: 0;
     border: none;
@@ -43,7 +67,6 @@
 
   button {
     width: @container-width;
-    margin: .5rem 0;
     font-size: 1.25rem;
     font-weight: 300;
     background-color: @color-primary;
@@ -78,7 +101,7 @@
   hr {
     color: @color-disabled;
     border-style: solid none none none;
-    padding: 5px 0 15px 0;
+    .sp-form-group;
   }
 
   .sp-title {
