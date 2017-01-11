@@ -5,14 +5,9 @@ import formUrlencoded from 'form-urlencoded';
 class HttpProvider {
   constructor(baseUri) {
     this.baseUri = baseUri || '';
-    this.requestInterceptor = null;
   }
 
-  setRequestInterceptor(requestInterceptor) {
-    this.requestInterceptor = requestInterceptor;
-  }
-
-  getJson(path, queryParameters) {
+  getJson(path, queryParameters, options) {
     if (queryParameters) {
       path += '?' + utils.encodeQueryString(queryParameters);
     }
@@ -20,7 +15,8 @@ class HttpProvider {
     return this._createRequest({
       method: 'GET',
       path: path,
-      json: true
+      json: true,
+      ...options
     });
   }
 
@@ -85,38 +81,28 @@ class HttpProvider {
   _createRequest(options) {
     options.uri = this.baseUri + options.path;
 
-    let waitFor;
-
-    if (this.requestInterceptor && this.requestInterceptor.onBeforeRequest) {
-      waitFor = this.requestInterceptor.onBeforeRequest(options);
-    } else {
-      waitFor = Promise.resolve();
-    }
-
-    return waitFor.then(() => {
-      return new Promise((accept, reject) => {
-        xhr(options, (err, resp, body) => {
-          if (err) {
-            if (resp && resp.statusCode === 0) {
-              err = 'Communication error. Check the API configuration option and allowed origins on your application.';
-            }
-
-            return reject(this._createResponseError(err));
+    return new Promise((accept, reject) => {
+      xhr(options, (err, resp, body) => {
+        if (err) {
+          if (resp && resp.statusCode === 0) {
+            err = 'Communication error. Check the API configuration option and allowed origins on your application.';
           }
 
-          if (resp && resp.statusCode >= 400) {
-            return reject(this._createResponseError(body && body.error || body));
-          }
+          return reject(this._createResponseError(err));
+        }
 
-          if (typeof body === 'string') {
-            const parsedBody = this._tryParseJson(body);
-            if (parsedBody !== false) {
-              body = parsedBody;
-            }
-          }
+        if (resp && resp.statusCode >= 400) {
+          return reject(this._createResponseError(body && body.error || body));
+        }
 
-          accept(body);
-        });
+        if (typeof body === 'string') {
+          const parsedBody = this._tryParseJson(body);
+          if (parsedBody !== false) {
+            body = parsedBody;
+          }
+        }
+
+        accept(body);
       });
     });
   }
