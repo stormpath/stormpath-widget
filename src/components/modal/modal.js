@@ -15,6 +15,7 @@ class ModalComponent {
 
   show() {
 
+    // TODO I think this should be refactored
     this._applyTitle();
 
     if (this._visible) {

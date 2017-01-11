@@ -1,24 +1,8 @@
 import extend from 'xtend';
-import Rivets from 'rivets';
 import EventEmitter from 'events';
 
+import ViewManager from './view-manager';
 import utils from './utils';
-
-import {
-  ModalComponent,
-  FormFieldsComponent,
-  FormFieldComponent,
-  PasswordFormFieldComponent,
-  LoginComponent,
-  RegistrationComponent,
-  ChangePasswordComponent,
-  SubmitButtonComponent,
-  ForgotPasswordComponent
-} from './components';
-
-import {
-  VerifyEmailComponent
-} from './components';
 
 import {
   CachedUserService,
@@ -41,45 +25,6 @@ class Stormpath extends EventEmitter {
   options = {
     appUri: null,
     authStrategy: null,
-
-    templates: {
-      [ChangePasswordComponent.id]: {
-        component: ChangePasswordComponent,
-        view: () => ChangePasswordComponent.view
-      },
-      [FormFieldsComponent.id]: {
-        component: FormFieldsComponent,
-        view: () => FormFieldsComponent.view
-      },
-      [FormFieldComponent.id]: {
-        component: FormFieldComponent,
-        view: () => FormFieldComponent.view
-      },
-      [PasswordFormFieldComponent.id]: {
-        component: PasswordFormFieldComponent,
-        view: () => PasswordFormFieldComponent.view
-      },
-      [ForgotPasswordComponent.id]: {
-        component: ForgotPasswordComponent,
-        view: () => ForgotPasswordComponent.view
-      },
-      [LoginComponent.id]: {
-        component: LoginComponent,
-        view: () => LoginComponent.view
-      },
-      [RegistrationComponent.id]: {
-        component: RegistrationComponent,
-        view: () => RegistrationComponent.view
-      },
-      [SubmitButtonComponent.id]: {
-        component: SubmitButtonComponent,
-        view: () => SubmitButtonComponent.view
-      },
-      [VerifyEmailComponent.id]: {
-        component: VerifyEmailComponent,
-        view: () => VerifyEmailComponent.view
-      }
-    }
   };
 
   constructor(options) {
@@ -99,13 +44,17 @@ class Stormpath extends EventEmitter {
       }
     }
 
-    this.modal = new ModalComponent();
     this.storage = new LocalStorage();
-    this.userService = this._createUserService(options);
 
+    this.userService = this._createUserService(options);
     this._initializeUserServiceEvents();
-    this._initializeRivets(options.templates);
     this._preloadViewModels();
+
+    this.viewManager = new ViewManager(
+      Stormpath.prefix,
+      options.templates,
+      this.userService
+    );
 
     // Asynchronously handle any callback response.
     // This needs to happen after the ctor is done so any code after
@@ -160,61 +109,25 @@ class Stormpath extends EventEmitter {
     this.userService.getRegistrationViewModel();
   }
 
-  _initializeRivets(templates) {
-    Rivets.formatters['is'] = (a, b) => a === b;
-    Rivets.formatters['isnt'] = (a, b) => a !== b;
-    Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
-    Rivets.formatters['gt'] = (x, y) => x > y;
-    Rivets.formatters.prefix = utils.prefix;
-
-    Rivets.binders.required = (el, val) => el.required = val === true;
-
-    for (var id in templates) {
-      const options = templates[id];
-      Rivets.components[Stormpath.prefix + '-' + id] = {
-        template: options.view,
-        initialize: (el, data) => new options.component(data, el)
-      };
-    }
-  }
-
-  _render(componentId, targetElement, data) {
-    const modalMode = targetElement === undefined;
-
-    data = data || {};
-    data.userService = this.userService;
-
-    if (modalMode) {
-      data.modal = this.modal;
-    }
-
-    Rivets.init(
-      Stormpath.prefix + '-' + componentId,
-      modalMode ? this.modal.element : targetElement,
-      data
-    );
-
-    if (modalMode) {
-      this.modal.show();
-    }
-  }
-
   _handleCallbackResponse() {
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
+
     if (parsedQueryString.error || parsedQueryString.error_description) {
-      // TODO render human-readable errors in UI somewhere
-      // the full list of error codes is here: https://tools.ietf.org/html/rfc6749#section-4.1.2.1
+      // TODO: Render human-readable errors in UI somewhere...
+      // The full list of error codes is here: https://tools.ietf.org/html/rfc6749#section-4.1.2.1
       this.emit('loginError', parsedQueryString.error);
     }
 
-    if (!parsedQueryString.jwtResponse) {
+    const assertionToken = parsedQueryString.jwtResponse;
+
+    if (!assertionToken) {
       return;
     }
 
-    let assertionToken = parsedQueryString.jwtResponse;
     if (window.history.replaceState) {
-      var cleanedLocation = window.location.toString()
+      const cleanedLocation = window.location.toString()
         .replace('jwtResponse=' + assertionToken, '');
+
       window.history.replaceState(null, null, cleanedLocation);
     }
 
@@ -235,68 +148,25 @@ class Stormpath extends EventEmitter {
   }
 
   showChangePassword(renderTo, token) {
-    const modalMode = renderTo === undefined;
     const parsedQueryString = utils.parseQueryString(window.location.search);
-
-    const data = {
-      userService: this.userService,
-      showLogin: this.showLogin.bind(this, renderTo),
-      showForgotPassword: this.showForgotPassword.bind(this, renderTo),
-      modal: modalMode ? this.modal : null,
-      token: token || parsedQueryString.sptoken
-    };
-
-    Rivets.init(
-      Stormpath.prefix + '-' + ChangePasswordComponent.id,
-      modalMode ? this.modal.element : renderTo,
-      data
-    );
-
-    if (modalMode) {
-      this.modal.show();
-    }
+    this.viewManager.showChangePassword(renderTo, token || parsedQueryString.sptoken);
   }
 
   showForgotPassword(renderTo) {
-    const modalMode = renderTo === undefined;
-
-    const data = {
-      userService: this.userService,
-      modal: modalMode ? this.modal : null
-    };
-
-    Rivets.init(
-      Stormpath.prefix + '-' + ForgotPasswordComponent.id,
-      modalMode ? this.modal.element : renderTo,
-      data
-    );
-
-    if (modalMode) {
-      this.modal.show();
-    }
+    return this.viewManager.showForgotPassword(renderTo);
   }
 
   showLogin(renderTo) {
-
-    this._render(LoginComponent.id, renderTo, {
-      showForgotPassword: this.showForgotPassword.bind(this, renderTo),
-      showRegistration: this.showRegistration.bind(this, renderTo)
-    });
+    return this.viewManager.showLogin(renderTo);
   }
 
   showRegistration(renderTo) {
-    this._render(RegistrationComponent.id, renderTo);
+    return this.viewManager.showRegistration(renderTo);
   }
 
   showEmailVerification(renderTo, token) {
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
-
-    const data = {
-      token: token || parsedQueryString.sptoken,
-      showLogin: this.showLogin.bind(this, renderTo)
-    };
-
-    this._render(VerifyEmailComponent.id, renderTo, data);
+    this.viewManager.showEmailVerification(renderTo, token || parsedQueryString.sptoken);
   }
 
   logout() {
