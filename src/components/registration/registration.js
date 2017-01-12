@@ -19,6 +19,7 @@ class RegistrationComponent {
   constructor(data) {
     this.viewManager = data.viewManager;
     this.userService = data.userService;
+    this.autoClose = data.autoClose;
 
     this.state = 'loading';
 
@@ -51,9 +52,13 @@ class RegistrationComponent {
   onRegistrationComplete(result) {
     if (result.status === 'ENABLED') {
       const fields = utils.mapArrayToObject(this.fields, 'name');
-      this.userService.login(fields.email.value, fields.password.value).then(() => {
-        this.viewManager.hide();
-      });
+      this.userService
+        .login(fields.email.value, fields.password.value)
+        .then(() => {
+          if (this.autoClose) {
+            this.viewManager.remove();
+          }
+        });
     } else {
       this.state = 'account_pending';
     }

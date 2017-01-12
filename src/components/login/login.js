@@ -24,6 +24,7 @@ class LoginComponent {
   constructor(data) {
     this.viewManager = data.viewManager;
     this.userService = data.userService;
+    this.autoClose = data.autoClose;
 
     this.state = 'loading';
 
@@ -77,7 +78,9 @@ class LoginComponent {
 
   onAuthenticated() {
     this.state = 'authenticated';
-    this.viewManager.hide();
+    if (this.autoClose) {
+      this.viewManager.remove();
+    }
   }
 
   onFormSubmit = (e, model) => {

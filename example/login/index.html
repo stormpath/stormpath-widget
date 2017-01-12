@@ -13,8 +13,6 @@
       console.log('Loaded Stormpath v%s.', Stormpath.version);
 
       function initializeView(stormpath) {
-        var stormpathContainer = document.getElementById('dom-container');
-
         // Authenticated
         var authenticatedContainer = document.getElementById('authenticated');
         var forgotPasswordButton = document.getElementById('forgot-password-button');
@@ -24,7 +22,7 @@
         authenticatedContainer.style.display = 'none';
         loginButton.addEventListener('click', function() { stormpath.showLogin(); });
         registerButton.addEventListener('click', function() { stormpath.showRegistration(); });
-        forgotPasswordButton.addEventListener('click', function() { stormpath.showForgotPassword(stormpathContainer); });
+        forgotPasswordButton.addEventListener('click', function() { stormpath.showForgotPassword(); });
 
         // Unauthenticated
         var unauthenticatedContainer = document.getElementById('unauthenticated');
@@ -39,11 +37,14 @@
       }
 
       function onDocumentReady() {
+        var stormpathContainer = document.getElementById('dom-container');
+
         var stormpath = new Stormpath({
           // Robert's app: 'https://lawful-heron.apps.stormpath.io'
           // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
           // Nate's app: https://serene-commander.apps.stormpath.io'
-          appUri: 'https://serene-commander.apps.stormpath.io'
+          appUri: 'https://serene-commander.apps.stormpath.io',
+          container: stormpathContainer
         });
 
         if ((/#change-password/).test(window.location.href)) {
