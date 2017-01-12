@@ -61,6 +61,10 @@
           });
 
           stormpath.getAccessToken().then(function (accessToken) {
+            if (!accessToken) {
+              accessToken = "(none, in cookie mode)";
+            }
+
             document.getElementById('access-token').innerHTML = accessToken;
           });
         });

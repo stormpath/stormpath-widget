@@ -61,13 +61,13 @@ class HttpProvider {
       }
     }
 
-    if (typeof err === 'object') {
+    if (err && typeof err === 'object') {
       status = err.status ? err.status : undefined;
       type = err.type ? err.type : 'unknown';
       message = err.message ? err.message : JSON.stringify(err);
     } else {
       type = 'unknown';
-      message = err;
+      message = err || 'Unknown error';
     }
 
     const newError = new Error(message);

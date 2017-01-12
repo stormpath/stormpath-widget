@@ -141,9 +141,22 @@ class ClientApiUserService extends EventEmitter {
 
   register(data) {
     return this.httpProvider.postJson('/register', data).then((result) => {
-      this.account = result.account;
-      this._setState('registered');
-      return Promise.resolve(result.account);
+      const account = this.account = result.account;
+
+      switch (account.status.toLowerCase()) {
+        case 'enabled':
+          this._setState('registered');
+          break;
+
+        case 'unverified':
+          this._setState('emailVerificationRequired');
+          break;
+
+        default:
+          return Promise.reject(new Error('Account returned unknown status \'' + account.status + '\'.'));
+      }
+
+      return Promise.resolve(account);
     });
   }
 
