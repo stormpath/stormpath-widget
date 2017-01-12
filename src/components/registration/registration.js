@@ -8,8 +8,6 @@ class RegistrationComponent {
   static style = style;
 
   fields = [];
-  userService = null;
-  modal = null;
   state = 'unknown';
 
   // This is necessary because currently Rivets cannot bind to top-level primitives
@@ -19,8 +17,8 @@ class RegistrationComponent {
   };
 
   constructor(data) {
+    this.viewManager = data.viewManager;
     this.userService = data.userService;
-    this.modal = data.modal;
 
     this.state = 'loading';
 
@@ -52,12 +50,9 @@ class RegistrationComponent {
 
   onRegistrationComplete(result) {
     if (result.status === 'ENABLED') {
-      this.state = 'account_enabled';
       const fields = utils.mapArrayToObject(this.fields, 'name');
       this.userService.login(fields.email.value, fields.password.value).then(() => {
-        if (this.modal) {
-          this.modal.close();
-        }
+        this.viewManager.hide();
       });
     } else {
       this.state = 'account_pending';
