@@ -163,6 +163,10 @@ class Stormpath extends EventEmitter {
   logout() {
     return this.userService.logout();
   }
+
+  remove() {
+    return this.viewManager.remove();
+  }
 }
 
 export default Stormpath;

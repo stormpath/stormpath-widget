@@ -2,6 +2,7 @@
   <div class="sp-title">Sign up</div>
   <div class="sp-loader" rv-show="state | is 'loading'"></div>
   <div rv-show="state | is 'loading_error'">Error: {error.message}</div>
+  <div rv-show="state | is 'account_enabled'">Your account has been created!</div>
   <div rv-show="state | is 'account_pending'">Your account has been created. Please check your email for a verification link.</div>
   <form rv-show="state | in 'ready,validation_error'" rv-on-submit="onFormSubmit">
 

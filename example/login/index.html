@@ -54,6 +54,8 @@
         stormpath.on('authenticated', function() {
           console.log('We\'re authenticated!');
 
+          stormpath.remove();
+
           document.getElementById('authenticated').style.display = 'block';
           document.getElementById('unauthenticated').style.display = 'none';
 
