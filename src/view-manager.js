@@ -90,24 +90,28 @@ class ViewManager {
     const containerHandle = Rivets.init(
       utils.prefix(ContainerComponent.id, this.prefix, '-'),
       element,
-      {} // TODO: Data for the container.
+      {}
     );
 
     return containerHandle.models._element.children[0];
   }
 
-  _render(viewComponentId, targetElement, data) {
-    let element = targetElement;
-    let modal = null;
+  _createTargetedViewManagerProxy(target) {
+    return {
+      hide: () => this.hide(target),
+      showRegistration: () => this.showRegistration(target),
+      showForgotPassword: () => this.showForgotPassword(target)
+    };
+  }
 
-    if (!element) {
-      modal = this.modal;
-      element = this.modal.element;
-    }
+  _render(viewComponentId, targetElement, data) {
+    let element = targetElement
+      ? targetElement
+      : this.modal.element;
 
     data = data || {};
     data.userService = this.userService;
-    data.modal = modal; // TODO: See if we can remove this.
+    data.viewManager = this._createTargetedViewManagerProxy(targetElement);
 
     Rivets.init(
       utils.prefix(viewComponentId, this.prefix, '-'),
@@ -115,16 +119,22 @@ class ViewManager {
       data
     );
 
-    if (modal) {
-      modal.show();
+    if (!targetElement) {
+      this.modal.show();
     }
   }
 
+  hide(target) {
+    if (target) {
+      target.innerHTML = '';
+      return;
+    }
+
+    this.modal.close();
+  }
+
   showLogin(target) {
-    this._render(LoginComponent.id, target, {
-      showForgotPassword: this.showForgotPassword.bind(this, target),
-      showRegistration: this.showRegistration.bind(this, target)
-    });
+    this._render(LoginComponent.id, target);
   }
 
   showRegistration(target) {

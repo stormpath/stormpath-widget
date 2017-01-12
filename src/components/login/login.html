@@ -22,11 +22,11 @@
 
     <fieldset class="sp-form-group sp-login-password">
       <sp-form-fields fields="fields" name-prefix="'sp-form-login'"></sp-form-fields>
-      <a rv-on-click="showForgotPassword">Forgot password?</a>
+      <a rv-on-click="viewManager.showForgotPassword">Forgot password?</a>
     </fieldset>
 
     <sp-submit-button label="'Log in'" submitting="props.isSubmitting"></sp-submit-button>
     <hr>
-    <span class="sp-light">Don't have an account?</span> <a class="sp-right" rv-on-click="showRegistration">Sign up</a>
+    <span class="sp-light">Don't have an account?</span> <a class="sp-right" rv-on-click="viewManager.showRegistration">Sign up</a>
   </form>
 </div>
