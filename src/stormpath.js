@@ -141,7 +141,7 @@ class Stormpath extends EventEmitter {
 
   getAccessToken() {
     if (!this.tokenStorage) {
-      throw new Error('No token store is present. Please verify that you\'ve set the \'authStrategy\' option to \'token\'.');
+      return Promise.resolve(null);
     }
 
     return this.tokenStorage.getAccessToken();

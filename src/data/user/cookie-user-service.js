@@ -65,13 +65,13 @@ class CookieUserService extends EventEmitter {
     return this.httpProvider.getJson('/register');
   }
 
-  login(username, password) {
-    if (username === undefined || password === undefined) {
+  login(login, password) {
+    if (login === undefined || password === undefined) {
       return Promise.reject(new Error('Username or password cannot be empty.'));
     }
 
     return this.httpProvider.postJson('/login', {
-      username,
+      login,
       password
     }).then(this._onLoginSuccessful.bind(this));
   }
