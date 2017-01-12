@@ -99,6 +99,7 @@ class ViewManager {
   _createTargetedViewManagerProxy(target) {
     return {
       hide: () => this.hide(target),
+      showLogin: () => this.showLogin(target),
       showRegistration: () => this.showRegistration(target),
       showForgotPassword: () => this.showForgotPassword(target)
     };
