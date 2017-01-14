@@ -1,0 +1,111 @@
+@import "../common/variables.less";
+@import "../common/spinner.less";
+
+.sp-container {
+  background-color: @color-background;
+
+  font-family: @font;
+  font-size: 0.8rem;
+  line-height: 1.2rem;
+  color: @color-text;
+  width: @container-width;
+  min-height: @container-width;
+  padding: @spacing;
+
+  p {
+    padding: 5px 0;
+  }
+
+  a {
+    // Froces a cursor pointer for <a> tags that have no href
+    cursor: pointer;
+  }
+
+  fieldset {
+    margin: 0;
+    border: none;
+  }
+
+  input {
+    width: @container-width;
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+
+  input[type=text], input[type=password], input[type=email] {
+    border-style: solid;
+    border-color: @color-disabled;
+    border-width: 1px;
+    height: 2rem;
+    padding-left: @input-padding-left;
+    width: @container-width - @input-padding-left;
+  }
+
+  button {
+    width: @container-width;
+    margin: .5rem 0;
+    font-size: 1.25rem;
+    font-weight: 300;
+    background-color: @color-primary;
+    color: white;
+    border: none;
+    height: 3rem;
+    -webkit-transition: background-color @quick-transition-duration;
+    transition: background-color @quick-transition-duration;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button:disabled {
+    background-color: @color-primary-disabled;
+  }
+
+  label, a {
+    font-weight: 600;
+  }
+
+  label {
+    display: block;
+    font-size: 0.9rem;
+    padding: .5rem 0;
+  }
+
+  a {
+    color: @color-primary;
+    text-decoration: none;
+  }
+
+  hr {
+    color: @color-disabled;
+    border-style: solid none none none;
+    padding: 5px 0 15px 0;
+  }
+
+  .sp-title {
+    font-weight: 400;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: @spacing - 5;
+  }
+
+  .sp-form-group {
+    padding: 0 0 20px 0;
+  }
+
+  .sp-form-field-group {
+    position: relative;
+  }
+
+  .sp-light {
+    color: @color-disabled;
+  }
+
+  .sp-right {
+    float: right;
+  }
+
+  .sp-loader {
+    .generator-spinner(30px, darken(@color-disabled, 15%), @color-background);
+    top: 70px;
+  }
+}

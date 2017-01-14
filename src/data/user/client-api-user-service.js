@@ -3,7 +3,6 @@ import EventEmitter from 'events';
 class ClientApiUserService extends EventEmitter {
   constructor(httpProvider, tokenStorage) {
     super();
-    httpProvider.setRequestInterceptor(this);
     this.httpProvider = httpProvider;
     this.tokenStorage = tokenStorage;
     this.account = null;
@@ -15,6 +14,12 @@ class ClientApiUserService extends EventEmitter {
       this.mostRecentState = newState;
       this.emit(newState, ...args);
     }
+  }
+
+  _getAuthorizationHeader() {
+    return this.tokenStorage.getAccessToken().then((accessToken) => {
+      return 'Bearer ' + accessToken;
+    });
   }
 
   _onLoginSuccessful(response) {
@@ -66,33 +71,23 @@ class ClientApiUserService extends EventEmitter {
       .catch(unauthenticated);
   }
 
-  onBeforeRequest(request) {
-    if (request.skipAuthorizationHeader) {
-      return Promise.resolve();
-    }
-
-    return this.tokenStorage.getAccessToken()
-      .then((accessToken) => {
-        if (accessToken) {
-          if (!request.headers) {
-            request.headers = {};
-          }
-
-          request.headers['Authorization'] = 'Bearer ' + accessToken;
-        }
-      })
-      .catch(() => Promise.resolve());
-  }
-
   me() {
-    return this.httpProvider.getJson('/me').then((result) => {
-      const account = result.account;
+    return this._getAuthorizationHeader().then((authorizationHeader) => {
+      const options = {
+        headers: {
+          Authorization: authorizationHeader
+        }
+      };
 
-      // Question is if we should do this...
-      // I.e. cache the account to avoid hitting the /me endpoint unnecessarily when calling getState().
-      this.account = account;
+      return this.httpProvider.getJson('/me', null, options).then((result) => {
+        const account = result.account;
 
-      return Promise.resolve(account);
+        // Question is if we should do this...
+        // I.e. cache the account to avoid hitting the /me endpoint unnecessarily when calling getState().
+        this.account = account;
+
+        return Promise.resolve(account);
+      });
     });
   }
 
@@ -149,9 +144,22 @@ class ClientApiUserService extends EventEmitter {
 
   register(data) {
     return this.httpProvider.postJson('/register', data).then((result) => {
-      this.account = result.account;
-      this._setState('registered');
-      return Promise.resolve(result.account);
+      const account = this.account = result.account;
+
+      switch (account.status.toLowerCase()) {
+        case 'enabled':
+          this._setState('registered');
+          break;
+
+        case 'unverified':
+          this._setState('emailVerificationRequired');
+          break;
+
+        default:
+          return Promise.reject(new Error('Account returned unknown status \'' + account.status + '\'.'));
+      }
+
+      return Promise.resolve(account);
     });
   }
 
