@@ -5,7 +5,7 @@ import ViewManager from './view-manager';
 import utils from './utils';
 
 import {
-  AuthStrategyResolver,
+  AuthStrategy,
   CachedUserService,
   ClientApiUserService,
   CookieUserService,
@@ -34,12 +34,11 @@ class Stormpath extends EventEmitter {
     // This needs to be fixed so that provided options override default.
     this.options = options = extend(this.options, options);
 
-    const authStrategyResolver = new AuthStrategyResolver(options, this._isSameDomain);
-    this.authStrategy = authStrategyResolver.strategy;
-
     this.storage = new LocalStorage();
 
-    this.userService = this._createUserService(this.authStrategy, options.appUri);
+    options.authStrategy = AuthStrategy.resolve(options.authStrategy, options.appUri);
+    this.userService = this._createUserService(options.authStrategy, options.appUri);
+
     this._initializeUserServiceEvents();
     this._preloadViewModels();
 
@@ -61,17 +60,17 @@ class Stormpath extends EventEmitter {
     let userService;
 
     switch (authStrategy) {
-      case AuthStrategyResolver.TokenStrategy:
+      case AuthStrategy.Token:
         this.tokenStorage = new TokenStorage(this.storage);
         userService = new ClientApiUserService(httpProvider, this.tokenStorage);
         break;
 
-      case AuthStrategyResolver.MockStrategy:
-        userService = new MockUserService();
+      case AuthStrategy.Cookie:
+        userService = new CookieUserService(httpProvider);
         break;
 
-      case AuthStrategyResolver.CookieStrategy:
-        userService = new CookieUserService(httpProvider);
+      case AuthStrategy.Mock:
+        userService = new MockUserService();
         break;
     }
 
@@ -79,12 +78,6 @@ class Stormpath extends EventEmitter {
     userService = new CachedUserService(userService, new MemoryStorage());
 
     return userService;
-  }
-
-  _isSameDomain(url) {
-    var link = window.document.createElement('a');
-    link.href = url;
-    return window.location.host === link.host;
   }
 
   _initializeUserServiceEvents() {
