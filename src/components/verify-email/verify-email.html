@@ -30,7 +30,7 @@
     </p>
     <form rv-show="state | isnt 'sent'" rv-on-submit="onFormSubmit">
       <fieldset class="sp-form-group">
-        <sp-form-fields fields="fields" name-prefix="'sp-form-verify'"></sp-form-fields>
+        <sp-form-fields fields="fields" name-prefix="'sp-form-verify-email'"></sp-form-fields>
       </fieldset>
 
       <div rv-show="state | is 'error'">{error.message}</div>
