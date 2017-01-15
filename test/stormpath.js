@@ -12,9 +12,8 @@ describe('Stormpath', () => {
 
       it('should set default options', () => {
         const stormpath = new Stormpath();
-        const options = stormpath.options;
-        assert.equal(options.baseUri, null);
-        assert.equal(options.authStrategy, 'cookie');
+        assert.equal(stormpath.options.baseUri, null);
+        assert.equal(stormpath.options.authStrategy, 'cookie');
       });
     });
   });

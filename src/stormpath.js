@@ -5,6 +5,7 @@ import ViewManager from './view-manager';
 import utils from './utils';
 
 import {
+  AuthStrategy,
   CachedUserService,
   ClientApiUserService,
   CookieUserService,
@@ -33,20 +34,11 @@ class Stormpath extends EventEmitter {
     // This needs to be fixed so that provided options override default.
     this.options = options = extend(this.options, options);
 
-    if (!options.authStrategy) {
-      // If we haven't set an auth strategy and point our appUri to a Stormpath app endpoint,
-      // then automatically use the token auth strategy.
-      if (options.appUri && options.appUri.indexOf('.stormpath.io') > -1) {
-        options.authStrategy = 'token';
-      // Else, default to using cookie.
-      } else {
-        options.authStrategy = 'cookie';
-      }
-    }
-
     this.storage = new LocalStorage();
 
-    this.userService = this._createUserService(options);
+    options.authStrategy = AuthStrategy.resolve(options.authStrategy, options.appUri);
+    this.userService = this._createUserService(options.authStrategy, options.appUri);
+
     this._initializeUserServiceEvents();
     this._preloadViewModels();
 
@@ -62,27 +54,24 @@ class Stormpath extends EventEmitter {
     setTimeout(this._handleCallbackResponse.bind(this));
   }
 
-  _createUserService(options) {
-    const httpProvider = new HttpProvider(options.appUri);
+  _createUserService(authStrategy, appUri) {
+    const httpProvider = new HttpProvider(appUri);
 
     let userService;
 
-    switch (options.authStrategy) {
-      case 'token':
+    switch (authStrategy) {
+      case AuthStrategy.Token:
         this.tokenStorage = new TokenStorage(this.storage);
         userService = new ClientApiUserService(httpProvider, this.tokenStorage);
         break;
 
-      case 'mock':
-        userService = new MockUserService();
-        break;
-
-      case 'cookie':
+      case AuthStrategy.Cookie:
         userService = new CookieUserService(httpProvider);
         break;
 
-      default:
-        throw new Error('Invalid authStrategy \'' + options.authStrategy + '\'.');
+      case AuthStrategy.Mock:
+        userService = new MockUserService();
+        break;
     }
 
     // Decorate our user service with caching

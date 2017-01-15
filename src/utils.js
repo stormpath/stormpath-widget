@@ -156,6 +156,12 @@ class Utils {
 
     return prefixed + name;
   }
+
+  isSameDomain(url) {
+    var link = window.document.createElement('a');
+    link.href = url;
+    return window.location.host === link.host;
+  }
 }
 
 export default new Utils();
