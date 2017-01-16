@@ -92,19 +92,11 @@ class ClientApiUserService extends EventEmitter {
   }
 
   getLoginViewModel() {
-    const options = {
-      skipAuthorizationHeader: true
-    };
-
-    return this.httpProvider.getJson('/login', null, options);
+    return this.httpProvider.getJson('/login');
   }
 
   getRegistrationViewModel() {
-    const options = {
-      skipAuthorizationHeader: true
-    };
-
-    return this.httpProvider.getJson('/register', null, options);
+    return this.httpProvider.getJson('/register');
   }
 
   login(username, password) {

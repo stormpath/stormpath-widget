@@ -15,14 +15,7 @@ class TokenStorage extends EventEmitter {
       refresh_token: refreshToken
     };
 
-    const options = {
-      // This is necessary because without it the onBeforeRequest-handler will try and retrieve the access token
-      // from the token store, but because the refreshTokenPromiseCache is set, it will end up waiting indefinitely.
-      // Setting this flag just means that we skip that step and call the API without setting an Authorization header.
-      skipAuthorizationHeader: true
-    };
-
-    return this.httpProvider.postForm('/oauth/token', requestData, options)
+    return this.httpProvider.postForm('/oauth/token', requestData)
       .then((result) => {
         return Promise.all([
           this.setAccessToken(result.access_token),
