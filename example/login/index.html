@@ -13,8 +13,6 @@
       console.log('Loaded Stormpath v%s.', Stormpath.version);
 
       function initializeView(stormpath) {
-        var stormpathContainer = document.getElementById('dom-container');
-
         // Authenticated
         var authenticatedContainer = document.getElementById('authenticated');
         var forgotPasswordButton = document.getElementById('forgot-password-button');
@@ -23,8 +21,8 @@
 
         authenticatedContainer.style.display = 'none';
         loginButton.addEventListener('click', function() { stormpath.showLogin(); });
-        registerButton.addEventListener('click', function() { stormpath.showRegistration(stormpathContainer); });
-        forgotPasswordButton.addEventListener('click', function() { stormpath.showForgotPassword(stormpathContainer); });
+        registerButton.addEventListener('click', function() { stormpath.showRegistration(); });
+        forgotPasswordButton.addEventListener('click', function() { stormpath.showForgotPassword(); });
 
         // Unauthenticated
         var unauthenticatedContainer = document.getElementById('unauthenticated');
@@ -39,6 +37,8 @@
       }
 
       function onDocumentReady() {
+        var stormpathContainer = document.getElementById('dom-container');
+
         var stormpath = new Stormpath({
           // Robert's app: 'https://lawful-heron.apps.stormpath.io'
           // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
@@ -53,6 +53,8 @@
 
         stormpath.on('authenticated', function() {
           console.log('We\'re authenticated!');
+
+          stormpath.remove();
 
           document.getElementById('authenticated').style.display = 'block';
           document.getElementById('unauthenticated').style.display = 'none';

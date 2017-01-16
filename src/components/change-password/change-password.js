@@ -23,9 +23,8 @@ class ChangePasswordComponent {
   state = 'unknown';
 
   constructor(data) {
+    this.viewManager = data.viewManager;
     this.userService = data.userService;
-    this.showLogin = data.showLogin;
-    this.showForgotPassword = data.showForgotPassword;
     this.token = data.token;
     this._beginVerifyToken();
   }

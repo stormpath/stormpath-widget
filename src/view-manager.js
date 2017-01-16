@@ -61,11 +61,16 @@ class ViewManager {
     }
   };
 
-  constructor(prefix, templates, userService) {
-    this.prefix = prefix;
+  constructor(prefix, userService, templates, container) {
     this.userService = userService;
-    this.modal = new ModalComponent();
+    this.prefix = prefix;
     this._initializeRivets(extend(ViewManager.defaultTemplates, templates));
+
+    this.targetElement = container;
+    if (!this.targetElement) {
+      this.modal = new ModalComponent();
+      this.targetElement = this.modal.element;
+    }
   }
 
   _initializeRivets(templates) {
@@ -90,64 +95,69 @@ class ViewManager {
     const containerHandle = Rivets.init(
       utils.prefix(ContainerComponent.id, this.prefix, '-'),
       element,
-      {} // TODO: Data for the container.
+      {}
     );
 
     return containerHandle.models._element.children[0];
   }
 
-  _render(viewComponentId, targetElement, data) {
-    let element = targetElement;
-    let modal = null;
-
-    if (!element) {
-      modal = this.modal;
-      element = this.modal.element;
-    }
-
+  _render(viewComponentId, data) {
     data = data || {};
     data.userService = this.userService;
-    data.modal = modal; // TODO: See if we can remove this.
+    data.viewManager = utils.bindAll(this, [
+      'remove',
+      'showLogin',
+      'showRegistration',
+      'showForgotPassword',
+      'showChangePassword',
+      'showEmailVerification']);
 
     Rivets.init(
       utils.prefix(viewComponentId, this.prefix, '-'),
-      this._createContainer(element),
+      this._createContainer(this.targetElement),
       data
     );
 
-    if (modal) {
-      modal.show();
+    if (this.modal) {
+      this.modal.show();
     }
   }
 
-  showLogin(target) {
-    this._render(LoginComponent.id, target, {
-      showForgotPassword: this.showForgotPassword.bind(this, target),
-      showRegistration: this.showRegistration.bind(this, target)
+  _modalExists() {
+    return typeof this.modal !== 'undefined';
+  }
+
+  remove() {
+    if (this.modal) {
+      this.modal.close();
+      return;
+    }
+
+    this.targetElement.innerHTML = '';
+  }
+
+  showLogin() {
+    this._render(LoginComponent.id, {
+      autoClose: this._modalExists()
     });
   }
 
-  showRegistration(target) {
-    this._render(RegistrationComponent.id, target);
-  }
-
-  showForgotPassword(target) {
-    this._render(ForgotPasswordComponent.id, target);
-  }
-
-  showChangePassword(target, token) {
-    this._render(ChangePasswordComponent.id, target, {
-      token,
-      showLogin: this.showLogin.bind(this, target),
-      showForgotPassword: this.showForgotPassword.bind(this, target),
+  showRegistration() {
+    this._render(RegistrationComponent.id, {
+      autoClose: this._modalExists()
     });
   }
 
-  showEmailVerification(target, token) {
-    this._render(VerifyEmailComponent.id, target, {
-      token,
-      showLogin: this.showLogin.bind(this, target)
-    });
+  showForgotPassword() {
+    this._render(ForgotPasswordComponent.id);
+  }
+
+  showChangePassword(token) {
+    this._render(ChangePasswordComponent.id, { token });
+  }
+
+  showEmailVerification(token) {
+    this._render(VerifyEmailComponent.id, { token });
   }
 }
 

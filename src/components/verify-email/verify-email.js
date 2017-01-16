@@ -23,10 +23,10 @@ class VerifyEmailComponent {
   };
 
   constructor(data) {
+    this.viewManager = data.viewManager;
     this.userService = data.userService;
     this.token = data.token;
     this.beginVerification();
-    this.showLogin = data.showLogin;
   }
 
   beginVerification() {

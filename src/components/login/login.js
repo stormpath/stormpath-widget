@@ -11,7 +11,6 @@ class LoginComponent {
   fields = [];
   accountStores = [];
   state = 'unknown';
-  modal = null;
 
   // This is necessary because currently Rivets cannot bind to top-level primitives
   // (see https://github.com/mikeric/rivets/issues/700#issuecomment-267177540)
@@ -23,10 +22,9 @@ class LoginComponent {
   };
 
   constructor(data) {
+    this.viewManager = data.viewManager;
     this.userService = data.userService;
-    this.showForgotPassword = data.showForgotPassword;
-    this.showRegistration = data.showRegistration;
-    this.modal = data.modal;
+    this.autoClose = data.autoClose;
 
     this.state = 'loading';
 
@@ -80,8 +78,8 @@ class LoginComponent {
 
   onAuthenticated() {
     this.state = 'authenticated';
-    if (this.modal) {
-      this.modal.close();
+    if (this.autoClose) {
+      this.viewManager.remove();
     }
   }
 

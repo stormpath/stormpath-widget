@@ -24,6 +24,7 @@ class ForgotPasswordComponent {
   };
 
   constructor(data) {
+    this.viewManager = data.viewManager;
     this.userService = data.userService;
   }
 
