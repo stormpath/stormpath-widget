@@ -26,6 +26,7 @@ class Stormpath extends EventEmitter {
   options = {
     appUri: null,
     authStrategy: null,
+    container: null,
   };
 
   constructor(options) {
@@ -44,8 +45,9 @@ class Stormpath extends EventEmitter {
 
     this.viewManager = new ViewManager(
       Stormpath.prefix,
+      this.userService,
       options.templates,
-      this.userService
+      options.container
     );
 
     // Asynchronously handle any callback response.
@@ -136,30 +138,34 @@ class Stormpath extends EventEmitter {
     return this.tokenStorage.getAccessToken();
   }
 
-  showChangePassword(renderTo, token) {
+  showChangePassword(token) {
     const parsedQueryString = utils.parseQueryString(window.location.search);
-    this.viewManager.showChangePassword(renderTo, token || parsedQueryString.sptoken);
+    this.viewManager.showChangePassword(token || parsedQueryString.sptoken);
   }
 
-  showForgotPassword(renderTo) {
-    return this.viewManager.showForgotPassword(renderTo);
+  showForgotPassword() {
+    return this.viewManager.showForgotPassword();
   }
 
-  showLogin(renderTo) {
-    return this.viewManager.showLogin(renderTo);
+  showLogin() {
+    return this.viewManager.showLogin();
   }
 
-  showRegistration(renderTo) {
-    return this.viewManager.showRegistration(renderTo);
+  showRegistration() {
+    return this.viewManager.showRegistration();
   }
 
-  showEmailVerification(renderTo, token) {
+  showEmailVerification(token) {
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
-    this.viewManager.showEmailVerification(renderTo, token || parsedQueryString.sptoken);
+    this.viewManager.showEmailVerification(token || parsedQueryString.sptoken);
   }
 
   logout() {
     return this.userService.logout();
+  }
+
+  remove() {
+    return this.viewManager.remove();
   }
 }
 

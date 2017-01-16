@@ -162,6 +162,29 @@ class Utils {
     link.href = url;
     return window.location.host === link.host;
   }
+
+  bindAll(ref, methods) {
+    if (!ref) {
+      throw new Error('Must pass an object to bind.');
+    }
+
+    if (!methods || !methods.length) {
+      throw new Error('Must pass a list of methods to bind.');
+    }
+
+    const newObj = {};
+
+    for (let name of methods) {
+      const original = ref[name];
+      if (!original) {
+        continue;
+      }
+
+      newObj[name] = original.bind(ref);
+    }
+
+    return newObj;
+  }
 }
 
 export default new Utils();

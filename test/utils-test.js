@@ -342,4 +342,40 @@ describe('utils', () => {
       });
     });
   });
+
+  describe('.bindAll(ref, methods)', () => {
+    describe('when ref is undefined', () =>  {
+      it('should throw', () => {
+        assert.throws(() => utils.bindAll());
+      });
+    });
+
+    describe('when methods is undefined', () => {
+      it('should throw', () => {
+        assert.throws(() => utils.bindAll({}));
+      });
+    });
+
+    describe('when ref has no matching functions', () => {
+      it('should return an empty object', () => {
+        let input = {
+          foo: () => true
+        };
+
+        let result = utils.bindAll(input, ['bar']);
+        assert.deepEqual(result, {});
+      });
+    });
+
+    describe('when ref has matching functions', () => {
+      it('should return those functions', () => {
+        let input = {
+          foo: () => true
+        };
+
+        let result = utils.bindAll(input, ['foo']);
+        assert.isFunction(result.foo);
+      });
+    });
+  });
 });
