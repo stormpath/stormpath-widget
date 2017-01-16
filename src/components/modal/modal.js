@@ -82,7 +82,7 @@ class ModalComponent {
 
     // Wire up close button
     modalDiv
-      .getElementsByClassName('sp-modal-close-btn')[0]
+      .getElementsByClassName('sp-modal-close')[0]
       .addEventListener('click', this.close.bind(this), false);
 
     // Save a reference to the inner content div

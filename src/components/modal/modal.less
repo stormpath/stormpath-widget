@@ -39,7 +39,7 @@
     text-align: center;
     font-size: 0.9rem;
     width: 100%;
-    padding-top: 20px;
+    padding-top: 18px;
     box-sizing: border-box;
     height: @modal-titlebar-height;
   }
@@ -53,15 +53,15 @@
     font-size: 1rem;
   }
 
-  .sp-modal-close-btn {
+  .sp-modal-close {
+    background-repeat: no-repeat;
+    background-image: url('../../assets/close.svg');
     position: absolute;
-    top: 3px;
-    right: 5px;
-    background-color: @color-header;
-    color: @color-disabled;
-    border-style: none;
-    font-size: 2rem;
-    font-weight: 300;
+    top: (@modal-titlebar-height / 2) - 5;
+    right: 15px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
   }
 
   .sp-modal-content {
