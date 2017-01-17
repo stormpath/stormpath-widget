@@ -18,7 +18,7 @@ class ExampleApp {
     return new SelectObject(by.id('render-to'));
   }
 
-  _getRenderToTarget() {
+  _getRenderToTarget() {
     return new Promise((accept, reject) => {
       return this.renderToSelect().getValue().then((renderTo) => {
         switch (renderTo) {
