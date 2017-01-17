@@ -4,23 +4,23 @@ import OverlayObject from './overlay';
 
 class RegistrationComponentObject extends OverlayObject {
   firstNameInput() {
-    return new InputObject(by.id('registration-field-givenName'));
+    return new InputObject(by.css('form input[name=givenName]'));
   }
 
   lastNameInput() {
-    return new InputObject(by.id('registration-field-surname'));
+    return new InputObject(by.css('form input[name=surname'));
   }
 
   emailInput() {
-    return new InputObject(by.id('registration-field-email'));
+    return new InputObject(by.css('form input[name=email]'));
   }
 
   passwordInput() {
-    return new InputObject(by.id('registration-field-password'));
+    return new InputObject(by.css('form input[name=password]'));
   }
 
   registerButton() {
-    return new ButtonObject(by.css('form button[rv-on-click=onFormSubmit]'));
+    return new ButtonObject(by.css('form button[type=submit]'));
   }
 }
 

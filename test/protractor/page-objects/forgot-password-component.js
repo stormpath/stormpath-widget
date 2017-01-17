@@ -4,11 +4,11 @@ import OverlayObject from './overlay';
 
 class ForgotPasswordComponentObject extends OverlayObject {
   emailInput() {
-    return new InputObject(by.id('forgot-password-field-login'));
+    return new InputObject(by.css('form input[name=email]'));
   }
 
   sendPasswordLinkButton() {
-    return new ButtonObject(by.css('form button[rv-on-click=onFormSubmit]'));
+    return new ButtonObject(by.css('form button[type=submit]'));
   }
 }
 
