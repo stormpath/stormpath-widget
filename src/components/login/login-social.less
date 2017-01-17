@@ -28,8 +28,7 @@
   }
 
   .sp-login-social {
-
-    padding-bottom: 15px;
+    padding: 10px 0 20px 0;
 
     &.sp-login-social-sm {
       display: flex;
@@ -38,12 +37,10 @@
       justify-content: center;
       align-items: center;
       width: @container-width;
-      padding-bottom: 0;
     }
 
     .sp-login-btn {
       display: block;
-      // TODO merge/mixin these from <button>?
       height: 3rem;
       line-height: 3rem;
       font-size: 1rem;
@@ -54,20 +51,19 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      padding: 0;
+      padding: 0 0 0 @social-icon-width + @social-icon-padding;
       color: white;
       -webkit-transition: background-color @quick-transition-duration,border-color @quick-transition-duration,box-shadow @quick-transition-duration;
       transition: background-color @quick-transition-duration,border-color @quick-transition-duration,box-shadow @quick-transition-duration;
       -webkit-box-sizing: border-box;
       box-sizing: border-box;
-      padding-left: @social-icon-width + @social-icon-padding;
       width: @container-width;
       margin-bottom: 5px;
     }
 
     &.sp-login-social-sm .sp-login-btn {
       width: @social-icon-width * 2;
-      margin: 0 8px 16px 8px;
+      margin: 0 8px 0 8px;
     }
 
     .image-properties() {

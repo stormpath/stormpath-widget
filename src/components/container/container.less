@@ -1,5 +1,6 @@
 @import "../common/variables.less";
 @import "../common/spinner.less";
+@import "../common/base.less";
 
 .sp-container {
   background-color: @color-background;
@@ -10,15 +11,29 @@
   color: @color-text;
   width: @container-width;
   min-height: @container-width;
-  padding: @spacing;
+  padding: (@spacing - 10px) 0 (@spacing - 10px) @spacing;
 
-  p {
-    padding: 5px 0;
+  .sp-title {
+    font-weight: 400;
+    font-size: 1.2rem;
+    text-align: center;
+    margin-bottom: @spacing - 5;
   }
 
-  a {
-    // Froces a cursor pointer for <a> tags that have no href
-    cursor: pointer;
+  .sp-form-group {
+    padding: 0 0 (@spacing - 10px) 0;
+  }
+
+  .sp-form-field-group {
+    position: relative;
+  }
+
+  .sp-light {
+    color: @color-disabled;
+  }
+
+  .sp-right {
+    float: right;
   }
 
   fieldset {
@@ -43,7 +58,6 @@
 
   button {
     width: @container-width;
-    margin: .5rem 0;
     font-size: 1.25rem;
     font-weight: 300;
     background-color: @color-primary;
@@ -78,7 +92,7 @@
   hr {
     color: @color-disabled;
     border-style: solid none none none;
-    padding: 5px 0 15px 0;
+    .sp-form-group;
   }
 
   .sp-title {
