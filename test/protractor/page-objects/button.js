@@ -12,14 +12,14 @@ class ButtonObject extends DomObject {
         return result;
       }
 
-      const resolved = this.onClickResolver();
+      return this.onClickResolver.then((resolved) => {
+        if (!resolved.waitUntilVisible) {
+          return resolved;
+        }
 
-      if (!resolved.waitUntilVisible) {
-        return resolved;
-      }
-
-      return resolved.waitUntilVisible()
-        .then(() => resolved);
+        return resolved.waitUntilVisible()
+          .then(() => resolved);
+      });
     });
   }
 }

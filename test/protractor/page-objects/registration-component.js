@@ -1,8 +1,8 @@
 import InputObject from './input';
 import ButtonObject from './button';
-import OverlayObject from './overlay';
+import LoadableObject from './loadable';
 
-class RegistrationComponentObject extends OverlayObject {
+class RegistrationComponentObject extends LoadableObject {
   firstNameInput() {
     return new InputObject(by.css('form input[name=givenName]'));
   }

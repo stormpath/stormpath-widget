@@ -1,8 +1,8 @@
 import InputObject from './input';
 import ButtonObject from './button';
-import OverlayObject from './overlay';
+import LoadableObject from './loadable';
 
-class ForgotPasswordComponentObject extends OverlayObject {
+class ForgotPasswordComponentObject extends LoadableObject {
   emailInput() {
     return new InputObject(by.css('form input[name=email]'));
   }

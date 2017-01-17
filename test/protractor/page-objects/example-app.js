@@ -18,24 +18,49 @@ class ExampleApp {
     return new SelectObject(by.id('render-to'));
   }
 
+  _getRenderToTarget() {
+    return new Promise((accept, reject) => {
+      return this.renderToSelect().getValue().then((renderTo) => {
+        switch (renderTo) {
+          case 'container':
+            accept(by.css('.sp-container'));
+            break;
+
+          case 'overlay':
+            accept(by.css('.sp-modal'));
+            break;
+
+          default:
+            reject(new Error('Invalid render to target ' + renderTo + '.'));
+        }
+      });
+    });
+  }
+
   loginButton() {
     return new ButtonObject(
       by.id('login-button'),
-      () => new LoginComponentObject(by.css('.sp-modal'))
+      this._getRenderToTarget().then((selector) => {
+        return new LoginComponentObject(selector);
+      })
     );
   }
 
   registerButton() {
     return new ButtonObject(
       by.id('register-button'),
-      () => new RegistrationComponentObject(by.css('.sp-modal'))
+      this._getRenderToTarget().then((selector) => {
+        return new RegistrationComponentObject(selector);
+      })
     );
   }
 
   forgotPasswordButton() {
     return new ButtonObject(
       by.id('forgot-password-button'),
-      () => new ForgotPasswordComponentObject(by.css('.sp-modal'))
+      this._getRenderToTarget().then((selector) => {
+        return new ForgotPasswordComponentObject(selector);
+      })
     );
   }
 
