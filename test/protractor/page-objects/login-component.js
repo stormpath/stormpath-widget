@@ -1,9 +1,9 @@
 import DomObject from './dom';
 import InputObject from './input';
 import ButtonObject from './button';
-import OverlayObject from './overlay';
+import LoadableObject from './loadable';
 
-class LoginComponentObject extends OverlayObject {
+class LoginComponentObject extends LoadableObject {
   usernameInput() {
     return new InputObject(by.css('form input[name=login]'));
   }

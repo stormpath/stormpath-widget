@@ -1,6 +1,6 @@
 import DomObject from './dom';
 
-class OverlayObject extends DomObject {
+class LoadableObject extends DomObject {
   waitUntilVisible() {
     return super.waitUntilVisible().then(() => {
       return this.loader().waitUntilHidden();
@@ -12,4 +12,4 @@ class OverlayObject extends DomObject {
   }
 }
 
-export default OverlayObject;
+export default LoadableObject;
