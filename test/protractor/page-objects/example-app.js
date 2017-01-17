@@ -19,21 +19,17 @@ class ExampleApp {
   }
 
   _getRenderToTarget() {
-    return new Promise((accept, reject) => {
-      return this.renderToSelect().getValue().then((renderTo) => {
-        switch (renderTo) {
-          case 'container':
-            accept(by.css('.sp-container'));
-            break;
+    return this.renderToSelect().getValue().then((renderTo) => {
+      switch (renderTo) {
+        case 'container':
+          return Promise.resolve(by.css('.sp-container'));
 
-          case 'overlay':
-            accept(by.css('.sp-modal'));
-            break;
+        case 'overlay':
+          return Promise.resolve(by.css('.sp-modal'));
 
-          default:
-            reject(new Error('Invalid render to target ' + renderTo + '.'));
-        }
-      });
+        default:
+          return Promise.reject(new Error('Invalid render to target ' + renderTo + '.'));
+      }
     });
   }
 
