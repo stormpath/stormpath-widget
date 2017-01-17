@@ -124,7 +124,12 @@ class ViewManager {
   }
 
   setContainer(container) {
+    if (this.targetElement) {
+      this.remove();
+    }
+
     this.targetElement = container;
+
     if (!this.targetElement) {
       this.modal = new ModalComponent();
       this.targetElement = this.modal.element;
