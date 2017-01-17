@@ -80,6 +80,8 @@ class HttpProvider {
 
   _createRequest(options) {
     options.uri = this.baseUri + options.path;
+    options.headers = options.headers || {};
+    options.headers['X-Stormpath-Agent'] = `stormpath-widget/${pkg.version}`;
 
     return new Promise((accept, reject) => {
       xhr(options, (err, resp, body) => {
