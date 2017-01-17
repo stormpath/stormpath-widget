@@ -3,17 +3,32 @@ import Stormpath from '../src/';
 
 describe('Stormpath', () => {
   describe('constructor([options])', () => {
+    let testInstance = null;
+
+    beforeEach(() => {
+      testInstance = new Stormpath();
+    });
+
+    afterEach(() => {
+      delete Stormpath.instance;
+    });
+
     describe('when options is undefined', () => {
       it('should return a new instance', () => {
-        const stormpath = new Stormpath();
-        assert.equal(typeof stormpath, 'object');
-        assert.equal(stormpath.constructor, Stormpath);
+        assert.equal(typeof testInstance, 'object');
+        assert.equal(testInstance.constructor, Stormpath);
       });
 
       it('should set default options', () => {
-        const stormpath = new Stormpath();
-        assert.equal(stormpath.options.baseUri, null);
-        assert.equal(stormpath.options.authStrategy, 'cookie');
+        assert.equal(testInstance.options.baseUri, null);
+        assert.equal(testInstance.options.authStrategy, 'cookie');
+      });
+    });
+
+    describe('when called more than once', () => {
+      it('should throw error', () => {
+        const instantiateTestFn = () => new Stormpath();
+        assert.throws(instantiateTestFn, 'It\'s only possible to initialize Stormpath once. To retrieve the already initialized instance, use Stormpath.getInstance().');
       });
     });
   });
@@ -29,6 +44,30 @@ describe('Stormpath', () => {
       it('should equal version in package.json', () => {
         const packageJson = require('json-loader!../package.json');
         assert.equal(Stormpath.version, packageJson.version);
+      });
+    });
+
+    describe('.getInstance()', () => {
+      describe('when no Stormpath instance has been created', () => {
+        it('should return undefined', () => {
+          assert.isUndefined(Stormpath.getInstance());
+        });
+      });
+
+      describe('when a Stormpath instance has been created', () => {
+        let testInstance = null;
+
+        beforeEach(() => {
+          testInstance = new Stormpath();
+        });
+
+        afterEach(() => {
+          delete Stormpath.instance;
+        });
+
+        it('should return the previously created instance', () => {
+          assert.equal(testInstance, Stormpath.getInstance());
+        });
       });
     });
   });
