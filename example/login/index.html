@@ -36,18 +36,14 @@
         }
       }
 
-      function onDocumentReady() {
-        var stormpathContainer = document.getElementById('dom-container');
-
+      function setupStormpath(container) {
         var stormpath = new Stormpath({
           // Robert's app: 'https://lawful-heron.apps.stormpath.io'
           // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
           // Nate's app: https://serene-commander.apps.stormpath.io'
           appUri: 'https://lawful-heron.apps.stormpath.io',
-          container: stormpathContainer
+          container: container
         });
-
-        window.stormpathInstance = stormpath;
 
         if ((/#change-password/).test(window.location.href)) {
           stormpath.showChangePassword();
@@ -108,10 +104,40 @@
         initializeView(stormpath);
       }
 
-      window.onload = onDocumentReady;
+      function initialize() {
+        var stormpathContainer = null;
+        var renderToSelect = document.getElementById('render-to');
+
+        if (renderToSelect.value === 'container') {
+          stormpathContainer = document.getElementById('dom-container');
+        }
+
+        var stormpathInstance = Stormpath.getInstance();
+
+        if (stormpathInstance) {
+          stormpathInstance.viewManager.setContainer(stormpathContainer);
+          return;
+        }
+
+        renderToSelect.addEventListener('change', initialize);
+
+        setupStormpath(stormpathContainer);
+      }
+
+      window.onload = initialize;
     </script>
   </head>
   <body>
+    <header>
+      <p>
+        <label for="render-to">Render to:</label>
+        <select id="render-to">
+          <option value="container" selected>Container</option>
+          <option value="overlay">Overlay</option>
+        </select>
+      </p>
+      <hr>
+    </header>
     <div id="authenticated">
       You are logged in as <span id="account-full-name"></span>!<br><br>
       This is your access token: <span id="access-token"></span><br><br>

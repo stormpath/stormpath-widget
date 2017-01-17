@@ -1,7 +1,7 @@
 class StormpathInstanceProxy {
   static getAccessToken() {
     return browser.executeAsyncScript((callback) => {
-      window.stormpathInstance.getAccessToken().then(callback);
+      Stormpath.getInstance().getAccessToken().then(callback);
     });
   }
 
@@ -17,7 +17,7 @@ class StormpathInstanceProxy {
 
       const asyncId = ++window._protractorAsyncId;
 
-      window.stormpathInstance.once(eventName, () => {
+      Stormpath.getInstance().once(eventName, () => {
         // Currently just set the result as true, because if we set it to
         // arguments, then it unfortunately fails when retrieving the result.
         // I think this is because the arguments object returned is too complex
