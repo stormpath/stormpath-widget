@@ -2,7 +2,7 @@
   <div class="sp-title">Log in</div>
   <div class="sp-loader" rv-show="state | is 'loading'"></div>
   <div rv-show="state | is 'loading_error'">Error: {error.message}</div>
-  <div rv-show"state | is 'authenticated'">You're logged in!</div>
+  <div rv-show="state | is 'authenticated'">You're logged in!</div>
   <form rv-show="state | in 'ready,login_error'" rv-on-submit="onFormSubmit">
     <fieldset class="sp-form-group" rv-show="accountStores">
       <div class="sp-login-social" rv-class-sp-login-social-sm="props.smallButtons">
