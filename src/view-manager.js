@@ -65,12 +65,7 @@ class ViewManager {
     this.userService = userService;
     this.prefix = prefix;
     this._initializeRivets(extend(ViewManager.defaultTemplates, templates));
-
-    this.targetElement = container;
-    if (!this.targetElement) {
-      this.modal = new ModalComponent();
-      this.targetElement = this.modal.element;
-    }
+    this.setContainer(container);
   }
 
   _initializeRivets(templates) {
@@ -125,7 +120,17 @@ class ViewManager {
   }
 
   _modalExists() {
-    return typeof this.modal !== 'undefined';
+    return !!this.modal;
+  }
+
+  setContainer(container) {
+    this.targetElement = container;
+    if (!this.targetElement) {
+      this.modal = new ModalComponent();
+      this.targetElement = this.modal.element;
+    } else {
+      this.modal = null;
+    }
   }
 
   remove() {
