@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import StormpathInstanceProxy from '../proxies/stormpath-instance';
 import ExampleApp from '../page-objects/example-app';
 
 describe('Login Component', () => {
@@ -115,15 +114,10 @@ describe('Login Component', () => {
       });
 
       describe('and username and password is valid', () => {
-        let loggedInEventAsyncId;
         let usernameInput;
         let passwordInput;
 
         beforeEach(() => {
-          StormpathInstanceProxy.once('loggedIn').then((asyncId) => {
-            loggedInEventAsyncId = asyncId;
-          });
-
           usernameInput = loginComponent.usernameInput();
           passwordInput = loginComponent.passwordInput();
 
@@ -135,18 +129,8 @@ describe('Login Component', () => {
           return loginComponent.waitUntilRemoved();
         });
 
-        it('should hide login component', () => {
+        it('should hide the login component', () => {
           return expect(loginComponent.isPresent()).to.eventually.equal(false);
-        });
-
-        it('should trigger loggedIn event', () => {
-          return expect(StormpathInstanceProxy.getAsyncResult(loggedInEventAsyncId)).to.eventually.be.ok;
-        });
-
-        describe('stormpath.getAccessToken()', () => {
-          it('should return an access token', () => {
-            return expect(StormpathInstanceProxy.getAccessToken()).to.eventually.be.ok;
-          });
         });
       });
     });
