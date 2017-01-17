@@ -23,7 +23,8 @@
     "lint": "./node_modules/.bin/esw -c .eslintrc src test",
     "lint:watch": "npm run lint -- --watch",
     "protractor": "npm run build && node ./node_modules/protractor/bin/webdriver-manager update && ./node_modules/protractor/bin/protractor test/protractor/index.js",
-    "test": "npm run lint && npm run karma"
+    "test": "npm run lint && npm run karma",
+    "pack": "node package-for-dist.js"
   },
   "dependencies": {
     "babel-cli": "^6.18.0",
