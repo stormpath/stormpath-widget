@@ -1,4 +1,5 @@
 import ButtonObject from './button';
+import SelectObject from './select';
 import LoginComponentObject from './login-component';
 import RegistrationComponentObject from './registration-component';
 import ForgotPasswordComponentObject from './forgot-password-component';
@@ -9,7 +10,12 @@ class ExampleApp {
     // Clear storage to ensure we have a clean slate.
     return WindowProxy.clearStorage().then(() => {
       browser.get(url);
+      return this.renderToSelect().select('Overlay');
     });
+  }
+
+  renderToSelect() {
+    return new SelectObject(by.id('render-to'));
   }
 
   loginButton() {

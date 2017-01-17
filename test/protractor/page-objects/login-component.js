@@ -5,11 +5,11 @@ import OverlayObject from './overlay';
 
 class LoginComponentObject extends OverlayObject {
   usernameInput() {
-    return new InputObject(by.id('sp-form-login-login'));
+    return new InputObject(by.css('form input[name=login]'));
   }
 
   passwordInput() {
-    return new InputObject(by.id('sp-form-login-password'));
+    return new InputObject(by.css('form input[name=password]'));
   }
 
   loginButton() {
@@ -17,7 +17,7 @@ class LoginComponentObject extends OverlayObject {
   }
 
   errorMessage() {
-    return new DomObject(by.css('.sp-error'));
+    return new DomObject(by.css('.sp-error-text'));
   }
 }
 

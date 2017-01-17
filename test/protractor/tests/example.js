@@ -9,6 +9,10 @@ describe('Example App', () => {
     app.loadAt(browser.params.exampleAppDomain).then(done);
   });
 
+  it('should have a render to select', () => {
+    expect(app.renderToSelect().isVisible()).to.eventually.equal(true);
+  });
+
   it('should have a login button', () => {
     expect(app.loginButton().isVisible()).to.eventually.equal(true);
   });
