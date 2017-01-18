@@ -1,10 +1,12 @@
 import xhr from 'xhr';
 import utils from '../../utils';
 import formUrlencoded from 'form-urlencoded';
+import AuthStrategy from '../auth-strategy';
 
 class HttpProvider {
-  constructor(baseUri) {
+  constructor(baseUri, authStrategy) {
     this.baseUri = baseUri || '';
+    this.authStrategy = authStrategy;
   }
 
   getJson(path, queryParameters, options) {
@@ -79,7 +81,7 @@ class HttpProvider {
   }
 
   _needsPreflight(options) {
-    if (!options) {
+    if (!options || this.authStrategy === AuthStrategy.Cookie) {
       return false;
     }
 
