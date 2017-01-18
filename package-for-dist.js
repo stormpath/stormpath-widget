@@ -8,8 +8,8 @@ const spawnSync = require('child_process').spawnSync;
 const packageInfo = JSON.parse(fs.readFileSync(`${__dirname}/package.json`, 'utf-8'));
 
 const outputFile = `${__dirname}/dist/${filename}`;
+const widgetSource = fs.readFileSync(outputFile, 'utf-8');
 const packDirectory = `${__dirname}/pack`;
-const packWidgetDirectory = `${packDirectory}/widget`;
 
 // Sanity check
 if (!fs.existsSync(outputFile)) {
@@ -20,15 +20,11 @@ if (fs.existsSync(packDirectory)) {
 }
 
 console.log(`Preparing package stormpath-widget/${packageInfo.version} for distribution...`);
-
-const widgetSource = fs.readFileSync(outputFile, 'utf-8');
-
 fs.mkdirSync(packDirectory);
-fs.mkdirSync(packWidgetDirectory);
 
 // Always copy the latest version to /widget/latest/
-console.log(`Copying output to /pack/widget/latest/${filename}`);
-const latestDirectory = `${packWidgetDirectory}/latest`;
+const latestDirectory = `${packDirectory}/latest`;
+console.log(`Copying output to ${latestDirectory}/${filename}`);
 fs.mkdirSync(latestDirectory);
 fs.writeFileSync(`${latestDirectory}/${filename}`, widgetSource, { encoding: 'utf-8' });
 
@@ -51,15 +47,16 @@ if (tag !== packageInfo.version) {
 
 // Push tagged minor releases to /widget/x.y/
 const shortVersion = `${semver.major(tag)}.${semver.minor(tag)}`;
-console.log(`Copying output to /widget/${shortVersion}/`);
-const shortVersionDirectory = `${packWidgetDirectory}/${shortVersion}`;
+const shortVersionDirectory = `${packDirectory}/${shortVersion}`;
+console.log(`Copying output to ${shortVersionDirectory}/${filename}`);
 fs.mkdirSync(shortVersionDirectory);
 fs.writeFileSync(`${shortVersionDirectory}/${filename}`, widgetSource, { encoding: 'utf-8' });
 
 // Push tagged releases to /widget/x.y.z/
-console.log(`Copying output to /widget/${tag}/`);
-const versionDirectory = `${packWidgetDirectory}/${tag}`;
+const versionDirectory = `${packDirectory}/${tag}`;
+console.log(`Copying output to ${versionDirectory}/${filename}`);
 fs.mkdirSync(versionDirectory);
 fs.writeFileSync(`${versionDirectory}/${filename}`, widgetSource, { encoding: 'utf-8' });
 
+// Profit!
 console.log('Done!');

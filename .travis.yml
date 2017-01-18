@@ -2,3 +2,13 @@ language: node_js
 node_js:
   - "6"
 script: npm test && npm run build && npm run pack
+deploy:
+  provider: s3
+  access_key_id: "YOUR AWS ACCESS KEY"
+  bucket: "BUCKET NAME"
+  skip_cleanup: true
+  detect_encoding: true
+  upload-dir: widget
+  local_dir: pack
+  on:
+    branch: master
