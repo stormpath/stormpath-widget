@@ -78,10 +78,30 @@ class HttpProvider {
     return newError;
   }
 
+  _needsPreflight(options) {
+    if (!options) {
+      return false;
+    }
+
+    const headers = options.headers;
+    if (headers && headers['Authorization']) {
+      return true;
+    }
+
+    if (options.method === 'POST' && options.json) {
+      return true;
+    }
+
+    return false;
+  }
+
   _createRequest(options) {
     options.uri = this.baseUri + options.path;
     options.headers = options.headers || {};
-    options.headers['X-Stormpath-Agent'] = `stormpath-widget/${pkg.version}`;
+
+    if (this._needsPreflight(options)) {
+      options.headers['X-Stormpath-Agent'] = `stormpath-widget/${pkg.version}`;
+    }
 
     return new Promise((accept, reject) => {
       xhr(options, (err, resp, body) => {
