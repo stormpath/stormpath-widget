@@ -23,6 +23,8 @@ You'll also need to add a little bit of JavaScript code to give the widget your 
 
 ## Using the widget
 
+> :bulb: To see a full code example, check out our [example page](https://github.com/stormpath/stormpath-widget/blob/master/example/login/index.html).
+
 When you are ready to show a login button, just call `stormpath.showLogin()`:
 
 ```html
