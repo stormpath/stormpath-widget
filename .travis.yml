@@ -1,4 +1,15 @@
 language: node_js
 node_js:
-  - "6"
-  
+- '6'
+script: npm test && npm run build && npm run pack
+deploy:
+  provider: s3
+  access_key_id: AKIAJXN5M3DJHUJCS55A
+  bucket: sp-widget
+  skip_cleanup: true
+  detect_encoding: true
+  local_dir: pack
+  on:
+    branch: master
+  secret_access_key:
+    secure: jUD7aOsdOyQOybc49l0o9WRc7Jsq31vTN9uYCHrL+8Uq/Ew3kfooGjSf6zxowYbr+MfK2RxjA1rsZgqFPwZawP3IsVTz5hSwAAzzqMXEViRLJxFLH6zos6gM4jOBQR2pTQmHW2pBYazhfpAjX7HBsHwHv1Va2bT7wGmsgCvpSAjOTXIkrEzKr0nWt9LStHD02V+i5HiEgypzXtWUGtu1PNfShyRNTHdU+LMNSTRmXlmy5M0hwNgi3OHhlp/tLHA6xyfbGGektp749wcK1E36SJrbSYMuMhBpGdp+b044Hsn2fFZ1T1s2nCt8DejpEy5RkWXpklCqIYuYOPS/ztTst7rr5oMqqQ2LIGFGfut02Et7Qwq0y/cHTrWFKsie41rLmR/pXas7IHLEBYg3VCbqqOv20UftWUsAl75X4G6K5iiL02HIur3IMqGIlgPpDe6U+WDTb0bmNwQMsCyA+JINPgYfdsLWzDihhwQnO+O0H89VjlWWfzeCFqmeKpr7W3kPYygNQjWEJ0CQwKqzbsM4mlIFywIwm6I5tWgd/WZVmMnkqA6B9bV8R4uv8MIeoWVTvhmAcKaHCRdj8oJz55j10nW7SopZ3eFDQD3fV/o7bRCrSGEVS8dbfDXiHi5f3MxylMSnGaDhW+60DNQgrD5bwzJdw9aFsR6j0NbYnwHKPcg=
