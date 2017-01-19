@@ -5,7 +5,7 @@ script: npm test && npm run build && npm run pack
 deploy:
   provider: s3
   access_key_id: AKIAJXN5M3DJHUJCS55A
-  bucket: sp-widget
+  bucket: sp-widgets
   skip_cleanup: true
   detect_encoding: true
   local_dir: pack
