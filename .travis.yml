@@ -9,6 +9,7 @@ deploy:
   skip_cleanup: true
   detect_encoding: true
   local_dir: pack
+  upload-dir: widget
   on:
     branch: master
   secret_access_key:
