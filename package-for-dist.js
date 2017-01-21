@@ -3,7 +3,6 @@
 const filename = 'stormpath.min.js';
 const fs = require('fs');
 const semver = require('semver');
-const spawnSync = require('child_process').spawnSync;
 
 const packageInfo = JSON.parse(fs.readFileSync(`${__dirname}/package.json`, 'utf-8'));
 
@@ -19,18 +18,8 @@ if (fs.existsSync(packDirectory)) {
   throw new Error('The pack/ directory already exists');
 }
 
-console.log(`Preparing package stormpath-widget/${packageInfo.version} for distribution...`);
-fs.mkdirSync(packDirectory);
-
-// Always copy the latest version to /widget/latest/
-const latestDirectory = `${packDirectory}/latest`;
-console.log(`Copying output to ${latestDirectory}/${filename}`);
-fs.mkdirSync(latestDirectory);
-fs.writeFileSync(`${latestDirectory}/${filename}`, widgetSource, { encoding: 'utf-8' });
-
 // If this is not a tagged release, end early
-const findTag = spawnSync('git', ['describe', '--exact-match', '--tags', 'HEAD']);
-const tag = process.env.DEPLOY_TAG || findTag.stdout.toString();
+const tag = process.env.DEPLOY_TAG || process.env.TRAVIS_TAG || '';
 
 if (!tag) {
   console.log('Not a tagged release, no further action needed');
@@ -44,6 +33,15 @@ if (!semver.valid(tag)) {
 if (tag !== packageInfo.version) {
   throw new Error(`Tag version ${tag} does not match package version ${packageInfo.version}, exiting`);
 }
+
+console.log(`Preparing package stormpath-widget/${packageInfo.version} for distribution...`);
+fs.mkdirSync(packDirectory);
+
+// Always copy the latest tagged version to /widget/latest/
+const latestDirectory = `${packDirectory}/latest`;
+console.log(`Copying output to ${latestDirectory}/${filename}`);
+fs.mkdirSync(latestDirectory);
+fs.writeFileSync(`${latestDirectory}/${filename}`, widgetSource, { encoding: 'utf-8' });
 
 // Push tagged minor releases to /widget/x.y/
 const shortVersion = `${semver.major(tag)}.${semver.minor(tag)}`;
