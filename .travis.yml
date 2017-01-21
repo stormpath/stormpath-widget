@@ -7,7 +7,7 @@ deploy:
   access_key_id: AKIAJXN5M3DJHUJCS55A
   bucket: sp-widgets
   skip_cleanup: true
-  local_dir: pack
+  local_dir: staging
   upload-dir: widget
   on:
     tags: true

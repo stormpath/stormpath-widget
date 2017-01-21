@@ -1,21 +1,21 @@
 'use strict';
 
-const filename = 'stormpath.min.js';
 const fs = require('fs');
 const semver = require('semver');
 
-const packageInfo = JSON.parse(fs.readFileSync(`${__dirname}/package.json`, 'utf-8'));
+const sourceFilename = 'stormpath.min.js';
+const sourceMapFilename = `${sourceFilename}.map`;
 
-const outputFile = `${__dirname}/dist/${filename}`;
-const widgetSource = fs.readFileSync(outputFile, 'utf-8');
-const packDirectory = `${__dirname}/pack`;
+const stagingDirectory = `${__dirname}/staging`;
+const outputSourceFile = `${__dirname}/dist/${sourceFilename}`;
+const outputSourceMapFile = `${__dirname}/dist/${sourceMapFilename}`;
 
 // Sanity check
-if (!fs.existsSync(outputFile)) {
-  throw new Error(`The file dist/${filename} does not exist`);
+if (!fs.existsSync(outputSourceFile) || !fs.existsSync(outputSourceMapFile)) {
+  throw new Error('The source files do not exist');
 }
-if (fs.existsSync(packDirectory)) {
-  throw new Error('The pack/ directory already exists');
+if (fs.existsSync(stagingDirectory)) {
+  throw new Error('The staging directory already exists');
 }
 
 // If this is not a tagged release, end early
@@ -30,31 +30,42 @@ if (!semver.valid(tag)) {
   throw new Error(`Tag version ${tag} is not a valid semver string, exiting`);
 }
 
+const source = fs.readFileSync(outputSourceFile, 'utf-8');
+const sourceMap = fs.readFileSync(outputSourceMapFile, 'utf-8');
+
+const packageInfo = JSON.parse(fs.readFileSync(`${__dirname}/package.json`, 'utf-8'));
+
 if (tag !== packageInfo.version) {
   throw new Error(`Tag version ${tag} does not match package version ${packageInfo.version}, exiting`);
 }
 
 console.log(`Preparing package stormpath-widget/${packageInfo.version} for distribution...`);
-fs.mkdirSync(packDirectory);
+fs.mkdirSync(stagingDirectory);
 
 // Always copy the latest tagged version to /widget/latest/
-const latestDirectory = `${packDirectory}/latest`;
-console.log(`Copying output to ${latestDirectory}/${filename}`);
+const latestDirectory = `${stagingDirectory}/latest`;
 fs.mkdirSync(latestDirectory);
-fs.writeFileSync(`${latestDirectory}/${filename}`, widgetSource, { encoding: 'utf-8' });
+console.log(`Copying source to ${latestDirectory}/${sourceFilename}`);
+fs.writeFileSync(`${latestDirectory}/${sourceFilename}`, source, { encoding: 'utf-8' });
+console.log(`Copying sourcemap to ${latestDirectory}/${sourceMapFilename}`);
+fs.writeFileSync(`${latestDirectory}/${sourceMapFilename}`, sourceMap, { encoding: 'utf-8' });
 
 // Push tagged minor releases to /widget/x.y/
 const shortVersion = `${semver.major(tag)}.${semver.minor(tag)}`;
-const shortVersionDirectory = `${packDirectory}/${shortVersion}`;
-console.log(`Copying output to ${shortVersionDirectory}/${filename}`);
+const shortVersionDirectory = `${stagingDirectory}/${shortVersion}`;
 fs.mkdirSync(shortVersionDirectory);
-fs.writeFileSync(`${shortVersionDirectory}/${filename}`, widgetSource, { encoding: 'utf-8' });
+console.log(`Copying source to ${shortVersionDirectory}/${sourceFilename}`);
+fs.writeFileSync(`${shortVersionDirectory}/${sourceFilename}`, source, { encoding: 'utf-8' });
+console.log(`Copying sourcemap to ${shortVersionDirectory}/${sourceMapFilename}`);
+fs.writeFileSync(`${shortVersionDirectory}/${sourceMapFilename}`, sourceMap, { encoding: 'utf-8' });
 
 // Push tagged releases to /widget/x.y.z/
-const versionDirectory = `${packDirectory}/${tag}`;
-console.log(`Copying output to ${versionDirectory}/${filename}`);
+const versionDirectory = `${stagingDirectory}/${tag}`;
 fs.mkdirSync(versionDirectory);
-fs.writeFileSync(`${versionDirectory}/${filename}`, widgetSource, { encoding: 'utf-8' });
+console.log(`Copying source to ${versionDirectory}/${sourceFilename}`);
+fs.writeFileSync(`${versionDirectory}/${sourceFilename}`, source, { encoding: 'utf-8' });
+console.log(`Copying sourcemap to ${versionDirectory}/${sourceMapFilename}`);
+fs.writeFileSync(`${versionDirectory}/${sourceMapFilename}`, sourceMap, { encoding: 'utf-8' });
 
 // Profit!
 console.log('Done!');
