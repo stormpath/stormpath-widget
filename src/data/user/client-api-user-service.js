@@ -23,20 +23,13 @@ class ClientApiUserService extends EventEmitter {
   }
 
   _onLoginSuccessful(response) {
-    return this.tokenStorage.setAccessToken(response.access_token).then(() => {
-      let waitFor;
-
-      if (response.refresh_token) {
-        waitFor = this.tokenStorage.setRefreshToken(response.refresh_token);
-      } else {
-        waitFor = Promise.resolve();
-      }
-
-      waitFor.then(() => {
-        return this.me().then((account) => {
-          this._setState('loggedIn', true, account);
-          this._setState('authenticated');
-        });
+    return Promise.all([
+      this.tokenStorage.setAccessToken(response.access_token),
+      this.tokenStorage.setRefreshToken(response.refresh_token)
+    ]).then(() => {
+      return this.me().then((account) => {
+        this._setState('loggedIn', true, account);
+        this._setState('authenticated');
       });
     });
   }
@@ -108,29 +101,31 @@ class ClientApiUserService extends EventEmitter {
 
   login(username, password) {
     if (username === undefined || password === undefined) {
-      return new Promise((_, reject) => {
-        reject(new Error('Username or password cannot be empty.'));
-      });
+      return Promise.reject(new Error('Username or password cannot be empty.'));
     }
 
-    return this.httpProvider.postForm('/oauth/token', {
+    const request = {
       grant_type: 'password',
       username,
       password
-    }).then(this._onLoginSuccessful.bind(this));
+    };
+
+    return this.httpProvider.postForm('/oauth/token', request)
+      .then(this._onLoginSuccessful.bind(this));
   }
 
   tokenLogin(token) {
     if (token === undefined) {
-      return new Promise((_, reject) => {
-        reject(new Error('Token cannot be empty.'));
-      });
+      return Promise.reject(new Error('Token cannot be empty.'));
     }
 
-    return this.httpProvider.postForm('/oauth/token', {
+    const request = {
       grant_type: 'stormpath_token',
       token
-    }).then(this._onLoginSuccessful.bind(this));
+    };
+
+    return this.httpProvider.postForm('/oauth/token', request)
+      .then(this._onLoginSuccessful.bind(this));
   }
 
   verifyEmail(token) {
