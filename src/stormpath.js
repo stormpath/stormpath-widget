@@ -96,8 +96,14 @@ class Stormpath extends EventEmitter {
   }
 
   _preloadViewModels() {
-    this.userService.getLoginViewModel();
-    this.userService.getRegistrationViewModel();
+    this.userService.getLoginViewModel().catch(() => {});
+    this.userService.getRegistrationViewModel().catch(() => {});
+    this.userService.getForgotEndpointResponse().catch(() => {});
+  }
+
+  _handleDisabledEndpoint(name, uri) {
+    /* eslint-disable no-console */
+    console.error(name + ' endpoint could not be loaded.  Ensure that the ' + uri + ' is enabled on the provided Client API domain, or on your local server if not using Client API.');
   }
 
   _handleCallbackResponse() {
@@ -149,11 +155,15 @@ class Stormpath extends EventEmitter {
   }
 
   showLogin() {
-    return this.viewManager.showLogin();
+    this.userService.getLoginViewModel()
+      .then(this.viewManager.showLogin.bind(this.viewManager))
+      .catch(this._handleDisabledEndpoint.bind(null, 'Login', '/login'));
   }
 
   showRegistration() {
-    return this.viewManager.showRegistration();
+    this.userService.getRegistrationViewModel()
+      .then(this.viewManager.showRegistration.bind(this.viewManager))
+      .catch(this._handleDisabledEndpoint.bind(null, 'Registration', '/register'));
   }
 
   showEmailVerification(token) {
