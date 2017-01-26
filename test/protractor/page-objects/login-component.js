@@ -3,7 +3,7 @@ class LoginComponentObject {
   }
 
   isVisible() {
-    return element(by.css('.sp-modal')).isDisplayed();
+    return element(by.css('.sp-login-component')).isDisplayed();
   }
 }
 
