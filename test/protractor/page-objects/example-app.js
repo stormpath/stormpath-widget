@@ -7,7 +7,7 @@ class ExampleApp {
     browser.get(url);
 
     // Allow the view models to settle
-    return browser.sleep(2000);
+    return browser.sleep(1000);
   }
 
   loginButton() {

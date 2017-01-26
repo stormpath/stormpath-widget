@@ -22,7 +22,14 @@ describe('Login Component', () => {
   });
 
   it('should toggle password visibility when the Show button is clicked', () => {
-    throw new Error('TODO!');
+    app.clickLoginButton();
+    expect(loginComponent.isVisible()).to.eventually.equal(true);
+    
+    loginComponent.clickTogglePasswordButton();
+    expect(loginComponent.passwordField().getAttribute('type')).to.eventually.equal('text');
+    
+    loginComponent.clickTogglePasswordButton();
+    expect(loginComponent.passwordField().getAttribute('type')).to.eventually.equal('password');
   });
 
   it('should show the Forgot Password Component when clicking Forgot Password', () => {
