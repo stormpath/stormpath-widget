@@ -131,8 +131,9 @@ class Stormpath extends EventEmitter {
   }
 
   getAccessToken() {
+
     if (!this.tokenStorage) {
-      return Promise.resolve(null);
+      return Promise.reject(new Error('Token storage is not configured.'));
     }
 
     return this.tokenStorage.getAccessToken();

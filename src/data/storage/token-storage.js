@@ -33,7 +33,7 @@ class TokenStorage extends EventEmitter {
 
     return readFromStorage().then((accessToken) => {
       if (!accessToken) {
-        return;
+        return Promise.reject(new Error('No access token in storage.'));
       }
 
       const parsedToken = utils.parseJwt(accessToken);

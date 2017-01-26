@@ -37,7 +37,14 @@ describe('TokenStorage', () => {
   });
 
   describe('.getAccessToken()', () => {
-    describe('when stormpath.access_token key in storage', () => {
+
+    describe('when no stormpath.access_token value is in storage', () => {
+      it('should reject with an error', (done) => {
+        assert.isRejected(tokenStorage.getAccessToken(), 'No access token in storage.').notify(done);
+      });
+    });
+
+    describe('when stormpath.access_token value is in storage', () => {
       describe('and token has expired', () => {
         let mockToken;
 
@@ -114,7 +121,7 @@ describe('TokenStorage', () => {
             sandbox.restore();
           });
 
-          it('should throw an error', () => {
+          it('should reject with an error', () => {
             assert.isOk(testError);
           });
 
