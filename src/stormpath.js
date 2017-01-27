@@ -57,7 +57,7 @@ class Stormpath extends EventEmitter {
   }
 
   _createUserService(authStrategy, appUri) {
-    const httpProvider = new HttpProvider(appUri);
+    const httpProvider = new HttpProvider(appUri, authStrategy);
 
     let userService;
 

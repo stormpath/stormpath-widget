@@ -1,10 +1,12 @@
 import xhr from 'xhr';
 import utils from '../../utils';
 import formUrlencoded from 'form-urlencoded';
+import AuthStrategy from '../auth-strategy';
 
 class HttpProvider {
-  constructor(baseUri) {
+  constructor(baseUri, authStrategy) {
     this.baseUri = baseUri || '';
+    this.authStrategy = authStrategy;
   }
 
   getJson(path, queryParameters, options) {
@@ -84,8 +86,30 @@ class HttpProvider {
     return newError;
   }
 
+  _needsPreflight(options) {
+    if (!options || this.authStrategy === AuthStrategy.Cookie) {
+      return false;
+    }
+
+    const headers = options.headers;
+    if (headers && headers['Authorization']) {
+      return true;
+    }
+
+    if (options.method === 'POST' && options.json) {
+      return true;
+    }
+
+    return false;
+  }
+
   _createRequest(options) {
     options.uri = this.baseUri + options.path;
+    options.headers = options.headers || {};
+
+    if (this._needsPreflight(options)) {
+      options.headers['X-Stormpath-Agent'] = `${pkg.name}/${pkg.version}`;
+    }
 
     return new Promise((accept, reject) => {
       xhr(options, (err, resp, body) => {
