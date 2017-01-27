@@ -102,7 +102,7 @@ class HttpProvider {
     options.headers = options.headers || {};
 
     if (this._needsPreflight(options)) {
-      options.headers['X-Stormpath-Agent'] = `stormpath-widget/${pkg.version}`;
+      options.headers['X-Stormpath-Agent'] = `${pkg.name}/${pkg.version}`;
     }
 
     return new Promise((accept, reject) => {
