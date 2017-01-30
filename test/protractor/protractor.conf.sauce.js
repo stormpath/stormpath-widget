@@ -21,7 +21,17 @@ baseConfig.multiCapabilities = [
   {
     browserName: 'firefox',
     version: 'latest',
+    platform: 'Windows 7'
+  },
+  {
+    browserName: 'firefox',
+    version: 'latest',
     platform: 'Windows 10'
+  },
+  {
+    browserName: 'firefox',
+    version: 'latest',
+    platform: 'OS X 10.10'
   },
   {
     browserName: 'firefox',
@@ -37,7 +47,7 @@ baseConfig.multiCapabilities = [
   {
     browserName: 'safari',
     version: 'latest',
-    platform: 'OS X 10.10'
+    platform: 'macOS 10.12'
   }
 ];
 
