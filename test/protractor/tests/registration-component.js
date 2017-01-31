@@ -6,7 +6,7 @@ describe('Registration Component', () => {
 
   beforeEach(() => {
     const app = new ExampleApp();
-    app.loadAt(browser.params.exampleAppUri).then(() => {
+    app.loadAt(browser.params.exampleAppDomain).then(() => {
       return app.registerButton().click().then((resultOverlay) => {
         registrationComponent = resultOverlay;
       });

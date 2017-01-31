@@ -6,7 +6,7 @@ describe('Login Component', () => {
 
   beforeEach(() => {
     const app = new ExampleApp();
-    app.loadAt(browser.params.exampleAppUri).then(() => {
+    app.loadAt(browser.params.exampleAppDomain).then(() => {
       return app.loginButton().click().then((resultOverlay) => {
         loginComponent = resultOverlay;
       });

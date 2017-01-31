@@ -6,7 +6,7 @@ describe('Forgot Password Component', () => {
 
   beforeEach(() => {
     const app = new ExampleApp();
-    app.loadAt(browser.params.exampleAppUri).then(() => {
+    app.loadAt(browser.params.exampleAppDomain).then(() => {
       return app.forgotPasswordButton().click().then((overlayResult) => {
         forgotPasswordComponent = overlayResult;
       });
