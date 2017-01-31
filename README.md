@@ -1,6 +1,6 @@
-# Stormpath Widget
+# Stormpath Login Widget
 
-Add beautiful login, registration, and multi-factor authentication screens to your app in only a few lines of code!
+Add beautiful login, registration, and multi-factor authentication screens to your app in only a few lines of code!  To get started, please signup for a free developer account at https://api.stormpath.com/register.
 
 
 ## Installing the widget
@@ -11,21 +11,21 @@ Ready to add authentiction to your application?  Simply add a reference to the S
 <script src="https://cdn.stormpath.io/widget/latest/stormpath.min.js"></script>
 ```
 
-You'll also need to add a little bit of JavaScript code to give the widget your Client API address:
+The login widget uses the [Stormpath Client API][] to authenticate the user.  Every Stormpath Application has a Client API domain, you can find the domain in the Stormpath Admin Console, under the application's "Policies" menu.  Once you have obtained the URL, configure the widget in your front-end application:
 
 ```html
 <script>
   var stormpath = window.stormpath = new Stormpath({
-    appUri: 'https://foo-bar.apps.stormpath.io'
+    appUri: 'https://your-domain.apps.stormpath.io'
   });
 </script>
 ```
 
 ## Using the widget
 
-> :bulb: To see a full code example, check out our [example page](https://github.com/stormpath/stormpath-widget/blob/master/example/login/index.html).
+> :bulb: To see a full code example, check out our [example application](example/index.html).
 
-When you are ready to show a login button, just call `stormpath.showLogin()`:
+When you are ready to show the login view, just call `stormpath.showLogin()`:
 
 ```html
 <button onclick="stormpath.showLogin()">Log in</button>
@@ -80,17 +80,17 @@ Creates a new instance of the Stormpath widget, but doesn't show anything until 
 * **container** - Pass a DOM element to render the widget to. If null, the widget will default to modal mode.
 * **authStrategy** - Either `cookie`, `token`. If null, the widget will automatically pick the best strategy to use (`cookie` when connecting to a server on the same domain, `token` when connecting cross-domain).
 
-#### getAccount()
+#### getAccount() ```Promise.<Account, Error>```
 
-Gets the user's details, if a user is currently logged in.
+Gets the user's Stormpath account object, if the user is currently logged in.
 
-#### getAccessToken()
+#### getAccessToken() ```Promise.<JwtString, Error>```
 
-Gets the user's access token, if a user is currently logged in.
+Gets the user's current access token, if a user is currently logged in.  This does not work in if the ``authStrategy`` is `cookie`, in that mode it is assumed that the cookies are not readable by JS (`httpOnly`).  This is likely the case if you are using one of our framework integrations on your server.
 
-#### logout()
+#### logout() ```Promise.<null, Error>```
 
-Logs the user out.
+Logs the user out, the access token and refresh tokens are revoked.
 
 #### showLogin()
 
@@ -108,7 +108,7 @@ Shows the password reset interface.
 
 Trigger the last step of the password reset workflow. The widget fetches the `sptoken` from the URL if it's not passed explicitly.
 
-To distinguish from password reset, we recommend that you set the [Link Base URL of your directory](https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#customizing-stormpath-email-templates) to `http://example.com#change-password`, and then invoke the widget like so:
+To distinguish from email verification, we recommend that you set the [Link Base URL of your directory](https://docs.stormpath.com/rest/product-guide/latest/accnt_mgmt.html#customizing-stormpath-email-templates) to `http://example.com#change-password`, and then invoke the widget like so:
 
 ```javascript
 if ((/#change-password/).test(window.location.href)) {
@@ -162,28 +162,4 @@ This event is emitted once a user logs in.
 
 This event is emitted once a user logs out.
 
-## Contributing
-
-You can build and test the widget by cloning this repository and running:
-
-```term
-$ npm i
-$ npm run dev
-```
-
-Open a browser and navigate to http://localhost:3000 to view the demo.
-
-`npm run dev` compiles all of the JS/HTML/CSS assets into `dist/stormpath.dev.js` and instructs Webpack to watch the `src` directory for changes.
-
-### Running tests
-
-To run the test suite, execute:
-
-```term
-$ npm test
-$ npm run protractor
-```
-
-### Building
-
-TODO
+[Stormpath Client API]: https://docs.stormpath.com/client-api/product-guide/latest/
