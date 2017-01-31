@@ -5,6 +5,20 @@
   <div rv-show="state | is 'account_enabled'">Your account has been created!</div>
   <div rv-show="state | is 'account_pending'">Your account has been created. Please check your email for a verification link.</div>
   <form rv-show="state | in 'ready,validation_error'" rv-on-submit="onFormSubmit">
+    <div class="sp-form-group" rv-show="accountStores | any">
+      <div class="sp-social-login" rv-class-sp-social-login-sm="props.smallButtons">
+        <a rv-each-dir="accountStores"
+          rv-href="dir.authorizeUri"
+          rv-class="dir.provider.providerId | prefix 'sp-social-login-btn sp-social-login-btn-'"
+          rv-show="props.showButtons | gt index">
+          Continue with {dir.name}</a>
+
+        <a class="sp-social-login-btn sp-social-login-btn-more-expand"
+           rv-show="props.showMoreButton"
+           rv-on-click="toggleMore">More</a>
+      </div>
+      <div class="sp-social-separator"><span>or</span></div>
+    </div>
 
     <fieldset class="sp-form-group">
       <sp-form-fields fields="fields" name-prefix="'sp-form-registration'"></sp-form-fields>
@@ -15,5 +29,8 @@
     <div class="sp-form-group">
       <sp-submit-button label="'Sign up'" submitting="props.isSubmitting"></sp-submit-button>
     </div>
+
+    <hr>
+    <span class="sp-light">Already have an account?</span> <a class="sp-right" rv-on-click="viewManager.showLogin">Log in</a>
   </form>
 </div>

@@ -6,13 +6,18 @@ class RegistrationComponent {
   static id = 'registration-component';
   static view = view;
   static style = style;
+  static maxInitialButtons = 4;
 
   fields = [];
   state = 'unknown';
+  accountStores = [];
 
   // This is necessary because currently Rivets cannot bind to top-level primitives
   // (see https://github.com/mikeric/rivets/issues/700#issuecomment-267177540)
   props = {
+    smallButtons: false,
+    showButtons: RegistrationComponent.maxInitialButtons,
+    showMoreButton: false,
     isSubmitting: false
   };
 
@@ -38,6 +43,15 @@ class RegistrationComponent {
     });
   }
 
+  _onlySupportedAccountStores(stores) {
+    return stores.filter((store) => store.authorizeUri);
+  }
+
+  toggleMore(e, model) {
+    model.props.showMoreButton = false;
+    model.props.showButtons = 99;
+  }
+
   onError(state, err) {
     this.error = err;
     this.state = state;
@@ -46,6 +60,14 @@ class RegistrationComponent {
 
   onViewModelLoaded(data) {
     this.fields = data.form.fields;
+    this.accountStores = this._onlySupportedAccountStores(data.accountStores);
+
+    this.props.smallButtons = this.accountStores.length > 1;
+    this.props.showMoreButton = this.accountStores.length > RegistrationComponent.maxInitialButtons;
+    if (this.props.showMoreButton) {
+      this.props.showButtons--;
+    }
+
     this.state = 'ready';
   }
 
