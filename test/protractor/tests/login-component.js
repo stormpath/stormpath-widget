@@ -3,11 +3,12 @@ import ExampleApp from '../page-objects/example-app';
 
 describe('Login Component', () => {
   let loginComponent;
+  let exampleApp;
 
   beforeEach(() => {
-    const app = new ExampleApp();
-    app.loadAt(browser.params.exampleAppDomain).then(() => {
-      return app.loginButton().click().then((resultOverlay) => {
+    exampleApp = new ExampleApp();
+    exampleApp.loadAt(browser.params.exampleAppDomain).then(() => {
+      return exampleApp.loginButton().click().then((resultOverlay) => {
         loginComponent = resultOverlay;
       });
     });
@@ -121,8 +122,8 @@ describe('Login Component', () => {
           usernameInput = loginComponent.usernameInput();
           passwordInput = loginComponent.passwordInput();
 
-          usernameInput.setValue('robin+test@stormpath.com');
-          passwordInput.setValue('Test12345_');
+          usernameInput.setValue(exampleApp.account.email);
+          passwordInput.setValue(exampleApp.account.password);
 
           loginButton.click();
 
