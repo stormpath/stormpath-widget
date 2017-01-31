@@ -50,8 +50,8 @@ fs.writeFileSync(`${latestDirectory}/${sourceFilename}`, source, { encoding: 'ut
 console.log(`Copying sourcemap to ${latestDirectory}/${sourceMapFilename}`);
 fs.writeFileSync(`${latestDirectory}/${sourceMapFilename}`, sourceMap, { encoding: 'utf-8' });
 
-// Push tagged minor releases to /widget/x.y/
-const shortVersion = `${semver.major(tag)}.${semver.minor(tag)}`;
+// Push tagged minor releases to /widget/major.x/
+const shortVersion = `${semver.major(tag)}.x`;
 const shortVersionDirectory = `${stagingDirectory}/${shortVersion}`;
 fs.mkdirSync(shortVersionDirectory);
 console.log(`Copying source to ${shortVersionDirectory}/${sourceFilename}`);
@@ -59,7 +59,7 @@ fs.writeFileSync(`${shortVersionDirectory}/${sourceFilename}`, source, { encodin
 console.log(`Copying sourcemap to ${shortVersionDirectory}/${sourceMapFilename}`);
 fs.writeFileSync(`${shortVersionDirectory}/${sourceMapFilename}`, sourceMap, { encoding: 'utf-8' });
 
-// Push tagged releases to /widget/x.y.z/
+// Push tagged releases to /widget/major.minor.patch/
 const versionDirectory = `${stagingDirectory}/${tag}`;
 fs.mkdirSync(versionDirectory);
 console.log(`Copying source to ${versionDirectory}/${sourceFilename}`);
