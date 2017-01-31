@@ -180,8 +180,6 @@ class Stormpath extends EventEmitter {
     return this.viewManager.remove();
   }
 
-  unload() {
-  }
 }
 
 export default Stormpath;
