@@ -5,14 +5,14 @@
   <div rv-show="state | is 'authenticated'">You're logged in!</div>
   <form rv-show="state | in 'ready,login_error'" rv-on-submit="onFormSubmit">
     <div class="sp-form-group" rv-show="accountStores | any">
-      <div class="sp-login-social" rv-class-sp-login-social-sm="props.smallButtons">
+      <div class="sp-social-login" rv-class-sp-social-login-sm="props.smallButtons">
         <a rv-each-dir="accountStores"
           rv-href="dir.authorizeUri"
-          rv-class="dir.provider.providerId | prefix 'sp-login-btn sp-login-btn-'"
+          rv-class="dir.provider.providerId | prefix 'sp-social-login-btn sp-social-login-btn-'"
           rv-show="props.showButtons | gt index">
           Log in with {dir.name}</a>
 
-        <a class="sp-login-btn sp-login-btn-more-expand"
+        <a class="sp-social-login-btn sp-social-login-btn-more-expand"
            rv-show="props.showMoreButton"
            rv-on-click="toggleMore">More</a>
       </div>
