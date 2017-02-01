@@ -5,6 +5,7 @@ import ngrok from 'ngrok';
 import stormpath from 'stormpath';
 
 import ExampleServer from './example-server';
+import pkg from '../../package.json';
 
 chai.use(chaiAsPromised);
 
@@ -21,6 +22,9 @@ export const config = {
     timeout: 20000
   },
 
+  // pkg is not a standard protractor option
+  pkg: pkg,
+
   params:{
     // anything in here gets attached to browser.params
   },
@@ -29,8 +33,9 @@ export const config = {
     browserName: 'chrome',
     version: '41',
     platform: 'OS X 10.10',
-    name: 'chrome-tests'
+    name: pkg.name
   },
+
 
   onPrepare: () => {
     browser.ignoreSynchronization = true;
@@ -45,7 +50,7 @@ export const config = {
       spClient.getApplication(process.env.STORMPATH_APPLICATION_HREF, { expand: 'webConfig'}, (err, application) => {
         var clientApiDomain = 'https://' + application.webConfig.domainName;
 
-        application.authorizedOriginUris.push(exampleAppDomain);
+        application.authorizedOriginUris.push('https://*.ngrok.io');
 
         application.save((err) => {
           if (err) {
@@ -74,7 +79,7 @@ export const config = {
         return deferred.reject(err);
       }
 
-      application.authorizedOriginUris = application.authorizedOriginUris.filter((uri) => !uri.match(browser.params.exampleAppDomain));
+      application.authorizedOriginUris = application.authorizedOriginUris.filter((uri) => !uri.match('https://*.ngrok.io'));
 
       application.save((err) => {
         if (err) {

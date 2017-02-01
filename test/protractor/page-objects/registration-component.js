@@ -8,7 +8,7 @@ class RegistrationComponentObject extends LoadableObject {
   }
 
   lastNameInput() {
-    return new InputObject(by.css('form input[name=surname'));
+    return new InputObject(by.css('form input[name=surname]'));
   }
 
   emailInput() {
