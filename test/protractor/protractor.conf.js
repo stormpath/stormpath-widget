@@ -45,7 +45,7 @@ export const config = {
 
     ngrok.connect(port, (err, url) => {
 
-      var exampleAppDomain = browser.params.exampleAppDomain = url;
+      browser.params.exampleAppDomain = url;
 
       spClient.getApplication(process.env.STORMPATH_APPLICATION_HREF, { expand: 'webConfig'}, (err, application) => {
         var clientApiDomain = 'https://' + application.webConfig.domainName;
