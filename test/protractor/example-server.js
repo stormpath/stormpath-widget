@@ -8,13 +8,19 @@ class ExampleServer {
     const app = this.app = express();
     const deferred = q.defer();
 
-    var html = fs.readFileSync(path.join(__dirname, '..', '..', 'example', 'login', 'index.html'), 'utf8');
+    var html = fs.readFileSync(path.join(__dirname, '..', '..', 'example', 'index.html'), 'utf8');
 
     html = html.replace('YOUR_CLIENT_API_DOMAIN', clientApiDomain);
+
+    // This will render the index.html as the root response:
 
     app.get('/', (req, res) => {
       res.send(html);
     });
+
+    // This will allow the CSS to be loaded:
+
+    app.use('/', express.static(path.join(__dirname, '..', '..', 'example')));
 
     app.get('/js/app.js', (req, res) => {
       res.sendFile(path.join(__dirname, '..', '..', 'dist', 'stormpath.js'));

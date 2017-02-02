@@ -1,7 +1,6 @@
 import ButtonObject from './button';
 import LoginComponentObject from './login-component';
 import RegistrationComponentObject from './registration-component';
-import ForgotPasswordComponentObject from './forgot-password-component';
 import stormpath from 'stormpath';
 import uuid from 'uuid';
 import WindowProxy from '../proxies/window';
@@ -58,22 +57,12 @@ class ExampleApp {
 
   registerButton() {
     return new ButtonObject(
-      by.id('register-button'),
+      by.id('signup-button'),
       this.getLoginWidgetContainer().then((selector) => {
         return new RegistrationComponentObject(selector);
       })
     );
   }
-
-  forgotPasswordButton() {
-    return new ButtonObject(
-      by.id('forgot-password-button'),
-      this.getLoginWidgetContainer().then((selector) => {
-        return new ForgotPasswordComponentObject(selector);
-      })
-    );
-  }
-
   logoutButton() {
     return new ButtonObject(by.id('logout-button'));
   }

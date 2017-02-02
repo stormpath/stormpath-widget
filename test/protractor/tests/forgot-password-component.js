@@ -1,5 +1,6 @@
 import { expect } from 'chai';
 import ExampleApp from '../page-objects/example-app';
+import ForgotPasswordComponentObject from '../page-objects/forgot-password-component';
 
 describe('Forgot Password Component', () => {
   let forgotPasswordComponent;
@@ -7,8 +8,14 @@ describe('Forgot Password Component', () => {
   beforeEach(() => {
     const app = new ExampleApp();
     app.loadAt(browser.params.exampleAppDomain).then(() => {
-      return app.forgotPasswordButton().click().then((overlayResult) => {
-        forgotPasswordComponent = overlayResult;
+      return app.loginButton().click().then((loginComponent) => {
+        return loginComponent.forgotPasswordButton().click().then(() => {
+          // It seems that I need to get the widget container again, to have
+          // a valid dom node reference.
+          return app.getLoginWidgetContainer().then((selector) => {
+            return forgotPasswordComponent = new ForgotPasswordComponentObject(selector);
+          });
+        });
       });
     });
   });

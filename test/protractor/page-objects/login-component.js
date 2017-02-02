@@ -4,6 +4,9 @@ import ButtonObject from './button';
 import LoadableObject from './loadable';
 
 class LoginComponentObject extends LoadableObject {
+  forgotPasswordButton() {
+    return new ButtonObject(by.css('.sp-forgot-password-button'));
+  }
   usernameInput() {
     return new InputObject(by.css('form input[name=login]'));
   }
