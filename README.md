@@ -2,6 +2,13 @@
 
 Add beautiful login, registration, and multi-factor authentication screens to your app in only a few lines of code!  To get started, please signup for a free developer account at https://api.stormpath.com/register.
 
+## Table of contents
+
+- [Installing the widget](#installing-the-widget)
+- [Using the widget](#using-the-widget)
+- [Reference](#reference)
+  - [API](#api)
+  - [Events](#events)
 
 ## Installing the widget
 
