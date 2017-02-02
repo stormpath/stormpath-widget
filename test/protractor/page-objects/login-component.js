@@ -11,11 +11,15 @@ class LoginComponentObject {
   }
 
   togglePasswordButton() {
-    return element(by.css('.sp-password-toggle'));
+    return element(by.className('sp-password-toggle')).isDisplayed();
   }
 
   clickTogglePasswordButton() {
-    this.togglePasswordButton().click();
+    return this.togglePasswordButton().click();
+  }
+
+  isPasswordFieldPlaintext() {
+    return this.passwordField().getAttribute('type') === 'text';
   }
 }
 
