@@ -5,6 +5,7 @@ var config = require('./webpack.dev.config');
 
 var app = express();
 var compiler = webpack(config);
+var port = process.env.PORT || 3000;
 
 app.use('/', express.static(__dirname + '/example/login'));
 
@@ -13,6 +14,6 @@ app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath
 }));
 
-app.listen(3000, function () {
-  console.log('Server running on http://localhost:3000/');
+app.listen(port, function () {
+  console.log('Server running on http://localhost:' + port);
 });

@@ -13,14 +13,29 @@ Open a browser and navigate to http://localhost:3000 to view the demo.
 
 ### Running tests
 
-To run the test suite, execute:
+`npm test` will run unit/karama tests
 
-```term
-$ npm test
-$ npm run protractor
-```
+#### Protractor
+
+Protractor tests run against builds, so you must first build:
+
+`npm run build`
+
+Then make sure protractor is up to date:
+
+`npm run protractor-update`
+
+Then you can run a quick local test with Chrome only:
+
+`npm run protractor-local`
+
+Or run the full coverage suite on Sauce Labs:
+
+`npm run protractor-sauce`
 
 ### Building Releases
+
+`npm build` will compile all of the js/html/css assets into the `dist/stormpath.js` and `dist/stormpath.min.js` files.
 
 TODO
 

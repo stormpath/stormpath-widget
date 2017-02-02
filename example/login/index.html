@@ -39,10 +39,7 @@
       function onDocumentReady() {
 
         var stormpath = new Stormpath({
-          // Robert's app: 'https://lawful-heron.apps.stormpath.io'
-          // Robin's app: 'https://oval-summer.apps.dev.stormpath.io'
-          // Nate's app: https://serene-commander.apps.stormpath.io'
-          appUri: 'https://lawful-heron.apps.stormpath.io'
+          appUri: 'YOUR_CLIENT_API_DOMAIN'
         });
 
         if ((/#change-password/).test(window.location.href)) {

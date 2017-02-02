@@ -1,9 +1,15 @@
 import q from 'q';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
+import ngrok from 'ngrok';
+import stormpath from 'stormpath';
+
 import ExampleServer from './example-server';
+import pkg from '../../package.json';
 
 chai.use(chaiAsPromised);
+
+const spClient = new stormpath.Client();
 
 export const config = {
   directConnect: true,
@@ -16,6 +22,9 @@ export const config = {
     timeout: 20000
   },
 
+  // pkg is not a standard protractor option
+  pkg: pkg,
+
   params:{
     // anything in here gets attached to browser.params
   },
@@ -24,23 +33,63 @@ export const config = {
     browserName: 'chrome',
     version: '41',
     platform: 'OS X 10.10',
-    name: 'chrome-tests'
+    name: pkg.name
   },
+
 
   onPrepare: () => {
     browser.ignoreSynchronization = true;
-    const port = process.env.PORT || 3000;
-    browser.params.exampleAppUri = process.env.EXAMPLE_APP_URI || 'http://localhost:' + port;
-    return new ExampleServer(port);
-  },
+    const port = Math.floor(Math.random() * 1000) + 3000;
 
-  onCleanUp: (exitCode) => {
-    // Boilerplate promise, will be used later when we
-    // need to do any cleanup
     var deferred = q.defer();
 
-    deferred.resolve(exitCode);
+    ngrok.connect(port, (err, url) => {
+
+      browser.params.exampleAppDomain = url;
+
+      spClient.getApplication(process.env.STORMPATH_APPLICATION_HREF, { expand: 'webConfig'}, (err, application) => {
+        var clientApiDomain = 'https://' + application.webConfig.domainName;
+
+        application.authorizedOriginUris.push('https://*.ngrok.io');
+
+        application.save((err) => {
+          if (err) {
+            return deferred.reject(err);
+          }
+
+          return new ExampleServer(port, clientApiDomain).then(deferred.resolve, deferred.reject);
+        });
+
+      });
+    });
+
+    return deferred.promise;
+  },
+
+
+  onCleanUp: (exitCode) => {
+
+    var deferred = q.defer();
+
+    // Remove the ngrox proxy url from this application
+
+    spClient.getApplication(process.env.STORMPATH_APPLICATION_HREF, (err, application) => {
+
+      if (err) {
+        return deferred.reject(err);
+      }
+
+      application.authorizedOriginUris = application.authorizedOriginUris.filter((uri) => !uri.match('https://*.ngrok.io'));
+
+      application.save((err) => {
+        if (err) {
+          return deferred.reject(err);
+        }
+        deferred.resolve(exitCode);
+      });
+    });
 
     return deferred.promise;
   }
+
 };
