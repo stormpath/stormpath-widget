@@ -16,7 +16,7 @@ Add beautiful login, registration, and multi-factor authentication screens to yo
 Ready to add authentiction to your application?  Simply add a reference to the Stormpath widget in your HTML code:
 
 ```html
-<script src="https://cdn.stormpath.io/widget/latest/stormpath.min.js"></script>
+<script src="https://cdn.stormpath.io/0.x/latest/stormpath.min.js"></script>
 ```
 
 The login widget uses the [Stormpath Client API][] to authenticate the user.  Every Stormpath Application has a Client API domain, you can find the domain in the Stormpath Admin Console, under the application's "Policies" menu.  Once you have obtained the URL, configure the widget in your front-end application:
