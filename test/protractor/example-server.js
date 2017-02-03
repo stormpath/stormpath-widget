@@ -8,9 +8,19 @@ class ExampleServer {
     const app = this.app = express();
     const deferred = q.defer();
 
+    /**
+     * Fetch the example app, and replace the default CDN script location with the URL
+     * where webpack will serve the built JS asset.
+     *
+     * Also replace the placholder for the Client API domain
+     */
+
     var html = fs.readFileSync(path.join(__dirname, '..', '..', 'example', 'index.html'), 'utf8');
 
     html = html.replace('YOUR_CLIENT_API_DOMAIN', clientApiDomain);
+    html = html.replace(
+      '<script src="https://cdn.stormpath.io/widget/0.x/stormpath.min.js"></script>',
+     '<script src="js/app.js"></script>');
 
     // This will render the index.html as the root response:
 

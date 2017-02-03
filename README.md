@@ -235,3 +235,7 @@ This event is emitted once a user logs in.
 This event is emitted once a user logs out.
 
 [Stormpath Client API]: https://docs.stormpath.com/client-api/product-guide/latest/
+
+## Contributing
+
+Want to submit a pull request or debug an issue?  Please see the [CONTRIBUTING](CONTRIBUTING.md) document for more information on how to develop for this project.

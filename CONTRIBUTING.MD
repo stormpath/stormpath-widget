@@ -3,8 +3,9 @@
 You can build and test the widget by cloning this repository and running:
 
 ```term
-$ npm i
-$ npm run dev
+export CLIENT_API_DOMAIN=your-domain.apps.stormpath.io
+npm i
+npm run dev
 ```
 
 Open a browser and navigate to http://localhost:3000 to view the demo.
