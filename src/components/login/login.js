@@ -1,11 +1,9 @@
 import utils from '../../utils';
 import view from 'html!./login.html';
-import style from '!style-loader!css-loader!less-loader!./login.less';
 
 class LoginComponent {
   static id = 'login-component';
   static view = view;
-  static style = style;
   static maxInitialButtons = 4;
 
   fields = [];
