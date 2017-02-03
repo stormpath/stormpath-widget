@@ -3,7 +3,7 @@
 You can build and test the widget by cloning this repository and running:
 
 ```term
-export CLIENT_API_DOMAIN=your-domain.apps.stormpath.io
+export STORMPATH_CLIENT_API_DOMAIN=your-domain.apps.stormpath.io
 npm i
 npm run dev
 ```

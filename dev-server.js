@@ -11,15 +11,15 @@ var compiler = webpack(config);
 var port = process.env.PORT || 3000;
 
 /**
- * The Client API domain can be provided directly through the environment as CLIENT_API_DOMAIN
+ * The Client API domain can be provided directly through the environment as STORMPATH_CLIENT_API_DOMAIN
  *
  * Or it will be inferred from the Stormpath application that is defined in your environment
  */
 
 var clientApiDomain;
 
-if (process.env.CLIENT_API_DOMAIN) {
-  clientApiDomain = 'https://' + process.env.CLIENT_API_DOMAIN;
+if (process.env.STORMPATH_CLIENT_API_DOMAIN) {
+  clientApiDomain = 'https://' + process.env.STORMPATH_CLIENT_API_DOMAIN;
 } else if (process.env.STORMPATH_APPLICATION_HREF) {
   new stormpath.Client().getApplication(process.env.STORMPATH_APPLICATION_HREF, {expand: 'webConfig'}, function (err, application) {
     if (err) {
