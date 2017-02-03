@@ -6,7 +6,7 @@ Add beautiful login, registration, and multi-factor authentication screens to yo
 
 - [Installing the widget](#installing-the-widget)
 - [Using the widget](#using-the-widget)
-- [Customizing the look](#customizing-the-look) 
+- [Customizing the widget](#customizing-the-widget) 
 - [Reference](#reference)
   - [API](#api)
   - [Events](#events)
@@ -76,11 +76,11 @@ var stormpath = window.stormpath = new Stormpath({
 
 You can remove the rendered elements from the DOM at any time by calling `stormpath.remove()`.
 
-## Customizing the look
+## Customizing the widget
 
 The widget includes a set of default styles and templates that work out-of-the-box. If you want the widget to better match the existing look and feel of your site, you can override the styles, or provide your own templates.
 
-### Applying styles
+### Applying new styles
 
 The templates rendered by the widget contain HTML elements marked with `sp-*` classes. You can override the styles on these classes to provide your own styling. For example,
 
@@ -96,7 +96,7 @@ This changes the color of the **Log in** button on the widget's Login interface 
 
 If you need to make changes to the HTML elements themselves, you'll need to provide your own templates.
 
-### Customizing templates
+### Customizing the templates
 
 TODO
 
