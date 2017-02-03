@@ -378,4 +378,36 @@ describe('utils', () => {
       });
     });
   });
+
+  describe('.hyphensToCamelCase(str)', () => {
+    describe('when str is null', () => {
+      it('should return null', () => {
+        assert.isNull(utils.hyphensToCamelCase(null));
+      });
+    });
+
+    describe('when str is empty', () => {
+      it('should return empty', () => {
+        assert.equal(utils.hyphensToCamelCase(''), '');
+      });
+    });
+
+    describe('when str is not hyphenated', () => {
+      it('should be idempotent', () => {
+        assert.equal(utils.hyphensToCamelCase('foobar'), 'foobar');
+      });
+    });
+
+    describe('when str is hyphenated', () => {
+      it('should be converted to camelCase', () => {
+        assert.equal(utils.hyphensToCamelCase('foo-bar-baz'), 'fooBarBaz');
+      });
+    });
+
+    describe('when str ends with a hyphen', () => {
+      it('should skip the last character', () => {
+        assert.equal(utils.hyphensToCamelCase('foo-bar-'), 'fooBar');
+      });
+    });
+  });
 });

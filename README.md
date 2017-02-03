@@ -2,6 +2,14 @@
 
 Add beautiful login, registration, and multi-factor authentication screens to your app in only a few lines of code!  To get started, please signup for a free developer account at https://api.stormpath.com/register.
 
+## Table of contents
+
+- [Installing the widget](#installing-the-widget)
+- [Using the widget](#using-the-widget)
+- [Customizing the widget](#customizing-the-widget) 
+- [Reference](#reference)
+  - [API](#api)
+  - [Events](#events)
 
 ## Installing the widget
 
@@ -67,6 +75,70 @@ var stormpath = window.stormpath = new Stormpath({
 ```
 
 You can remove the rendered elements from the DOM at any time by calling `stormpath.remove()`.
+
+## Customizing the widget
+
+The widget includes a set of default styles and templates that work out-of-the-box. If you want the widget to better match the existing look and feel of your site, you can override the styles, or provide your own templates.
+
+### Applying new styles
+
+The templates rendered by the widget contain HTML elements marked with `sp-*` classes. You can override the styles on these classes to provide your own styling. For example,
+
+```html
+<style type="text/css">
+  .sp-login-component .sp-submit-btn {
+    background-color: lightgreen;
+  }
+</style>
+```
+
+This changes the color of the **Log in** button on the widget's Login interface to green.
+
+If you need to make changes to the HTML elements themselves, you'll need to provide your own templates.
+
+### Customizing the templates
+
+The views the widget renders are split up into logical [components](https://github.com/stormpath/stormpath-widget/tree/master/src/components): login, registration, forgot password, and so on. Each one of these components has a default HTML template that can be replaced with your own HTML.
+
+To specify a custom template, pass a `templates` hash when initializing the `Stormpath` object:
+
+```javascript
+var stormpath = new Stormpath({
+  appUri: 'https://foo-bar.apps.stormpath.io',
+  templates: {
+    login: "<h1>Login form, yo! More HTML here.</h1>",
+  }
+});
+```
+
+You can also pass a reference to an existing DOM node:
+
+```javascript
+var stormpath = new Stormpath({
+  appUri: 'https://foo-bar.apps.stormpath.io',
+  templates: {
+    login: document.getElementById('my-custom-login-form'),
+  }
+});
+```
+
+Elsewhere on the page, you can stash your template in a hidden `<div>`:
+
+```html
+<div style="display: none;">
+  <div id="my-custom-login-form">
+    <h1>Login form, yo! More HTML here.</h1>
+  </div>
+</div>
+```
+
+For each component, you can pass:
+
+* a string containing HTML
+* an existing DOM node containing elements
+* a function that resolves to a string or a DOM node
+
+Under the hood, the widget uses the [Rivets](https://github.com/mikeric/rivets) library for lightweight data binding. Your template code can make use of `rv-*` attributes to bind data and behavior. For examples, refer to the default [components](https://github.com/stormpath/stormpath-widget/tree/master/src/components) views.
 
 ## Reference
 

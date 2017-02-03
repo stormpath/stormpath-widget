@@ -18,7 +18,7 @@ import {
 } from './components';
 
 class ViewManager {
-  static defaultTemplates = {
+  static defaultComponents = {
     [ContainerComponent.id]: {
       component: ContainerComponent,
       view: () => ContainerComponent.view
@@ -64,11 +64,12 @@ class ViewManager {
   constructor(prefix, userService, templates, container) {
     this.userService = userService;
     this.prefix = prefix;
-    this._initializeRivets(extend(ViewManager.defaultTemplates, templates));
+    this.templates = templates;
+    this._initializeRivets(extend(ViewManager.defaultComponents));
     this.setContainer(container);
   }
 
-  _initializeRivets(templates) {
+  _initializeRivets(components) {
     Rivets.formatters['is'] = (a, b) => a === b;
     Rivets.formatters['isnt'] = (a, b) => a !== b;
     Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
@@ -78,12 +79,30 @@ class ViewManager {
 
     Rivets.binders.required = (el, val) => el.required = val === true;
 
-    for (var id in templates) {
-      const options = templates[id];
+    for (var id in components) {
+      const data = components[id];
+      const viewFunction = this._getViewFunction(id, data.view);
+
       Rivets.components[this.prefix + '-' + id] = {
-        template: options.view,
-        initialize: (el, data) => new options.component(data, el)
+        template: viewFunction,
+        initialize: (el, d) => new data.component(d, el)
       };
+    }
+  }
+
+  _getViewFunction(id, fallback) {
+    let prettyId = utils.hyphensToCamelCase(id).replace('Component', '');
+
+    if (!this.templates || !this.templates[prettyId]) {
+      return fallback;
+    }
+
+    const template = this.templates[prettyId];
+
+    if (typeof template === 'function') {
+      return template;
+    } else {
+      return () => template;
     }
   }
 
