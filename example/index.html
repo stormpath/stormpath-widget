@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]><html lang="en" class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html lang="en" class="no-js lt-ie9 lt-ie8"><![endif]-->
+<!--[if IE 8]><html lang="en" class="no-js lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" class="no-js"><!--<![endif]-->
+  <head>
+    <title>Stormpath Widget Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous">
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-old-ie-min.css">
+    <![endif]-->
+    <!--[if gt IE 8]><!-->
+        <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/grids-responsive-min.css">
+    <!--<![endif]-->
+    <link rel="stylesheet" href="example.css">
+
+    <!-- Include a reference to the Stormpath Widget -->
+    <script src="https://cdn.stormpath.io/widget/0.x/stormpath.min.js"></script>
+
+    <!-- Include code to activate the widget when you click specific buttons -->
+    <script>
+      function onDocumentReady() {
+
+        // Initialize Stormpath, you must provide the location of your Client API Domain.
+
+        var stormpath = new Stormpath({
+          appUri: 'YOUR_CLIENT_API_DOMAIN'
+        });
+
+        console.log('Loaded Stormpath v%s.', Stormpath.version);
+
+        // Get references to the DOM nodes that we will manipulate once we know
+        // the authentication state.
+
+        var accessTokenContainer = document.getElementById('access-token');
+        var authenticatedContainer = document.getElementById('authenticated');
+        var unauthenticatedContainer = document.getElementById('unauthenticated');
+        var loadingIndicator = document.getElementById('loading-indicator');
+        var loginButton = document.getElementById('login-button');
+        var logoutButton = document.getElementById('logout-button');
+        var signupButton = document.getElementById('signup-button');
+
+        // Hide everything until we know if the user is logged in or not
+
+        authenticatedContainer.style.display = 'none';
+        unauthenticatedContainer.style.display = 'none';
+
+        // Setup some click handlers, so that we can invoke the Stormpath widget
+        // when the user clicks the buttons in our application.
+
+        loginButton.addEventListener('click', function () {
+          stormpath.showLogin();
+        });
+
+        signupButton.addEventListener('click', function () {
+          stormpath.showRegistration();
+        });
+
+        logoutButton.addEventListener('click', function () {
+          stormpath.logout();
+        });
+
+        // These handlers watch the URL for email verification of password reset
+        // links, and triggers those flows with the Widget.
+
+        if ((/#verify/).test(window.location.href)) {
+          stormpath.showEmailVerification();
+        }
+
+        if ((/#change-password/).test(window.location.href)) {
+          stormpath.showChangePassword();
+        }
+
+        // Now we setup our event handlers, to respond to the authentication
+        // state that Stormpath provides.
+
+        stormpath.on('authenticated', function () {
+
+          // This event is fired once we know that the user is authenticated,
+          // this can fire on login, or on page reload when the user is already
+          // logged in.
+
+          console.log('We\'re authenticated!');
+
+          // Hide the Stormpath widget
+
+          stormpath.remove();
+
+          // Hide our loading indicator, and show the authenticated state
+
+          loadingIndicator.style.display = 'none';
+          authenticatedContainer.style.display = 'block';
+          unauthenticatedContainer.style.display = 'none';
+
+          // Get the user's account so that we can show them their name
+
+          stormpath.getAccount().then(function (account) {
+            document.getElementById('account-full-name').innerHTML = account.givenName;
+          });
+
+          // Get the user's current access token and show it
+
+          stormpath.getAccessToken().then(function (accessToken) {
+            if (!accessToken) {
+              accessToken = '(none, in cookie mode)';
+            }
+
+            accessTokenContainer.innerHTML = accessToken;
+          });
+        });
+
+        stormpath.on('unauthenticated', function () {
+
+          // This event is fired once Stormpath has determined that the user is
+          // not logged in.  In this case we show our Login and Signup buttons.
+
+          console.log('We\'re not authenticated. Showing login/registration options.');
+
+          loadingIndicator.style.display = 'none';
+          authenticatedContainer.style.display = 'none';
+          unauthenticatedContainer.style.display = 'block';
+
+        });
+
+        stormpath.on('forgotPasswordSent', function (data) {
+          console.log('User just requested to reset his password!', data);
+        });
+
+        stormpath.on('changedPassword', function () {
+          console.log('User just changed his password!');
+        });
+
+        stormpath.once('registered', function (account) {
+          console.log('User just created a new account!', account);
+        });
+
+        stormpath.once('loggedIn', function (account) {
+          console.log('User just logged in!', account);
+        });
+
+        stormpath.once('loggedOut', function () {
+          console.log('User just logged out!');
+        });
+
+        stormpath.on('loginError', function (error) {
+          console.error(error);
+        });
+      }
+
+      window.onload = onDocumentReady;
+    </script>
+  </head>
+
+  <body>
+    <div class="header">
+        <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
+            <a class="pure-menu-heading" href="">Demo</a>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="content">
+
+        <h1 class="splash-head">Stormpath Widget</h1>
+
+        <div class="loader" id="loading-indicator">Loading...</div>
+
+        <!-- This div will be shown when the user is logged in. The widget's 'authenticated' event will show or hide it. -->
+        <div id="authenticated">
+          <p class="splash-subhead">
+            Hi <span id="account-full-name"></span>, you are logged in!
+          </p>
+
+          <p>
+            This is your access token:
+          </p>
+          <p id="access-token" class="content"></p>
+          <p>
+            <a id="logout-button" class="pure-button pure-button-primary">Log out</a>
+          </p>
+        </div>
+
+        <!-- This div will be shown when the user is NOT logged in. -->
+        <div id="unauthenticated">
+          <p class="splash-subhead">
+            Click one of these handy buttons:
+          </p>
+          <p>
+            <a id="login-button" class="pure-button pure-button-primary">Log in</a>
+            <a id="signup-button" class="pure-button pure-button-primary">Sign up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+        View the source of this page to learn how it's done! Layout by <a href="https://purecss.io">Pure CSS</a>.
+    </div>
+
+  </body>
+</html>

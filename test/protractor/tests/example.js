@@ -16,8 +16,4 @@ describe('Example App', () => {
   it('should have a registration button', () => {
     expect(app.registerButton().isVisible()).to.eventually.equal(true);
   });
-
-  it('should have a forgot password button', () => {
-    expect(app.forgotPasswordButton().isVisible()).to.eventually.equal(true);
-  });
 });

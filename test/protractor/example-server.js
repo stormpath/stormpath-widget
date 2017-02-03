@@ -8,13 +8,29 @@ class ExampleServer {
     const app = this.app = express();
     const deferred = q.defer();
 
-    var html = fs.readFileSync(path.join(__dirname, '..', '..', 'example', 'login', 'index.html'), 'utf8');
+    /**
+     * Fetch the example app, and replace the default CDN script location with the URL
+     * where webpack will serve the built JS asset.
+     *
+     * Also replace the placholder for the Client API domain
+     */
+
+    var html = fs.readFileSync(path.join(__dirname, '..', '..', 'example', 'index.html'), 'utf8');
 
     html = html.replace('YOUR_CLIENT_API_DOMAIN', clientApiDomain);
+    html = html.replace(
+      '<script src="https://cdn.stormpath.io/widget/0.x/stormpath.min.js"></script>',
+     '<script src="js/app.js"></script>');
+
+    // This will render the index.html as the root response:
 
     app.get('/', (req, res) => {
       res.send(html);
     });
+
+    // This will allow the CSS to be loaded:
+
+    app.use('/', express.static(path.join(__dirname, '..', '..', 'example')));
 
     app.get('/js/app.js', (req, res) => {
       res.sendFile(path.join(__dirname, '..', '..', 'dist', 'stormpath.js'));
