@@ -47,6 +47,7 @@ class Stormpath extends EventEmitter {
     options.authStrategy = AuthStrategy.resolve(options.authStrategy, options.appUri);
     this.userService = this._createUserService(options.authStrategy, options.appUri);
 
+    this._handleSocialProviderCallbackError();
     this._initializeUserServiceEvents();
     this._preloadViewModels();
 
@@ -65,6 +66,18 @@ class Stormpath extends EventEmitter {
 
   static getInstance() {
     return Stormpath.instance;
+  }
+
+  _handleSocialProviderCallbackError() {
+    const parsedQueryString = utils.parseQueryString(window.location.search);
+    const errorCode = parsedQueryString.error;
+    const errorDescription = parsedQueryString.error_description;
+
+    if (errorCode && errorDescription) {
+      const socialProviderError = new Error('Social provider callback error (' + errorCode + '): ' + errorDescription);
+      socialProviderError.error = errorCode;
+      this.emit('error', socialProviderError);
+    }
   }
 
   _createUserService(authStrategy, appUri) {
