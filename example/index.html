@@ -166,7 +166,9 @@
 
         <h1 class="splash-head">Stormpath Widget</h1>
 
-        <!-- This div will be shown when the user is logged in. The widget's 'authenticated'' event will show or hide it. -->
+        <div class="loader" id="loading-indicator">Loading...</div>
+
+        <!-- This div will be shown when the user is logged in. The widget's 'authenticated' event will show or hide it. -->
         <div id="authenticated">
           <p class="splash-subhead">
             Hi <span id="account-full-name"></span>, you are logged in!
@@ -180,14 +182,6 @@
             <a id="logout-button" class="pure-button pure-button-primary">Log out</a>
           </p>
         </div>
-
-        <div class="sp-submit-btn" type="submit" id="loading-indicator">
-          <div class="sp-anim-container" >
-            <div class="sp-spinner"></div>
-          </div>
-          <div class="sp-anim-container" ></div>
-        </div>
-
 
         <!-- This div will be shown when the user is NOT logged in. -->
         <div id="unauthenticated">
