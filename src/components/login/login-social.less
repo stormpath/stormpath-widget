@@ -11,7 +11,6 @@
 @color-saml: #999;
 
 .sp-login-component {
-
   .sp-social-separator {
     width: 100%;
     text-align: center;
@@ -29,6 +28,11 @@
 
   .sp-login-social {
     padding: 10px 0 20px 0;
+
+    .image-properties() {
+      background-repeat: no-repeat;
+      background-position: 12px center;
+    }
 
     &.sp-login-social-sm {
       display: flex;
@@ -62,13 +66,9 @@
     }
 
     &.sp-login-social-sm .sp-login-btn {
+      background-position: center center;
       width: @social-icon-width * 2;
       margin: 0 8px 0 8px;
-    }
-
-    .image-properties() {
-      background-repeat: no-repeat;
-      background-position: center;
     }
 
     .generator-button-states(@name, @initialColor) {
