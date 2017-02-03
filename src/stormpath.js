@@ -17,6 +17,7 @@ import {
 } from './data';
 
 class Stormpath extends EventEmitter {
+  static instance;
   static prefix = 'sp';
   static version = pkg.version;
 
@@ -31,6 +32,12 @@ class Stormpath extends EventEmitter {
 
   constructor(options) {
     super();
+
+    if (Stormpath.instance) {
+      throw new Error('It\'s only possible to initialize Stormpath once. To retrieve the already initialized instance, use Stormpath.getInstance().');
+    }
+
+    Stormpath.instance = this;
 
     // This needs to be fixed so that provided options override default.
     this.options = options = extend(this.options, options);
@@ -54,6 +61,10 @@ class Stormpath extends EventEmitter {
     // This needs to happen after the ctor is done so any code after
     // new Stormpath() can set up event hooks watching for `loginError`
     setTimeout(this._handleCallbackResponse.bind(this));
+  }
+
+  static getInstance() {
+    return Stormpath.instance;
   }
 
   _createUserService(authStrategy, appUri) {
@@ -168,6 +179,7 @@ class Stormpath extends EventEmitter {
   remove() {
     return this.viewManager.remove();
   }
+
 }
 
 export default Stormpath;

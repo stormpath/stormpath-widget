@@ -1,21 +1,81 @@
+import ButtonObject from './button';
+import LoginComponentObject from './login-component';
+import RegistrationComponentObject from './registration-component';
+import ForgotPasswordComponentObject from './forgot-password-component';
+import stormpath from 'stormpath';
+import uuid from 'uuid';
+import WindowProxy from '../proxies/window';
+
 class ExampleApp {
-  clickLoginButton() {
-    this.loginButton().click();
+
+  static account;
+
+  constructor() {
+    this.createTestAccount();
+  }
+
+  createTestAccount() {
+    const spClient = new stormpath.Client();
+    spClient.getApplication(process.env.STORMPATH_APPLICATION_HREF, (err, application) => {
+
+      const newAccount = {
+        givenName: uuid.v4(),
+        surname: uuid.v4(),
+        email: 'robert+' + uuid.v4() + '@stormpath.com',
+        password: uuid.v4() + uuid.v4().toUpperCase() + '!'
+      };
+
+      application.createAccount(newAccount, (err, account) => {
+        if (err) {
+          throw err;
+        }
+        this.account = account;
+        this.account.password = newAccount.password;
+      });
+
+    });
   }
 
   loadAt(url) {
-    browser.get(url);
+    // Clear storage to ensure we have a clean slate.
+    return WindowProxy.clearStorage().then(() => {
+      return browser.get(url);
+    });
+  }
 
-    // Allow the view models to settle
-    return browser.sleep(2000);
+  getLoginWidgetContainer() {
+    return Promise.resolve(by.css('.sp-modal'));
   }
 
   loginButton() {
-    return element(by.id('login-button')).isDisplayed();
+    return new ButtonObject(
+      by.id('login-button'),
+      this.getLoginWidgetContainer().then((selector) => {
+        return new LoginComponentObject(selector);
+      })
+    );
   }
 
-  hasLoginButton() {
-    return element(by.id('login-button')).isDisplayed();
+  registerButton() {
+    return new ButtonObject(
+      by.id('register-button'),
+      this.getLoginWidgetContainer().then((selector) => {
+        return new RegistrationComponentObject(selector);
+      })
+    );
+  }
+
+  forgotPasswordButton() {
+    return new ButtonObject(
+      by.id('forgot-password-button'),
+      this.getLoginWidgetContainer().then((selector) => {
+        return new ForgotPasswordComponentObject(selector);
+      })
+    );
+  }
+
+  logoutButton() {
+    return new ButtonObject(by.id('logout-button'));
   }
 }
 
