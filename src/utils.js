@@ -220,6 +220,35 @@ class Utils {
 
     return newObj;
   }
+
+  hyphensToCamelCase(str) {
+    if (!str) {
+      return str;
+    }
+
+    if (str.indexOf('-') === -1) {
+      return str;
+    }
+
+    var result = '';
+
+    for (let i = 0; i < str.length; i++) {
+      let c = str[i];
+
+      if (c !== '-') {
+        result += c;
+        continue;
+      }
+
+      i += 1;
+
+      if (i <= str.length - 1) {
+        result += str[i].toUpperCase();
+      }
+    }
+
+    return result;
+  }
 }
 
 export default new Utils();

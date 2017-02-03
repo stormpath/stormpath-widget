@@ -28,6 +28,7 @@ class Stormpath extends EventEmitter {
     appUri: null,
     authStrategy: null,
     container: null,
+    templates: null
   };
 
   constructor(options) {
