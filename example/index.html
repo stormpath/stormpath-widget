@@ -22,45 +22,53 @@
 
     <!-- Include code to activate the widget when you click specific buttons -->
     <script>
-      console.log('Loaded Stormpath v%s.', Stormpath.version);
+      function onDocumentReady() {
 
-      function initializeView(stormpath) {
-        // Authenticated
+        var stormpath = new Stormpath({
+          appUri: 'YOUR_CLIENT_API_DOMAIN'
+        });
+
+        console.log('Loaded Stormpath v%s.', Stormpath.version);
+
         var authenticatedContainer = document.getElementById('authenticated');
+        var unauthenticatedContainer = document.getElementById('unauthenticated');
+        var loadingIndicator = document.getElementById('loading-indicator');
         var loginButton = document.getElementById('login-button');
+        var logoutButton = document.getElementById('logout-button');
         var signupButton = document.getElementById('signup-button');
 
         authenticatedContainer.style.display = 'none';
-        loginButton.addEventListener('click', function() { stormpath.showLogin(); });
-        signupButton.addEventListener('click', function() { stormpath.showRegistration(); });
 
-        // Unauthenticated
-        var unauthenticatedContainer = document.getElementById('unauthenticated');
-        var logoutButton = document.getElementById('logout-button');
+        loginButton.addEventListener('click', function () {
+          stormpath.showLogin();
+        });
+
+        signupButton.addEventListener('click', function () {
+          stormpath.showRegistration();
+        });
 
         unauthenticatedContainer.style.display = 'none';
-        logoutButton.addEventListener('click', function() { stormpath.logout(); });
+
+        logoutButton.addEventListener('click', function () {
+          stormpath.logout();
+        });
 
         if ((/#verify/).test(window.location.href)) {
           stormpath.showEmailVerification();
         }
-      }
-
-      function onDocumentReady() {
-        var stormpath = new Stormpath({
-          appUri: 'YOUR_CLIENT_API_DOMAIN'
-        });
 
         if ((/#change-password/).test(window.location.href)) {
           stormpath.showChangePassword();
         }
 
-        stormpath.on('authenticated', function() {
+        stormpath.on('authenticated', function () {
+
           console.log('We\'re authenticated!');
 
           stormpath.remove();
+          loadingIndicator.style.display = 'none';
 
-          document.getElementById('authenticated').style.display = 'block';
+          authenticatedContainer.style.display = 'block';
           document.getElementById('unauthenticated').style.display = 'none';
 
           stormpath.getAccount().then(function (account) {
@@ -69,25 +77,25 @@
 
           stormpath.getAccessToken().then(function (accessToken) {
             if (!accessToken) {
-              accessToken = "(none, in cookie mode)";
+              accessToken = '(none, in cookie mode)';
             }
 
             document.getElementById('access-token').innerHTML = accessToken;
           });
         });
 
-        stormpath.on('unauthenticated', function() {
+        stormpath.on('unauthenticated', function () {
+          loadingIndicator.style.display = 'none';
+          authenticatedContainer.style.display = 'none';
+          unauthenticatedContainer.style.display = 'block';
           console.log('We\'re not authenticated. Showing login/registration options.');
-
-          document.getElementById('authenticated').style.display = 'none';
-          document.getElementById('unauthenticated').style.display = 'block';
         });
 
         stormpath.on('forgotPasswordSent', function (data) {
           console.log('User just requested to reset his password!', data);
         });
 
-        stormpath.on('changedPassword', function() {
+        stormpath.on('changedPassword', function () {
           console.log('User just changed his password!');
         });
 
@@ -106,8 +114,6 @@
         stormpath.on('loginError', function (error) {
           console.error(error);
         });
-
-        initializeView(stormpath);
       }
 
       window.onload = onDocumentReady;
@@ -123,6 +129,7 @@
 
     <div class="content-wrapper">
       <div class="content">
+
         <h1 class="splash-head">Stormpath Widget</h1>
 
         <!-- This div will be shown when the user is logged in.
@@ -140,6 +147,14 @@
             <a id="logout-button" class="pure-button pure-button-primary">Log out</a>
           </p>
         </div>
+
+        <div class="sp-submit-btn" type="submit" id="loading-indicator">
+          <div class="sp-anim-container" >
+            <div class="sp-spinner"></div>
+          </div>
+          <div class="sp-anim-container" ></div>
+        </div>
+
 
         <!-- This div will be shown when the user is NOT logged in. -->
         <div id="unauthenticated">
