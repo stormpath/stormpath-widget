@@ -134,7 +134,6 @@ class Utils {
       }
 
       try {
-        value = (value || '').replace(/\+/gim, '%20'); // Convert + to %20.
         value = decodeURIComponent(value);
       } catch (e) {
         value = undefined;
