@@ -94,7 +94,7 @@
         });
 
         stormpath.on('loginError', function (error) {
-          console.log('An error occured during social login: ', error);
+          console.error(error);
         });
 
         initializeView(stormpath);

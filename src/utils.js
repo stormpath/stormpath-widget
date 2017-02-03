@@ -134,7 +134,7 @@ class Utils {
       }
 
       try {
-        value = decodeURIComponent(value || '');
+        value = decodeURIComponent(value);
       } catch (e) {
         value = undefined;
       }

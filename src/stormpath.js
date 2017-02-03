@@ -120,11 +120,12 @@ class Stormpath extends EventEmitter {
 
   _handleCallbackResponse() {
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
+    const error = parsedQueryString.error;
+    const error_description = parsedQueryString.error_description;
 
-    if (parsedQueryString.error || parsedQueryString.error_description) {
-      // TODO: Render human-readable errors in UI somewhere...
-      // The full list of error codes is here: https://tools.ietf.org/html/rfc6749#section-4.1.2.1
-      this.emit('loginError', parsedQueryString.error);
+    if (error) {
+      const errorMessage = 'Provider Callback Error: ' + error + (error_description ? (' (' + error_description + ')') : '');
+      this.emit('loginError', new Error(errorMessage));
     }
 
     const assertionToken = parsedQueryString.jwtResponse;
