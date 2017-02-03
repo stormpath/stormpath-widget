@@ -23,7 +23,7 @@
 
     <fieldset class="sp-form-group">
       <sp-form-fields fields="fields" name-prefix="'sp-form-login'"></sp-form-fields>
-      <a rv-on-click="viewManager.showForgotPassword">Forgot password?</a>
+      <a rv-show="props.canRequestPasswordReset" rv-on-click="viewManager.showForgotPassword">Forgot password?</a>
     </fieldset>
 
     <div class="sp-form-group">
@@ -31,6 +31,6 @@
     </div>
 
     <hr>
-    <span class="sp-light">Don't have an account?</span> <a class="sp-right" rv-on-click="viewManager.showRegistration">Sign up</a>
+    <span rv-show="props.canRegister" class="sp-light">Don't have an account?</span> <a class="sp-right" rv-on-click="viewManager.showRegistration">Sign up</a>
   </form>
 </div>

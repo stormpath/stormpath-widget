@@ -91,6 +91,10 @@ class ClientApiUserService extends EventEmitter {
     });
   }
 
+  getForgotEndpointResponse() {
+    return this.httpProvider.getJson('/forgot');
+  }
+
   getLoginViewModel() {
     return this.httpProvider.getJson('/login');
   }

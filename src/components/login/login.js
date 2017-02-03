@@ -19,6 +19,8 @@ class LoginComponent {
     showButtons: LoginComponent.maxInitialButtons,
     showMoreButton: false,
     isSubmitting: false,
+    canRegister: false,
+    canRequestPasswordReset: false,
   };
 
   constructor(data) {
@@ -45,6 +47,15 @@ class LoginComponent {
       this.userService.getLoginViewModel()
         .then(this.onViewModelLoaded.bind(this))
         .catch(this.onError.bind(this, 'loading_error'));
+
+      this.userService.getRegistrationViewModel()
+        .then(() => this.props.canRegister = true)
+        .catch(() => this.props.canRegister = false);
+
+      // If we get a 405 from this endpoint on Client API, it means that it is
+      // enabled on Client API.  If it 404's, it is not enabled.
+      this.userService.getForgotEndpointResponse()
+        .catch((err) => this.props.canRequestPasswordReset = err.status === 405);
     });
   }
 

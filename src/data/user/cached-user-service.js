@@ -33,6 +33,10 @@ class CachedUserService {
     });
   }
 
+  getForgotEndpointResponse() {
+    return this._cachedPromise('forgot-endpoint-response', () => this.userService.getForgotEndpointResponse());
+  }
+
   getLoginViewModel() {
     return this._cachedPromise('login-view', () => this.userService.getLoginViewModel());
   }
