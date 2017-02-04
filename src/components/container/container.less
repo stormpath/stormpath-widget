@@ -13,9 +13,11 @@
   font-size: 0.8rem;
   line-height: 1.2rem;
   color: @color-text;
-  width: @container-width;
+
+  box-sizing: border-box;
+  width: @container-width + (@spacing * 2);
   min-height: @container-width;
-  padding: (@spacing - 10px) 0 (@spacing - 10px) @spacing;
+  padding: (@spacing - 10px) @spacing (@spacing - 10px) @spacing;
 
   .sp-title {
     font-weight: 400;
