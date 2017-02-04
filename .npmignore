@@ -1,0 +1,5 @@
+coverage/
+dist/
+example/
+test/
+staging/

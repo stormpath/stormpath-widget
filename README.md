@@ -1,25 +1,25 @@
-# Stormpath Login Widget
+# Stormpath Widget
 
 Add beautiful login, registration, and multi-factor authentication screens to your app in only a few lines of code!  To get started, please signup for a free developer account at https://api.stormpath.com/register.
 
 ## Table of contents
 
-- [Installing the widget](#installing-the-widget)
-- [Using the widget](#using-the-widget)
-- [Customizing the widget](#customizing-the-widget) 
+- [Installation](#installation)
+- [Usage](#usage)
+- [Customization](#customization) 
 - [Reference](#reference)
   - [API](#api)
   - [Events](#events)
 
-## Installing the widget
+## Installation
 
-Ready to add authentiction to your application?  Simply add a reference to the Stormpath widget in your HTML code:
+Ready to add authentication to your application?  Simply add a reference to the Stormpath widget in your HTML code:
 
 ```html
-<script src="https://cdn.stormpath.io/0.x/latest/stormpath.min.js"></script>
+<script src="https://cdn.stormpath.io/widget/0.x/stormpath.min.js"></script>
 ```
 
-The login widget uses the [Stormpath Client API][] to authenticate the user.  Every Stormpath Application has a Client API domain, you can find the domain in the Stormpath Admin Console, under the application's "Policies" menu.  Once you have obtained the URL, configure the widget in your front-end application:
+The widget uses the [Stormpath Client API][] to authenticate the user.  Every Stormpath Application has a Client API domain, you can find the domain in the Stormpath Admin Console, under the application's "Policies" menu.  Once you have obtained the URL, configure the widget in your front-end application:
 
 ```html
 <script>
@@ -29,7 +29,7 @@ The login widget uses the [Stormpath Client API][] to authenticate the user.  Ev
 </script>
 ```
 
-## Using the widget
+## Usage
 
 > :bulb: To see a full code example, check out our [example application](example/index.html).
 
@@ -76,7 +76,7 @@ var stormpath = window.stormpath = new Stormpath({
 
 You can remove the rendered elements from the DOM at any time by calling `stormpath.remove()`.
 
-## Customizing the widget
+## Customization
 
 The widget includes a set of default styles and templates that work out-of-the-box. If you want the widget to better match the existing look and feel of your site, you can override the styles, or provide your own templates.
 
@@ -98,7 +98,7 @@ If you need to make changes to the HTML elements themselves, you'll need to prov
 
 ### Customizing the templates
 
-The views the widget renders are split up into logical [components](https://github.com/stormpath/stormpath-widget/tree/master/src/components): login, registration, forgot password, and so on. Each one of these components has a default HTML template that can be replaced with your own HTML.
+The views the widget renders are split up into logical [components](https://github.com/stormpath/stormpath-widget/tree/master/src/components), e.g. login, registration, forgot password, and so on. Each one of these components has a default HTML template that can be replaced with your own HTML.
 
 To specify a custom template, pass a `templates` hash when initializing the `Stormpath` object:
 
