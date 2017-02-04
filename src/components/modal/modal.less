@@ -18,19 +18,30 @@
 .sp-modal {
   display: none;
   outline: none;
-
+  box-sizing: border-box;
   font-family: @font;
+
+  background-color: white;
+  width: @modal-width;
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  margin-left: round(@modal-width / -2);
+  z-index: @modal-z + 1;
+  overflow: hidden;
+
+  @media only screen and (max-width : 450px) {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    margin: 0;
+    overflow-y: scroll;
+  }
 
   &.sp-active {
     display: block;
-    background-color: white;
-    width: @modal-width;
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    margin-left: round(@modal-width / -2);
-    z-index: @modal-z + 1;
-    overflow: hidden;
+
   }
 
   .sp-modal-header {
@@ -63,6 +74,8 @@
   }
 
   .sp-modal-content {
+    display: flex;
+    justify-content: center;
 
     .sp-container {
       min-height: @container-width - @modal-titlebar-height;
