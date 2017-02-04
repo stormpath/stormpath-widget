@@ -4,14 +4,14 @@ Add beautiful login, registration, and multi-factor authentication screens to yo
 
 ## Table of contents
 
-- [Installing](#installing)
+- [Installation](#installation)
 - [Usage](#usage)
-- [Customizing](#customizing) 
+- [Customization](#customization) 
 - [Reference](#reference)
   - [API](#api)
   - [Events](#events)
 
-## Installing
+## Installation
 
 Ready to add authentication to your application?  Simply add a reference to the Stormpath widget in your HTML code:
 
@@ -76,7 +76,7 @@ var stormpath = window.stormpath = new Stormpath({
 
 You can remove the rendered elements from the DOM at any time by calling `stormpath.remove()`.
 
-## Customizing
+## Customization
 
 The widget includes a set of default styles and templates that work out-of-the-box. If you want the widget to better match the existing look and feel of your site, you can override the styles, or provide your own templates.
 
