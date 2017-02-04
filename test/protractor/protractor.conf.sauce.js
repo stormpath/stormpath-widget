@@ -16,6 +16,7 @@ if (process.env.TRAVIS_COMMIT) {
   baseConfig.sauceBuild += ` (${os.hostname()} ${new Date().toISOString()})`;
 }
 
+/* eslint-disable no-console */
 console.log(`Running SauceLabs build ${baseConfig.sauceBuild}`);
 
 baseConfig.multiCapabilities = [
