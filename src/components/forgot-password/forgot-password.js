@@ -1,11 +1,9 @@
 import utils from '../../utils';
 import view from 'html!./forgot-password.html';
-import style from '!style-loader!css-loader!less-loader!./forgot-password.less';
 
 class ForgotPasswordComponent {
   static id = 'forgot-password-component';
   static view = view;
-  static style = style;
 
   state = 'ready';
 

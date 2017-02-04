@@ -1,4 +1,4 @@
-@import "variables.less";
+@import (reference) "variables.less";
 
 @social-icon-width: 24px;
 @social-icon-padding: 24px;
@@ -35,6 +35,7 @@
     justify-content: center;
     align-items: center;
     width: @container-width;
+    margin-bottom: -10px;
   }
 
   .sp-social-login-btn {
@@ -62,7 +63,7 @@
   &.sp-social-login-sm .sp-social-login-btn {
     background-position: center center;
     width: @social-icon-width * 2;
-    margin: 0 8px 0 8px;
+    margin: 0 8px 10px 8px;
   }
 
   .image-properties() {

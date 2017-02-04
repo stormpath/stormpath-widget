@@ -1,8 +1,41 @@
-@import "variables.less";
+@import (reference) "variables.less";
 
 .sp-anim-container {
   position: relative; // Workaround IE child opacity bug
 }
+
+// Spinner animation --
+
+.generator-spinner(@radius, @color, @bgColor) {
+
+  width: 0px;
+  height: 0px;
+  border-radius: @radius;
+  border: @radius solid @color;
+  border-top-color: transparent;
+  margin: auto;
+  position: relative;
+  -webkit-animation: waitSpin 1.5s infinite linear;
+  animation: waitSpin 1.5s infinite linear;
+
+  @innerRadius: @radius * 1.6;
+
+  &:after {
+    background-color: @bgColor;
+    border-radius: 50%;
+    width: @innerRadius;
+    height: @innerRadius;
+    position: absolute;
+    content: '';
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: @innerRadius / -2;
+  }
+
+}
+
+// Animation definitions --
 
 @-webkit-keyframes waitSpin {
   from {

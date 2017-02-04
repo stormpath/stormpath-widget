@@ -1,11 +1,9 @@
 import utils from '../../utils';
 import view from 'html!./change-password.html';
-import style from '!style-loader!css-loader!less-loader!./change-password.less';
 
 class ChangePasswordComponent {
   static id = 'change-password-component';
   static view = view;
-  static style = style;
 
   fields = [{
     label: 'Password',

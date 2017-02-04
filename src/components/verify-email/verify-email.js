@@ -1,11 +1,9 @@
 import utils from '../../utils';
 import view from 'html!./verify-email.html';
-import style from '!style-loader!css-loader!less-loader!./verify-email.less';
 
 class VerifyEmailComponent {
   static id = 'verify-email-component';
   static view = view;
-  static style = style;
 
   state = null;
   token = null;

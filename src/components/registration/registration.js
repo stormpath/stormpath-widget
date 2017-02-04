@@ -1,11 +1,9 @@
 import utils from '../../utils';
 import view from 'html!./registration.html';
-import style from '!style-loader!css-loader!less-loader!./registration.less';
 
 class RegistrationComponent {
   static id = 'registration-component';
   static view = view;
-  static style = style;
   static maxInitialButtons = 4;
 
   fields = [];
