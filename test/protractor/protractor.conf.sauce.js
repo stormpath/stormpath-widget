@@ -10,7 +10,9 @@ delete baseConfig.capabilities;
 
 baseConfig.sauceBuild = baseConfig.pkg.name;
 
-if (process.env.TRAVIS_COMMIT) {
+if (process.env.TRAVIS_PULL_REQUEST) {
+  baseConfig.sauceBuild += ` (travis PR ${process.env.TRAVIS_PULL_REQUEST})`;
+} else if (process.env.TRAVIS_COMMIT) {
   baseConfig.sauceBuild += ` (travis commit ${process.env.TRAVIS_COMMIT})`;
 } else {
   baseConfig.sauceBuild += ` (${os.hostname()} ${new Date().toISOString()})`;
