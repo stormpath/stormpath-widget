@@ -121,10 +121,10 @@ class Stormpath extends EventEmitter {
   _handleCallbackResponse() {
     const parsedQueryString = utils.parseQueryString(utils.getWindowQueryString());
     const error = parsedQueryString.error;
-    const error_description = parsedQueryString.error_description;
+    const errorDescription = parsedQueryString.error_description;
 
     if (error) {
-      const errorMessage = 'Provider Callback Error: ' + error + (error_description ? (' (' + error_description + ')') : '');
+      const errorMessage = 'Provider Callback Error: ' + error + (errorDescription ? (' (' + errorDescription + ')') : '');
       this.emit('loginError', new Error(errorMessage));
     }
 

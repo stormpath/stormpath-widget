@@ -304,6 +304,13 @@ describe('utils', () => {
         assert.deepEqual(parsedQueryString, { specialCharacters: '&?' });
       });
     });
+
+    describe('when queryString is \'error_description=foo+bar\'', () => {
+      it('should return { error_description: \'foo bar\' }', () => {
+        const parsedQueryString = utils.parseQueryString('error_description=foo+bar');
+        assert.deepEqual(parsedQueryString, { error_description: 'foo bar' });
+      });
+    });
   });
 
   describe('.prefix(name, prefix, separator)', () => {
