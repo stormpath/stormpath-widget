@@ -1,4 +1,5 @@
 import { config as baseConfig } from './protractor.conf.js';
+import os from 'os';
 
 baseConfig.directConnect = false;
 
@@ -8,6 +9,17 @@ baseConfig.sauceKey = process.env.SAUCE_ACCESS_KEY;
 delete baseConfig.capabilities;
 
 baseConfig.sauceBuild = baseConfig.pkg.name;
+
+if (process.env.TRAVIS_PULL_REQUEST !== 'false') {
+  baseConfig.sauceBuild += ` (travis PR ${process.env.TRAVIS_PULL_REQUEST})`;
+} else if (process.env.TRAVIS_COMMIT) {
+  baseConfig.sauceBuild += ` (travis commit ${process.env.TRAVIS_COMMIT})`;
+} else {
+  baseConfig.sauceBuild += ` (${os.hostname()} ${new Date().toISOString()})`;
+}
+
+/* eslint-disable no-console */
+console.log(`Running SauceLabs build ${baseConfig.sauceBuild}`);
 
 baseConfig.multiCapabilities = [
   {
