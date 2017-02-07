@@ -1,0 +1,71 @@
+@import "../common/icons.less";
+
+.sp-mfa-enroll-component, .sp-mfa-challenge-component {
+    .sp-mfa-title {
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 21px;
+        color: #364052;
+    }
+
+    .sp-action-message {
+        background-color: #8799AD;
+        color: #fff;
+        padding: 5px;
+    }
+
+    .sp-factors {
+        .sp-factor {
+            .sp-factor-title {
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 500;
+                line-height: 19px;
+                color: #0063FF;
+                margin-bottom: 5px;
+
+                span {
+                    margin-right: 10px;
+                }
+            }
+
+            .sp-factor-description {
+                margin-left: 30px;
+                color: #8799AD;
+            }
+        }
+    }
+
+    .sp-google-authenticator .sp-mfa-title {
+        text-align: center;
+    }
+
+    .sp-google-authenticator {
+        .sp-mfa-qr-code-image {
+            padding-bottom: 0px;
+            margin-bottom: 0px;
+        }
+
+        .sp-mfa-secret {
+            margin-top: 0px;
+            padding-top: 0px;
+            padding-bottom: 10px;
+        }
+
+        .sp-mfa-qr-code-image, .sp-mfa-secret {
+            text-align: center;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    }
+
+    .sp-mfa-setup.sp-google-authenticator {
+        .sp-mfa-step-1 .sp-mfa-icons, .sp-mfa-header {
+            text-align: center;
+        }
+    }
+
+    .sp-loader {
+        top: 30px;
+    }
+}

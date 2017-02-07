@@ -1,6 +1,26 @@
 const jwtExpression = /^[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+$/;
 
 class Utils {
+  tryParseJson(data) {
+    try {
+      return JSON.parse(data);
+    } catch (otherErr) {
+      return false;
+    }
+  }
+
+  getClosestDataAttribute(element, name) {
+    if (element.dataset[name]) {
+      return element.dataset[name];
+    }
+
+    if (element.parentNode) {
+      return this.getClosestDataAttribute(element.parentNode, name);
+    }
+
+    return false;
+  }
+
   // Takes an object array and remaps it to an object based on a key.
   mapArrayToObject(source, key) {
     if (!Array.isArray(source) || typeof key !== 'string') {

@@ -184,8 +184,25 @@ class Stormpath extends EventEmitter {
     this.viewManager.showEmailVerification(token || parsedQueryString.sptoken);
   }
 
+  showEnrollMfa(type) {
+    let selectedFactor;
+
+    if (type) {
+      selectedFactor = {
+        id: type,
+        type: type
+      };
+    }
+
+    this.viewManager.showEnrollMfa({
+      section: selectedFactor ? 'setup' : 'select',
+      selectedFactor: selectedFactor
+    });
+  }
+
   logout() {
-    return this.userService.logout();
+    return this.userService.logout()
+      .then(this.remove.bind(this));
   }
 
   remove() {

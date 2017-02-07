@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="112px" height="12px" viewBox="0 0 112 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>Dividers / Progress 1</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="180" cy="10" r="6"></circle>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="12" height="12" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+        <circle id="path-3" cx="130" cy="10" r="6"></circle>
+        <mask id="mask-4" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="12" height="12" fill="white">
+            <use xlink:href="#path-3"></use>
+        </mask>
+    </defs>
+    <g id="MFA" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="MFA---Enrollment-Google-1" transform="translate(-104.000000, -127.000000)">
+            <g id="Dividers-/-Progress-1" transform="translate(30.000000, 123.000000)">
+                <path d="M130,10 L180,10" id="Rule-Right" stroke="#B7C2CE" stroke-width="2" stroke-linecap="square"></path>
+                <path d="M80,10 L130,10" id="Rule-Left" stroke="#B7C2CE" stroke-width="2" stroke-linecap="square"></path>
+                <use id="Circle-3" stroke="#B7C2CE" mask="url(#mask-2)" stroke-width="4" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                <use id="Circle-2" stroke="#B7C2CE" mask="url(#mask-4)" stroke-width="4" fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-3"></use>
+                <circle id="Circle-1" fill="#171A22" fill-rule="evenodd" cx="80" cy="10" r="6"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

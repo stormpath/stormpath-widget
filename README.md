@@ -8,7 +8,7 @@ Add beautiful login, registration, and multi-factor authentication screens to yo
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Customization](#customization) 
+- [Customization](#customization)
 - [Reference](#reference)
   - [API](#api)
   - [Events](#events)
@@ -196,6 +196,10 @@ if ((/#change-password/).test(window.location.href)) {
   stormpath.showChangePassword();
 }
 ```
+
+#### showEnrollMfa(type)
+
+Shows the MFA flow for enrolling a specific factor. Available types are `google-authenticator` and `sms`.
 
 #### showEmailVerification(sptoken)
 

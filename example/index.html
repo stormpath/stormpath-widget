@@ -42,6 +42,11 @@
         var loginButton = document.getElementById('login-button');
         var logoutButton = document.getElementById('logout-button');
         var signupButton = document.getElementById('signup-button');
+        var enrollSmsMfaButton = document.getElementById('enroll-sms-mfa-button');
+        var enrollGoogleAuthenticatorMfaButton = document.getElementById('enroll-google-authenticator-mfa-button');
+
+        logoutButton.addEventListener('click', function() { stormpath.logout(); });
+
 
         // Hide everything until we know if the user is logged in or not
 
@@ -61,6 +66,16 @@
 
         logoutButton.addEventListener('click', function () {
           stormpath.logout();
+        });
+
+        // MFA
+
+        enrollSmsMfaButton.addEventListener('click', function () {
+          stormpath.showEnrollMfa('sms');
+        });
+
+        enrollGoogleAuthenticatorMfaButton.addEventListener('click', function () {
+          stormpath.showEnrollMfa('google-authenticator');
         });
 
         // These handlers watch the URL for email verification of password reset
@@ -178,6 +193,10 @@
             This is your access token:
           </p>
           <p id="access-token" class="content"></p>
+          <p id="enroll-mfa">
+            <p><a id="enroll-sms-mfa-button" class="pure-button pure-button-primary">Enroll with SMS MFA</a></p>
+            <p><a id="enroll-google-authenticator-mfa-button" class="pure-button pure-button-primary">Enroll with Google Authenticator MFA</a></p>
+          </p>
           <p>
             <a id="logout-button" class="pure-button pure-button-primary">Log out</a>
           </p>

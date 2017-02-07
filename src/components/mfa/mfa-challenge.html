@@ -1,0 +1,87 @@
+<div class="sp-mfa-challenge-component">
+  <div class="sp-title">Verification Required</div>
+  <div class="sp-loader" rv-show="state | is 'loading'"></div>
+
+  <div rv-show="section | is 'select'">
+    <p>Choose a method to verify access to your account.</p>
+    <div class="sp-factors">
+      <div class="sp-factor" rv-each-factor="factors" rv-data-id="factor.id">
+        <p class="sp-factor-title" rv-on-click="selectFactor"><span rv-class="factor.iconId | prefix 'sp-icon-'"></span>{factor.title}</p>
+        <p class="sp-factor-description">{factor.description}</p>
+      </div>
+    </div>
+  </div>
+
+  <div rv-show="section | is 'challenge'">
+    <div rv-show="selectedFactor.id | is 'sms'">
+      <form rv-on-submit="onFormSubmit">
+        <div>
+          <p>We've just sent a code to {selectedFactor.hint}.</p>
+          <p rv-show="action | isnt 'verifyPhone'">Enter the code you receive here.</p>
+          <p rv-show="action | is 'verifyPhone'">Please verify your phone number by entering the code you receive here.</p>
+        </div>
+
+        <p rv-show="actionMessage" class="sp-action-message">
+          {actionMessage}
+        </p>
+
+        <fieldset class="sp-form-group">
+          <label for="sp-mfa-challenge-sms-code">Security code</label>
+          <input id="sp-mfa-challenge-sms-code"
+             type="text"
+             name="sms-code"
+             rv-value="selectedFactor.code"
+             placeholder="123456"
+             required="true" />
+
+          <p rv-show="errorMessage">
+            <span class="sp-icon-warning"></span> {errorMessage}
+          </p>
+        </fieldset>
+
+        <div class="sp-form-group">
+          <sp-submit-button label="'Continue'"></sp-submit-button>
+        </div>
+
+        <hr>
+
+        <div class="sp-mfa-challenge-actions">
+          <p><a rv-on-click="reSendSmsCode">Re-send code</a></p>
+          <!--p><a rv-on-click="changeSmsPhoneNumber">Change phone number</a></p-->
+        </div>
+      </form>
+    </div>
+
+    <div rv-show="selectedFactor.id | is 'google-authenticator'">
+      <form rv-on-submit="onFormSubmit">
+        <div>
+          <p>Open the Authenticator app on your mobile device, and enter the code shown.</p>
+        </div>
+
+        <fieldset class="sp-form-group">
+          <label for="sp-mfa-challenge-google-authenticator-code">Security code</label>
+          <input id="sp-mfa-google-authenticator-code"
+             type="text"
+             name="google-authenticator-code"
+             rv-value="selectedFactor.code"
+             placeholder="123456"
+             required="true" />
+
+          <p rv-show="errorMessage">
+            <span class="sp-icon-warning"></span> {errorMessage}
+          </p>
+        </fieldset>
+
+        <div class="sp-form-group">
+          <sp-submit-button label="'Continue'"></sp-submit-button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div rv-show="section | is 'complete'">
+    <p class="sp-text-success"><span class="sp-icon-success"></span> Verification successful</p>
+    <p>You'll be redirected to your application shortly.</p>
+    <p class="sp-loader"></p>
+  </div>
+</div>

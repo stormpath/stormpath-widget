@@ -67,9 +67,58 @@ class LoginComponent {
   }
 
   onError(state, err) {
-    this.error = err;
-    this.state = state;
-    this.props.isSubmitting = false;
+    switch (err.action) {
+      case 'factor_challenge':
+        this.viewManager.showChallengeMfa({
+          section: 'challenge',
+          state: err.state,
+          selectedFactor: {
+            id: err.factor.type.toLowerCase(),
+            ...err.factor
+          },
+          onComplete: () => {
+            if (this.autoClose) {
+              this.autoClose();
+            }
+          }
+        });
+        break;
+
+      case 'factor_enroll':
+        this.viewManager.showEnrollMfa({
+          section: 'enroll',
+          state: err.state,
+          factors: err.allowedFactorTypes.map((id) => {
+            return {
+              id: id
+            };
+          }),
+          onComplete: () => {
+            if (this.autoClose) {
+              this.autoClose();
+            }
+          }
+        });
+        break;
+
+      case 'factor_select':
+        this.viewManager.showChallengeMfa({
+          section: 'select',
+          factors: err.factors,
+          onComplete: () => {
+            if (this.autoClose) {
+              this.autoClose();
+            }
+          }
+        });
+        break;
+
+      default:
+        this.error = err;
+        this.state = state;
+        this.props.isSubmitting = false;
+        break;
+    }
   }
 
   onViewModelLoaded(data) {

@@ -16,9 +16,11 @@ class ClientApiUserService extends EventEmitter {
     }
   }
 
-  _getAuthorizationHeader() {
+  _getAuthorizationHeaders() {
     return this.tokenStorage.getAccessToken().then((accessToken) => {
-      return 'Bearer ' + accessToken;
+      return { Authorization: 'Bearer ' + accessToken };
+    }).catch(() => {
+      return Promise.resolve({});
     });
   }
 
@@ -72,11 +74,9 @@ class ClientApiUserService extends EventEmitter {
   }
 
   me() {
-    return this._getAuthorizationHeader().then((authorizationHeader) => {
+    return this._getAuthorizationHeaders().then((authHeaders) => {
       const options = {
-        headers: {
-          Authorization: authorizationHeader
-        }
+        headers: authHeaders
       };
 
       return this.httpProvider.getJson('/me', null, options).then((result) => {
@@ -179,6 +179,72 @@ class ClientApiUserService extends EventEmitter {
 
   verifyPasswordResetToken(token) {
     return this.httpProvider.getJson('/change?sptoken=' + token);
+  }
+
+  createFactor(data, state) {
+    return this._getAuthorizationHeaders().then((authHeaders) => {
+      let options = {};
+      let request = {
+        ...data
+      };
+
+      if (authHeaders) {
+        options.headers = authHeaders;
+      }
+
+      if (state) {
+        request.state = state;
+      }
+
+      return this.httpProvider.postJson('/factors?challenge=true', request, options);
+    });
+  }
+
+  createChallenge(state, data) {
+    return this._getAuthorizationHeaders().then((authHeaders) => {
+      let options = {};
+      let request = data || {};
+
+      if (authHeaders) {
+        options.headers = authHeaders;
+      }
+
+      if (state) {
+        request.state = state;
+      }
+
+      return this.httpProvider.postJson('/challenges', request, options);
+    });
+  }
+
+  loginWithChallenge(state, code) {
+    return this._getAuthorizationHeaders().then((authHeaders) => {
+      let options = {};
+
+      let request = {
+        grant_type: 'stormpath_factor_challenge',
+        code: code
+      };
+
+      if (authHeaders) {
+        options.headers = authHeaders;
+      }
+
+      if (state) {
+        request.state = state;
+      }
+
+      return this.httpProvider.postForm('/oauth/token', request, options)
+        .then(this._onLoginSuccessful.bind(this))
+        .catch((err) => {
+          // Mask the default 'Invalid username or password' error.
+          if (err.error === 'invalid_grant') {
+            err = new Error('Invalid code.');
+          }
+
+          return Promise.reject(err);
+        });
+    });
   }
 
   logout() {
