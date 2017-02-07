@@ -63,18 +63,17 @@
 
         // Now we setup our event handlers, to respond to the authentication
         // state that Stormpath provides.
+
         stormpath.on('authenticated', function () {
           // This event is fired once we know that the user is authenticated,
           // this can fire on login, or on page reload when the user is already
           // logged in.
           console.log('We\'re authenticated!');
 
-          // Hide the Stormpath widget
-          stormpath.remove();
-
           // Show the authenticated state.
           $('#authenticated').show();
           $('#unauthenticated').hide();
+          $('#loading-indicator').hide();
 
           // Get the user's account so that we can show them their name.
           stormpath.getAccount().then(function (account) {
@@ -99,6 +98,7 @@
           // Show the unauthenticated state.
           $('#authenticated').hide();
           $('#unauthenticated').show();
+          $('#loading-indicator').hide();
         });
 
         stormpath.on('forgotPasswordSent', function (data) {
@@ -137,6 +137,8 @@
     <div class="content-wrapper">
       <div class="content">
         <h1 class="splash-head">Stormpath Widget</h1>
+
+        <div class="loader" id="loading-indicator">Loading...</div>
 
         <!-- This div will be shown when the user is logged in. The widget's 'authenticated' event will show or hide it. -->
         <div id="authenticated">
