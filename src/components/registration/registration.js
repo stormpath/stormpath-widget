@@ -41,10 +41,6 @@ class RegistrationComponent {
     });
   }
 
-  _onlySupportedAccountStores(stores) {
-    return stores.filter((store) => store.authorizeUri);
-  }
-
   toggleMore(e, model) {
     model.props.showMoreButton = false;
     model.props.showButtons = 99;
@@ -58,8 +54,7 @@ class RegistrationComponent {
 
   onViewModelLoaded(data) {
     this.fields = data.form.fields;
-    this.accountStores = this._onlySupportedAccountStores(data.accountStores);
-
+    this.accountStores = data.accountStores;
     this.props.smallButtons = this.accountStores.length > 1;
     this.props.showMoreButton = this.accountStores.length > RegistrationComponent.maxInitialButtons;
     if (this.props.showMoreButton) {

@@ -1,5 +1,7 @@
 import EventEmitter from 'events';
 
+import utils from '../../utils';
+
 class ClientApiUserService extends EventEmitter {
   constructor(httpProvider, tokenStorage) {
     super();
@@ -32,6 +34,22 @@ class ClientApiUserService extends EventEmitter {
         this._setState('authenticated');
       });
     });
+  }
+
+  /**
+   * Given a remote view model, do the following:
+   * - Remove out account stores that don't have an authorizeUri
+   * - Set the `redirect_uri` param of the authorizeUri to be the current host
+   */
+  _vieModelTransform(data) {
+    const accountStores = data.accountStores.filter((store) => store.authorizeUri);
+
+    accountStores.forEach((accountStore) => {
+      accountStore.authorizeUri += '&redirect_uri=' + utils.getCurrentHost();
+    });
+
+    data.accountStores = accountStores;
+    return Promise.resolve(data);
   }
 
   getAccount() {
@@ -96,11 +114,11 @@ class ClientApiUserService extends EventEmitter {
   }
 
   getLoginViewModel() {
-    return this.httpProvider.getJson('/login');
+    return this.httpProvider.getJson('/login').then(this._vieModelTransform);
   }
 
   getRegistrationViewModel() {
-    return this.httpProvider.getJson('/register');
+    return this.httpProvider.getJson('/register').then(this._vieModelTransform);
   }
 
   login(username, password) {
