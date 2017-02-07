@@ -144,7 +144,7 @@ class ClientApiUserService extends EventEmitter {
 
       switch (account.status.toLowerCase()) {
         case 'enabled':
-          this._setState('registered');
+          this._setState('registered', true, account);
           break;
 
         case 'unverified':

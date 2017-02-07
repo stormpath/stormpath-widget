@@ -95,13 +95,13 @@ class Stormpath extends EventEmitter {
   }
 
   _initializeUserServiceEvents() {
-    this.userService.on('loggedIn', () => this.emit('loggedIn'));
-    this.userService.on('loggedOut', () => this.emit('loggedOut'));
-    this.userService.on('registered', () => this.emit('registered'));
-    this.userService.on('authenticated', () => this.emit('authenticated'));
-    this.userService.on('unauthenticated', () => this.emit('unauthenticated'));
-    this.userService.on('forgotPasswordSent', () => this.emit('forgotPasswordSent'));
-    this.userService.on('passwordChanged', () => this.emit('passwordChanged'));
+    this.userService.on('loggedIn', (...args) => this.emit('loggedIn', ...args));
+    this.userService.on('loggedOut', (...args) => this.emit('loggedOut', ...args));
+    this.userService.on('registered', (...args) => this.emit('registered', ...args));
+    this.userService.on('authenticated', (...args) => this.emit('authenticated', ...args));
+    this.userService.on('unauthenticated', (...args) => this.emit('unauthenticated', ...args));
+    this.userService.on('forgotPasswordSent', (...args) => this.emit('forgotPasswordSent', ...args));
+    this.userService.on('passwordChanged', (...args) => this.emit('passwordChanged', ...args));
 
     // Make an initial request to getState() in order to trigger our first user events.
     this.userService.getState();
