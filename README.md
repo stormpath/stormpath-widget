@@ -8,7 +8,7 @@ Add beautiful login, registration, and multi-factor authentication screens to yo
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Customization](#customization) 
+- [Customization](#customization)
 - [Reference](#reference)
   - [API](#api)
   - [Events](#events)
@@ -26,7 +26,7 @@ The widget uses the [Stormpath Client API][] to authenticate the user.  Every St
 
 ```html
 <script>
-  var stormpath = window.stormpath = new Stormpath({
+  window.stormpath = new Stormpath({
     appUri: 'https://your-domain.apps.stormpath.io'
   });
 </script>
@@ -77,7 +77,7 @@ To understand everything that the widget is capable of doing, keep reading!
 By default, the widget will display a modal (pop-up) on your page. If you want, you can display the widget inside of an existing `<div>` or other DOM element on your page. To do this, pass a DOM node to the widget via the `container` parameter:
 
 ```javascript
-var stormpath = window.stormpath = new Stormpath({
+window.stormpath = new Stormpath({
   appUri: 'https://foo-bar.apps.stormpath.io',
   container: document.getElementById('widget')
 });
@@ -112,7 +112,7 @@ The views the widget renders are split up into logical [components](https://gith
 To specify a custom template, pass a `templates` hash when initializing the `Stormpath` object:
 
 ```javascript
-var stormpath = new Stormpath({
+window.stormpath = new Stormpath({
   appUri: 'https://foo-bar.apps.stormpath.io',
   templates: {
     login: "<h1>Login form, yo! More HTML here.</h1>",
@@ -123,7 +123,7 @@ var stormpath = new Stormpath({
 You can also pass a reference to an existing DOM node:
 
 ```javascript
-var stormpath = new Stormpath({
+window.stormpath = new Stormpath({
   appUri: 'https://foo-bar.apps.stormpath.io',
   templates: {
     login: document.getElementById('my-custom-login-form'),
