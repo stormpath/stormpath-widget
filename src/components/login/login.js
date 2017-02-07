@@ -57,10 +57,6 @@ class LoginComponent {
     });
   }
 
-  _onlySupportedAccountStores(stores) {
-    return stores.filter((store) => store.authorizeUri);
-  }
-
   toggleMore(e, model) {
     model.props.showMoreButton = false;
     model.props.showButtons = 99;
@@ -74,12 +70,7 @@ class LoginComponent {
 
   onViewModelLoaded(data) {
     this.fields = data.form.fields;
-    this.accountStores = this._onlySupportedAccountStores(data.accountStores);
-    this.accountStores.map((accountStore) => {
-      accountStore.authorizeUri += '&redirect_uri=' + utils.getCurrentHost();
-      return accountStore;
-    });
-
+    this.accountStores = data.accountStores;
     this.props.smallButtons = this.accountStores.length > 1;
     this.props.showMoreButton = this.accountStores.length > LoginComponent.maxInitialButtons;
     if (this.props.showMoreButton) {
