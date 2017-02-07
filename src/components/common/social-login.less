@@ -71,25 +71,28 @@
     background-position: 12px center;
   }
 
-  .generator-button-states(@name, @initialColor) {
-    .sp-social-login-btn.sp-social-login-btn-@{name}:hover,
-    .sp-social-login-btn.sp-social-login-btn-@{name}:focus {
+  // This generator will create the hover, focus, active states
+  // for any given subclass of buttons
+  .generator-button-states(@class, @initialColor) {
+    .sp-social-login-btn@{class}:hover,
+    .sp-social-login-btn@{class}:focus {
       background-color: darken(@initialColor, 5%);
     }
 
-    .sp-social-login-btn.sp-social-login-btn-@{name}:active {
+    .sp-social-login-btn@{class}:active {
       background-color: darken(@initialColor, 15%);
     }
   }
 
+  // Expand more (ellipsis) button
   .sp-social-login-btn.sp-social-login-btn-more-expand {
     background-color: white;
     background-image: url('../../assets/more.svg');
     .image-properties();
   }
+  .generator-button-states(~".sp-social-login-btn-more-expand", white);
 
-  .generator-button-states(more-expand, white);
-
+  // Google
   .sp-social-login-btn.sp-social-login-btn-google {
     background-color: @color-google;
     background-image: url('../../assets/google-color.svg');
@@ -97,44 +100,43 @@
     color: lighten(@color-text, 20%);
     box-shadow: inset 0 0 0 2px lighten(@color-text, 60%);
   }
+  .generator-button-states(~".sp-social-login-btn-google", @color-google);
 
-  .generator-button-states(google, @color-google);
-
+  // Facebook
   .sp-social-login-btn.sp-social-login-btn-facebook {
     background-color: @color-facebook;
     background-image: url('../../assets/facebook.svg');
     .image-properties();
   }
+  .generator-button-states(~".sp-social-login-btn-facebook", @color-facebook);
 
-  .generator-button-states(facebook, @color-facebook);
-
+  // Github
   .sp-social-login-btn.sp-social-login-btn-github {
     background-color: @color-github;
     background-image: url('../../assets/github.svg');
     .image-properties();
   }
+  .generator-button-states(~".sp-social-login-btn-github", @color-github);
 
-  .generator-button-states(github, @color-github);
-
+  // LinkedIn
   .sp-social-login-btn.sp-social-login-btn-linkedin {
     background-color: @color-linkedin;
     background-image: url('../../assets/linkedin.svg');
     .image-properties();
   }
+  .generator-button-states(~".sp-social-login-btn-linkedin", @color-linkedin);
 
-  .generator-button-states(linkedin, @color-linkedin);
-
-  .sp-social-login-btn.sp-social-login-btn-saml {
-    background-color: @color-saml;
-  }
-
-  .generator-button-states(saml, @color-saml);
-
+  // Twitter
   .sp-social-login-btn.sp-social-login-btn-twitter {
     background-color: @color-twitter;
     background-image: url('../../assets/twitter.svg');
     .image-properties();
   }
+  .generator-button-states(~".sp-social-login-btn-twitter", @color-twitter);
 
-  .generator-button-states(twitter, @color-twitter);
+  // SAML
+  .sp-social-login-btn.sp-social-login-btn-saml {
+    background-color: @color-saml;
+  }
+  .generator-button-states(~".sp-social-login-btn-saml", @color-saml);
 }
