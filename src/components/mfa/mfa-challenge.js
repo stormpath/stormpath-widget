@@ -45,7 +45,8 @@ class MfaChallengeComponent {
     this.errorMessage = null;
     this.actionMessage = null;
     this.userService.createChallenge(this.state)
-      .then(() => {
+      .then((result) => {
+        this.state = result.state;
         this.actionMessage = 'Replacement code sent.';
       })
       .catch(this.showError);
@@ -59,10 +60,11 @@ class MfaChallengeComponent {
     this.state = selectedFactor.state;
     this.selectedFactor = selectedFactor;
 
-    if (id === 'sms') {
-      this.userService.createChallenge(this.state)
-        .catch(this.showError);
-    }
+    this.userService.createChallenge(this.state)
+      .then((result) => {
+        this.state = result.state;
+      })
+      .catch(this.showError);
   }
 
   showComplete = () => {
