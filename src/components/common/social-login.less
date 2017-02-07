@@ -88,6 +88,7 @@
   .sp-social-login-btn.sp-social-login-btn-more-expand {
     background-color: white;
     background-image: url('../../assets/more.svg');
+    box-shadow: inset 0 0 0 2px lighten(@color-disabled, 10%);
     .image-properties();
   }
   .generator-button-states(~".sp-social-login-btn-more-expand", white);
@@ -98,7 +99,7 @@
     background-image: url('../../assets/google-color.svg');
     .image-properties();
     color: lighten(@color-text, 20%);
-    box-shadow: inset 0 0 0 2px lighten(@color-text, 60%);
+    box-shadow: inset 0 0 0 2px lighten(@color-disabled, 10%);
   }
   .generator-button-states(~".sp-social-login-btn-google", @color-google);
 
