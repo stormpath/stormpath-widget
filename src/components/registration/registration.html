@@ -10,7 +10,9 @@
         <a rv-each-dir="accountStores"
           rv-href="dir.authorizeUri"
           rv-class="dir.provider.providerId | prefix 'sp-social-login-btn sp-social-login-btn-'"
-          rv-show="props.showButtons | gt index">
+          rv-show="props.showButtons | gt index"
+          rv-title="dir.name | prefix 'Continue with '"
+          rv-aria-label="dir.name | prefix 'Continue with '">
           Continue with {dir.name}</a>
 
         <a class="sp-social-login-btn sp-social-login-btn-more-expand"
