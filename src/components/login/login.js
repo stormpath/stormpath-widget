@@ -75,6 +75,10 @@ class LoginComponent {
   onViewModelLoaded(data) {
     this.fields = data.form.fields;
     this.accountStores = this._onlySupportedAccountStores(data.accountStores);
+    this.accountStores.map((accountStore) => {
+      accountStore.authorizeUri += '&redirect_uri=' + utils.getCurrentHost();
+      return accountStore;
+    });
 
     this.props.smallButtons = this.accountStores.length > 1;
     this.props.showMoreButton = this.accountStores.length > LoginComponent.maxInitialButtons;

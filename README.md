@@ -2,6 +2,8 @@
 
 Add beautiful login, registration, and multi-factor authentication screens to your app in only a few lines of code!  To get started, please signup for a free developer account at https://api.stormpath.com/register.
 
+> :racehorse: &nbsp;To see a live demo, please visit https://stormpath-widget.herokuapp.com :racehorse:
+
 ## Table of contents
 
 - [Installation](#installation)
@@ -10,6 +12,7 @@ Add beautiful login, registration, and multi-factor authentication screens to yo
 - [Reference](#reference)
   - [API](#api)
   - [Events](#events)
+
 
 ## Installation
 
@@ -28,6 +31,12 @@ The widget uses the [Stormpath Client API][] to authenticate the user.  Every St
   });
 </script>
 ```
+
+You will need to tell Stormpath where your front-end application is running, by adding it's domain to the list of **Authorized Origin URIs** on your Stormpath Application.  This can be done from the Stormpath Admin Console.  For example, if you are developing on a local sever that runs your front-end app at `http://localhost:3000`, you need to add that URI to the list
+
+If this is not done, you will see the error `Origin 'http://localhost:3000' is therefore not allowed access.` in the browser error log.
+
+If you will be using social login, you will also need to add this URI to the list of **Authorized Callback URIs**, otherwise you will see the error `Specified redirect_uri is not in the application's configured authorized callback uri's.` when you attempt social login.
 
 ## Usage
 
