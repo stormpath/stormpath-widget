@@ -29,6 +29,10 @@ The widget uses the [Stormpath Client API][] to authenticate the user.  Every St
 </script>
 ```
 
+You will need to tell Stormpath where your front-end application is running, by adding it's domain to the list of **Authorized Origin URIs** on your Stormpath Application.  This can be done from the Stormpath Admin Console.  For example, if you are developing on a local sever that runs your front-end app at `http://localhost:3000`, you need to add that URI to the list
+
+If this is not done, you will see the error `Origin 'http://localhost:3000' is therefore not allowed access.` in the browser error log.
+
 ## Usage
 
 > :bulb: To see a full code example, check out our [example application](example/index.html).

@@ -98,6 +98,12 @@ class Utils {
     return true;
   }
 
+  getCurrentHost() {
+    return window.location.protocol
+      + '//'
+      + window.location.host;
+  }
+
   getWindowQueryString() {
     return window.location.search;
   }
