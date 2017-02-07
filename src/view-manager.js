@@ -136,6 +136,22 @@ class ViewManager {
     if (this.modal) {
       this.modal.show();
     }
+
+    this._focusOnFirstField(this.targetElement);
+  }
+
+  _focusOnFirstField(el) {
+    debugger;
+    if (!el || !el.querySelectorAll) {
+      return;
+    }
+
+    const firstField = el.querySelectorAll('input[type="text"]')[0];
+    if (!firstField) {
+      return;
+    }
+
+    firstField.focus();
   }
 
   _modalExists() {

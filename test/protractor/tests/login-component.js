@@ -33,6 +33,10 @@ describe('Login Component', () => {
     it('should be visible', () => {
       return expect(usernameInput.isVisible()).to.eventually.equal(true);
     });
+
+    it('should have focus', () => {
+      return expect(usernameInput.isFocused()).to.eventually.equal(true);
+    });
   });
 
   describe('password input', () => {
