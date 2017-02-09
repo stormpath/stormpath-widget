@@ -86,6 +86,7 @@ class ViewManager {
     Rivets.formatters['gt'] = (x, y) => x > y;
     Rivets.formatters['any'] = (arr) => (arr || []).length > 0;
     Rivets.formatters['contains'] = (arr, x) => (arr || []).includes(x);
+    Rivets.formatters['or'] = (value, defaultValue) => value || defaultValue;
     Rivets.formatters.prefix = utils.prefix;
 
     Rivets.binders.required = (el, val) => el.required = val === true;
@@ -205,6 +206,18 @@ class ViewManager {
   }
 
   showEnrollMfa(options) {
+    options = options || {};
+
+    if (!options.onComplete) {
+      options.onComplete = () => {
+        setTimeout(() => {
+          if (this._modalExists()) {
+            this.remove();
+          }
+        }, 5 * 1000);
+      };
+    }
+
     this._render(MfaEnrollComponent.id, options);
   }
 

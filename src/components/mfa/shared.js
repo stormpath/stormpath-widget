@@ -11,6 +11,7 @@ const factorDefaults = {
     description: 'A free app from Google.',
     base64QRImage: null,
     secret: null,
+    showSecret: false,
     step: 1
   }
 };

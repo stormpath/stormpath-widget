@@ -26,13 +26,15 @@
         </p>
 
         <fieldset class="sp-form-group">
-          <label for="sp-mfa-challenge-sms-code">Security code</label>
-          <input id="sp-mfa-challenge-sms-code"
-             type="text"
-             name="sms-code"
-             rv-value="selectedFactor.code"
-             placeholder="123456"
-             required="true" />
+          <label>Security code
+            <input
+               type="text"
+               class="mfa-focus-target"
+               name="sms-code"
+               rv-value="selectedFactor.code"
+               placeholder="123456"
+               required="true" />
+          </label>
 
           <p rv-show="errorMessage">
             <span class="sp-icon-warning"></span> {errorMessage}
@@ -40,7 +42,7 @@
         </fieldset>
 
         <div class="sp-form-group">
-          <sp-submit-button label="'Continue'"></sp-submit-button>
+          <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
         </div>
 
         <hr>
@@ -59,13 +61,15 @@
         </div>
 
         <fieldset class="sp-form-group">
-          <label for="sp-mfa-challenge-google-authenticator-code">Security code</label>
-          <input id="sp-mfa-google-authenticator-code"
-             type="text"
-             name="google-authenticator-code"
-             rv-value="selectedFactor.code"
-             placeholder="123456"
-             required="true" />
+          <label>Security code
+            <input
+               type="text"
+               class="mfa-focus-target"
+               name="google-authenticator-code"
+               rv-value="selectedFactor.code"
+               placeholder="123456"
+               required="true" />
+          </label>
 
           <p rv-show="errorMessage">
             <span class="sp-icon-warning"></span> {errorMessage}
@@ -73,7 +77,7 @@
         </fieldset>
 
         <div class="sp-form-group">
-          <sp-submit-button label="'Continue'"></sp-submit-button>
+          <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
         </div>
       </form>
     </div>
@@ -81,7 +85,9 @@
 
   <div rv-show="section | is 'complete'">
     <p class="sp-text-success"><span class="sp-icon-success"></span> Verification successful</p>
-    <p>You'll be redirected to your application shortly.</p>
-    <p class="sp-loader"></p>
+    <div class="sp-complete">
+      <p>You'll be redirected to your application shortly.</p>
+      <p class="sp-loader"></p>
+    </div>
   </div>
 </div>

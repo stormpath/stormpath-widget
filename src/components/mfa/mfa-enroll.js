@@ -22,7 +22,9 @@ class MfaEnrollComponent {
     isSubmitting: false
   };
 
-  constructor(data) {
+  constructor(data, element) {
+    this.element = element;
+
     for (var key in data) {
       this[key] = data[key];
     }
@@ -52,23 +54,43 @@ class MfaEnrollComponent {
 
   showComplete = () => {
     this.section = 'complete';
+    this.selectedFactor.isSubmitting = false;
     if (this.onComplete) {
       this.onComplete(this);
     }
   }
+
 
   showError = (err) => {
     if (err.error === 'invalid_request') {
       err.message = 'The code you entered was not valid.';
     }
 
+    if (err.message === 'An existing phone with that number is already associated with a factor for that Account.') {
+      err.message = 'This phone number has already been added to your account.';
+    }
+
     this.errorMessage = err.message;
+    this.selectedFactor.isSubmitting = false;
+
+    utils.focusVisibleElement(this.element, 'mfa-focus-target');
+  }
+
+  showFactorSecret = (e) => {
+    e.preventDefault();
+    this.selectedFactor.showSecret = true;
+  }
+
+  hideFactorSecret = (e) => {
+    e.preventDefault();
+    this.selectedFactor.showSecret = false;
   }
 
   onFormSubmit = (event) => {
     event.preventDefault();
 
     this.errorMessage = null;
+    this.selectedFactor.isSubmitting = true;
 
     let request = {
       state: this.state,
@@ -84,6 +106,7 @@ class MfaEnrollComponent {
         this.userService.createFactor(request)
           .then((result) => {
             this.state = result.state;
+            this.selectedFactor.isSubmitting = false;
             this.selectedFactor.hint = this.selectedFactor.phoneNumber;
             this.viewManager.showChallengeMfa({
               source: 'enroll',
@@ -118,12 +141,14 @@ class MfaEnrollComponent {
                 }
 
                 this.selectedFactor.step++;
+                this.selectedFactor.isSubmitting = false;
               })
               .catch(this.showError);
             break;
 
           case 2:
             this.selectedFactor.step++;
+            this.selectedFactor.isSubmitting = false;
             break;
 
           case 3:

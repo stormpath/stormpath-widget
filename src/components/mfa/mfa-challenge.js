@@ -27,7 +27,9 @@ class MfaChallengeComponent {
     isSubmitting: false
   };
 
-  constructor(data) {
+  constructor(data, element) {
+    this.element = element;
+
     for (var key in data) {
       this[key] = data[key];
     }
@@ -59,9 +61,11 @@ class MfaChallengeComponent {
     this.section = 'challenge';
     this.state = selectedFactor.state;
     this.selectedFactor = selectedFactor;
+    this.selectedFactor.isSubmitting = true;
 
     this.userService.createChallenge(this.state)
       .then((result) => {
+        this.selectedFactor.isSubmitting = false;
         this.state = result.state;
       })
       .catch(this.showError);
@@ -69,6 +73,7 @@ class MfaChallengeComponent {
 
   showComplete = () => {
     this.section = 'complete';
+    this.selectedFactor.isSubmitting = false;
     if (this.onComplete) {
       this.onComplete(this);
     }
@@ -79,18 +84,34 @@ class MfaChallengeComponent {
       err.message = 'The code you entered was not valid.';
     }
 
+    if (err.message === 'An existing phone with that number is already associated with a factor for that Account.') {
+      err.message = 'This phone number has already been added to your account.';
+    }
+
     this.actionMessage = null;
     this.errorMessage = err.message;
+    this.selectedFactor.isSubmitting = false;
+
+    utils.focusVisibleElement(this.element, 'mfa-focus-target');
   }
 
   onFormSubmit = (event) => {
     event.preventDefault();
 
+    this.errorMessage = null;
+    this.selectedFactor.isSubmitting = true;
+
     if (this.source === 'enroll') {
       this.userService.createChallenge(this.state, {
         code: this.selectedFactor.code
       })
-      .then(this.showComplete)
+      .then((result) => {
+        if (result.status === 'FAILED') {
+          return this.showError(new Error('The code that you entered was not valid.'));
+        }
+
+        this.showComplete();
+      })
       .catch(this.showError);
     } else {
       this.userService.loginWithChallenge(this.state, this.selectedFactor.code)

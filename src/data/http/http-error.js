@@ -2,16 +2,6 @@ import utils from '../../utils';
 
 class HttpError {
   constructor(status, body) {
-    //super();
-
-    // Fix according to http://stackoverflow.com/questions/31089801/extending-error-in-javascript-with-es6-syntax
-    /*this.name = this.constructor.name;
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, this.constructor);
-    } else {
-      this.stack = (new Error(message)).stack;
-    }*/
-
     this.status = status;
     this._trySetValuesFromBody(body);
   }

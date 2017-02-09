@@ -17,18 +17,20 @@
     <div rv-show="selectedFactor.id | is 'sms'">
       <form rv-on-submit="onFormSubmit">
         <div>
-          <p class="sp-mfa-title">Set up SMS</p>
+          <p class="sp-subtitle">Set up SMS</p>
           <p>Enter a phone number that can receive SMS text messages. You'll need to have access to this phone when logging in to your account.</p>
         </div>
 
         <fieldset class="sp-form-group">
-          <label for="sp-mfa-sms-phone-number">Phone number</label>
-          <input id="sp-mfa-sms-phone-number"
-             type="text"
-             name="sms-phone-number"
-             rv-value="selectedFactor.phoneNumber"
-             placeholder="(555) 123-4567"
-             required="true" />
+          <label>Phone number
+            <input
+               type="text"
+               class="mfa-focus-target"
+               name="sms-phone-number"
+               rv-value="selectedFactor.phoneNumber"
+               placeholder="(555) 123-4567"
+               required="true" />
+           </label>
 
           <p rv-show="errorMessage">
             <span class="sp-icon-warning"></span> {errorMessage}
@@ -43,7 +45,7 @@
 
     <div class="sp-mfa-setup sp-google-authenticator" rv-show="selectedFactor.id | is 'google-authenticator'">
       <div class="sp-mfa-header">
-        <p class="sp-mfa-title">Set Up Google Authenticator</p>
+        <p class="sp-subtitle">Set Up Google Authenticator</p>
         <p><span rv-class="selectedFactor.step | prefix 'sp-icon-step-'"></span></p>
       </div>
 
@@ -71,11 +73,21 @@
           <p>Open up Google Authenticator and add this account:</p>
           <ul>
             <li>Tap the plus icon.</li>
-            <li>Scan the barcode or enter key.</li>
+            <li>
+              <span rv-show="selectedFactor.showSecret | is false">Scan the barcode.</span>
+              <span rv-show="selectedFactor.showSecret | is true">Manually enter the code.</span>
+            </li>
           </ul>
 
-          <p class="sp-mfa-qr-code-image"><img rv-src="selectedFactor.base64QRImage | prefix 'data:image/png;base64,'" /></p>
-          <p class="sp-mfa-secret">{selectedFactor.secret}</p>
+          <div rv-show="selectedFactor.showSecret | is false" >
+            <p class="sp-mfa-qr-code-image"><img rv-src="selectedFactor.base64QRImage | or '' | prefix 'data:image/png;base64,'" /></p>
+            <p class="sp-mfa-show-secret"><a rv-on-click="showFactorSecret">Problem scanning code?<br>Click here to enter it manually.</a></p>
+          </div>
+
+          <div rv-show="selectedFactor.showSecret | is true">
+            <p class="sp-mfa-secret">{selectedFactor.secret}</p>
+            <p class="sp-mfa-show-secret"><a rv-on-click="hideFactorSecret">Problem entering code?<br>Click here to scan it.</a></p>
+          </div>
 
           <div class="sp-form-group">
             <sp-submit-button label="'Next'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
@@ -88,13 +100,16 @@
           <p>Enter the code shown.</p>
 
           <fieldset class="sp-form-x">
-            <label for="sp-mfa-verify-google-authenticator-code">Security code</label>
-            <input id="sp-mfa-google-authenticator-code"
-               type="text"
-               name="google-authenticator-code"
-               rv-value="selectedFactor.code"
-               placeholder="123456"
-               required="true" />
+            <label>Security code
+              <input
+                 type="text"
+                 class="mfa-focus-target"
+                 name="google-authenticator-code"
+                 rv-value="selectedFactor.code"
+                 placeholder="123456"
+                 required="true"
+                 />
+             </label>
 
             <p rv-show="errorMessage">
               <span class="sp-icon-warning"></span> {errorMessage}
@@ -111,7 +126,7 @@
 
   <div rv-show="section | is 'complete'">
     <p class="sp-text-success"><span class="sp-icon-success"></span> Device added</p>
-    <div rv-show="onComplete">
+    <div class="sp-complete" rv-show="onComplete">
       <p>You'll be redirected to your application shortly.</p>
       <p class="sp-loader"></p>
     </div>

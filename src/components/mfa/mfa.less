@@ -1,11 +1,12 @@
 @import "../common/icons.less";
 
 .sp-mfa-enroll-component, .sp-mfa-challenge-component {
-    .sp-mfa-title {
-        font-size: 16px;
-        font-weight: 300;
-        line-height: 21px;
-        color: #364052;
+    label input {
+        margin-top: 5px;
+    }
+
+    .sp-complete {
+        padding-bottom: 40px;
     }
 
     .sp-action-message {
@@ -36,7 +37,7 @@
         }
     }
 
-    .sp-google-authenticator .sp-mfa-title {
+    .sp-google-authenticator .sp-subtitle {
         text-align: center;
     }
 
@@ -46,8 +47,16 @@
             margin-bottom: 0px;
         }
 
-        .sp-mfa-secret {
+        .sp-mfa-show-secret {
+            text-align: center;
             margin-top: 0px;
+            padding-top: 0px;
+            padding-bottom: 15px;
+        }
+
+        .sp-mfa-secret {
+            font-weight: bold;
+            margin-top: 30px;
             padding-top: 0px;
             padding-bottom: 10px;
         }

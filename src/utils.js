@@ -1,6 +1,26 @@
 const jwtExpression = /^[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+$/;
 
 class Utils {
+  isVisible(element) {
+    return window.getComputedStyle(element).display !== 'none';
+  }
+
+  getElementsByClass(element, className) {
+    const elements = element.getElementsByClassName(className);
+    return Array.prototype.slice.call(elements);
+  }
+
+  focusIfVisible(element) {
+    if (this.isVisible(element)) {
+      element.focus();
+    }
+  }
+
+  focusVisibleElement(element, className) {
+    this.getElementsByClass(element, className)
+      .forEach(element => this.focusIfVisible(element));
+  }
+
   tryParseJson(data) {
     try {
       return JSON.parse(data);
