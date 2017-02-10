@@ -6,10 +6,12 @@ class FormFieldComponent {
 
   field = {};
   namePrefix = '';
+  value = '';
 
   constructor(data) {
     this.field = data.model;
     this.namePrefix = data.namePrefix;
+    this.value = this.field.value || '';
   }
 }
 
