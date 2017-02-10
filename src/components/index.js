@@ -9,3 +9,4 @@ export ChangePasswordComponent from './change-password/change-password';
 export ForgotPasswordComponent from './forgot-password/forgot-password';
 export SubmitButtonComponent from './submit-button/submit-button';
 export VerifyEmailComponent from './verify-email/verify-email';
+export PasswordStrengthComponent from './password-strength/password-strength';

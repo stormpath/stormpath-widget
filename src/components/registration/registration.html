@@ -23,7 +23,7 @@
     </div>
 
     <fieldset class="sp-form-group">
-      <sp-form-fields fields="fields" name-prefix="'sp-form-registration'"></sp-form-fields>
+      <sp-form-fields fields="fields" password-policy="passwordPolicy" name-prefix="'sp-form-registration'"></sp-form-fields>
     </fieldset>
 
     <div class="sp-error-text" rv-show="state | is 'validation_error'">{error.message}</div>

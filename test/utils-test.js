@@ -417,4 +417,36 @@ describe('utils', () => {
       });
     });
   });
+
+  describe('.shallowCopyInPlace(original, newObj)', () => {
+    describe('when the original object is empty', () => {
+      it('input = undefined should have no effect', () => {
+        let original = {};
+        utils.shallowCopyInPlace(original);
+        assert.deepEqual(original, {});
+      });
+
+      it('input = null should have no effect', () => {
+        let original = {};
+        utils.shallowCopyInPlace(original, null);
+        assert.deepEqual(original, {});
+      });
+
+      it('should add properties', () => {
+        let original = {};
+        utils.shallowCopyInPlace(original, { foo: 1, bar: 2 });
+        assert.equal(original.foo, 1);
+        assert.equal(original.bar, 2);
+      });
+    });
+
+    describe('when the original object has properties', () => {
+      it('should update properties', () => {
+        let original = { foo: 'bar' };
+        utils.shallowCopyInPlace(original, { foo: 1, baz: 'qux' });
+        assert.equal(original.foo, 1);
+        assert.equal(original.baz, 'qux');
+      });
+    });
+  });
 });

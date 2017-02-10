@@ -9,6 +9,7 @@ class RegistrationComponent {
   fields = [];
   state = 'unknown';
   accountStores = [];
+  passwordPolicy = {};
 
   // This is necessary because currently Rivets cannot bind to top-level primitives
   // (see https://github.com/mikeric/rivets/issues/700#issuecomment-267177540)
@@ -55,6 +56,8 @@ class RegistrationComponent {
   onViewModelLoaded(data) {
     this.fields = data.form.fields;
     this.accountStores = data.accountStores;
+    utils.shallowCopyInPlace(this.passwordPolicy, data.passwordPolicy);
+
     this.props.smallButtons = this.accountStores.length > 1;
     this.props.showMoreButton = this.accountStores.length > RegistrationComponent.maxInitialButtons;
     if (this.props.showMoreButton) {

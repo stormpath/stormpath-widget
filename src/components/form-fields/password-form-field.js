@@ -5,10 +5,13 @@ class PasswordFormFieldComponent extends FormFieldComponent {
   static id = 'password-form-field';
   static view = view;
 
+  policy = {};
+
   constructor(data, el) {
     super(data, el);
 
     this.element = el;
+    this.policy = data.policy;
   }
 
   togglePasswordVisibility(e, model) {

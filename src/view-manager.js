@@ -14,7 +14,8 @@ import {
   PasswordFormFieldComponent,
   RegistrationComponent,
   SubmitButtonComponent,
-  VerifyEmailComponent
+  VerifyEmailComponent,
+  PasswordStrengthComponent,
 } from './components';
 
 class ViewManager {
@@ -58,7 +59,11 @@ class ViewManager {
     [VerifyEmailComponent.id]: {
       component: VerifyEmailComponent,
       view: () => VerifyEmailComponent.view
-    }
+    },
+    [PasswordStrengthComponent.id]: {
+      component: PasswordStrengthComponent,
+      view: () => PasswordStrengthComponent.view
+    },
   };
 
   constructor(prefix, userService, templates, container) {

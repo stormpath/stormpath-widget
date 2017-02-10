@@ -256,6 +256,25 @@ class Utils {
 
     return result;
   }
+
+  shallowCopyInPlace(original, newObj) {
+    if (!original) {
+      throw new Error('Original object must exist');
+    }
+
+    if (!newObj) {
+      return;
+    }
+
+    const keys = Object.keys(newObj);
+    if (!keys.length) {
+      return;
+    }
+
+    for (let prop of keys) {
+      original[prop] = newObj[prop];
+    }
+  }
 }
 
 export default new Utils();

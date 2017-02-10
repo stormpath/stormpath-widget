@@ -3,4 +3,5 @@
 
   <sp-form-field rv-if="field.type | isnt 'password'" model="field" name-prefix="namePrefix"></sp-form-field>
   <sp-password-form-field rv-if="field.type | is 'password'" model="field" name-prefix="namePrefix"></sp-password-form-field>
+  <sp-password-strength rv-if="field.type | is 'password'" policy="passwordPolicy"></sp-password-strength>
 </div>

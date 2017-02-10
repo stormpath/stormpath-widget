@@ -8,10 +8,12 @@ class FormFieldsComponent {
 
   fields = {};
   namePrefix = '';
+  passwordPolicy = {};
 
   constructor(data) {
     this.fields = data.fields;
     this.namePrefix = data.namePrefix;
+    this.passwordPolicy = data.passwordPolicy;
   }
 }
 
