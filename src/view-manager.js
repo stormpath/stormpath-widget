@@ -18,6 +18,8 @@ import {
   PasswordStrengthComponent,
 } from './components';
 
+import { NotificationService } from './data';
+
 class ViewManager {
   static defaultComponents = {
     [ContainerComponent.id]: {
@@ -68,8 +70,10 @@ class ViewManager {
 
   constructor(prefix, userService, templates, container) {
     this.userService = userService;
+    this.notificationService = new NotificationService();
     this.prefix = prefix;
     this.templates = templates;
+
     this._initializeRivets(extend(ViewManager.defaultComponents));
     this.setContainer(container);
   }
@@ -90,7 +94,7 @@ class ViewManager {
 
       Rivets.components[this.prefix + '-' + id] = {
         template: viewFunction,
-        initialize: (el, d) => new data.component(d, el)
+        initialize: (el, d) => new data.component(d, el, this.notificationService)
       };
     }
   }

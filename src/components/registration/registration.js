@@ -20,7 +20,8 @@ class RegistrationComponent {
     isSubmitting: false
   };
 
-  constructor(data) {
+  constructor(data, _, notificationService) {
+    this.notificationService = notificationService;
     this.viewManager = data.viewManager;
     this.userService = data.userService;
     this.autoClose = data.autoClose;
@@ -65,6 +66,7 @@ class RegistrationComponent {
     }
 
     this.state = 'ready';
+    this.notificationService.domLoaded();
   }
 
   onRegistrationComplete(result) {
