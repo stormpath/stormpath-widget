@@ -9,7 +9,9 @@ class PasswordFormFieldComponent extends FormFieldComponent {
 
   policy = {};
   value = '';
-  analysis = {};
+  analysis = {
+    dirty: false
+  };
 
   constructor(data, el, notificationService) {
     super(data, el);
@@ -33,6 +35,7 @@ class PasswordFormFieldComponent extends FormFieldComponent {
   _onInput() {
     let analysis = PasswordAnalyzer.analyze(this.value, this.policy);
     utils.shallowCopyInPlace(this.analysis, analysis);
+    this.analysis.dirty = true;
   }
 
   togglePasswordVisibility(e, model) {
