@@ -7,9 +7,11 @@ class PasswordStrengthComponent {
   static style = style;
 
   policy = {};
+  analysis = {};
 
   constructor(data) {
     this.policy = data.policy;
+    this.analysis = data.analysis;
   }
 }
 

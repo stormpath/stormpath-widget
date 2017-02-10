@@ -1,17 +1,38 @@
 import view from 'html!./password-form-field.html';
 import FormFieldComponent from './form-field';
+import utils from '../../utils';
+import PasswordAnalyzer from '../../data/password-analyzer';
 
 class PasswordFormFieldComponent extends FormFieldComponent {
   static id = 'password-form-field';
   static view = view;
 
   policy = {};
+  value = '';
+  analysis = {};
 
-  constructor(data, el) {
+  constructor(data, el, notificationService) {
     super(data, el);
 
     this.element = el;
     this.policy = data.policy;
+    this.notificationService = notificationService;
+
+    this.notificationService.on('domLoaded', this._onDomLoaded.bind(this));
+  }
+
+  _onDomLoaded() {
+    const inputField = this.element.querySelector('input');
+    if (!inputField) {
+      return;
+    }
+
+    inputField.addEventListener('input', () => this._onInput.bind(this)());
+  }
+
+  _onInput() {
+    let analysis = PasswordAnalyzer.analyze(this.value, this.policy);
+    utils.shallowCopyInPlace(this.analysis, analysis);
   }
 
   togglePasswordVisibility(e, model) {
