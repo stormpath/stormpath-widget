@@ -5,7 +5,7 @@ import chaiAsPromised from 'chai-as-promised';
 
 chai.use(chaiAsPromised);
 
-describe.only('ClientApiUserService', () => {
+describe('ClientApiUserService', () => {
   describe('View model transformer (_vieModelTransform)', () => {
 
     const input = {
