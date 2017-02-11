@@ -66,7 +66,7 @@ class RegistrationComponent {
     }
 
     this.state = 'ready';
-    this.notificationService.domLoaded();
+    this.notificationService.viewModelLoaded();
   }
 
   onRegistrationComplete(result) {

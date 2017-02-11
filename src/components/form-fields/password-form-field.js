@@ -20,10 +20,10 @@ class PasswordFormFieldComponent extends FormFieldComponent {
     this.policy = data.policy;
     this.notificationService = notificationService;
 
-    this.notificationService.on('domLoaded', this._onDomLoaded.bind(this));
+    this.notificationService.on('viewModelLoaded', this._onViewModelLoaded.bind(this));
   }
 
-  _onDomLoaded() {
+  _onViewModelLoaded() {
     const inputField = this.element.querySelector('input');
     if (!inputField) {
       return;

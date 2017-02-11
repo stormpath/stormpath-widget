@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
 class NotificationService extends EventEmitter {
-  domLoaded = (...args) => this.emit('domLoaded', ...args);
+  viewModelLoaded = (...args) => this.emit('viewModelLoaded', ...args);
 }
 
 export default NotificationService;
