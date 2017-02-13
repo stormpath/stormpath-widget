@@ -131,6 +131,7 @@ class ViewManager {
   _render(viewComponentId, data) {
     data = data || {};
     data.userService = this.userService;
+    data.autoClose = this._modalExists();
     data.viewManager = utils.bindAll(this, [
       'remove',
       'showLogin',
@@ -182,15 +183,11 @@ class ViewManager {
   }
 
   showLogin() {
-    this._render(LoginComponent.id, {
-      autoClose: this._modalExists()
-    });
+    this._render(LoginComponent.id);
   }
 
   showRegistration() {
-    this._render(RegistrationComponent.id, {
-      autoClose: this._modalExists()
-    });
+    this._render(RegistrationComponent.id);
   }
 
   showForgotPassword() {

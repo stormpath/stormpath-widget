@@ -40,6 +40,17 @@
         <div class="sp-form-group">
           <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
         </div>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-right">
+            <a rv-on-click="navigateBack">
+              <span rv-show="previousSection | isnt null">Back</span>
+              <span rv-show="previousSection | is null">Cancel</span>
+            </a>
+          </p>
+          <!--p><a rv-on-click="changeSmsPhoneNumber">Change phone number</a></p-->
+        </div>
       </form>
     </div>
 
@@ -66,6 +77,13 @@
             <sp-submit-button label="'Next'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
           </div>
         </form>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-right">
+            <a rv-on-click="navigateBack">Cancel</a>
+          </p>
+        </div>
       </div>
 
       <div class="sp-mfa-step-2" rv-show="selectedFactor.step | is 2">
@@ -93,6 +111,13 @@
             <sp-submit-button label="'Next'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
           </div>
         </form>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-right">
+            <a rv-on-click="stepBackwards">Back</a>
+          </p>
+        </div>
       </div>
 
       <div class="sp-mfa-step-3" rv-show="selectedFactor.step | is 3">
@@ -120,6 +145,13 @@
             <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
           </div>
         </form>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-right">
+            <a rv-on-click="stepBackwards">Back</a>
+          </p>
+        </div>
       </div>
     </div>
   </div>

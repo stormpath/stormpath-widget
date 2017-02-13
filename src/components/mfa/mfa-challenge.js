@@ -9,8 +9,10 @@ class MfaChallengeComponent {
   static style = style;
 
   source = null;
-  section = null;
   action = null;
+
+  section = null;
+  previousSection = null;
 
   state = null;
 
@@ -54,11 +56,16 @@ class MfaChallengeComponent {
       .catch(this.showError);
   }
 
+  setSection(section) {
+    this.previousSection = this.section;
+    this.section = section;
+  }
+
   selectFactor = (e) => {
     let id = utils.getClosestDataAttribute(e.srcElement, 'id');
     let selectedFactor = this.factors.find(x => x.id === id);
 
-    this.section = 'challenge';
+    this.setSection('challenge');
     this.state = selectedFactor.state;
     this.selectedFactor = selectedFactor;
     this.selectedFactor.isSubmitting = true;
@@ -71,8 +78,36 @@ class MfaChallengeComponent {
       .catch(this.showError);
   }
 
+  resetSelectedFactor() {
+    this.selectedFactor = {
+      id: null,
+      state: null,
+      code: null,
+      hint: null,
+      isSubmitting: false
+    };
+  }
+
+  navigateBack = () => {
+    if (this.onBack) {
+      return this.onBack();
+    }
+
+    if (!this.previousSection) {
+      if (this.autoClose) {
+        this.viewManager.remove();
+      }
+      return;
+    }
+
+    this.state = null;
+    this.action = null;
+    this.resetSelectedFactor();
+    this.setSection(this.previousSection);
+  }
+
   showComplete = () => {
-    this.section = 'complete';
+    this.setSection('complete');
     this.selectedFactor.isSubmitting = false;
     if (this.onComplete) {
       this.onComplete(this);

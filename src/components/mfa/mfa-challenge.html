@@ -35,7 +35,6 @@
                placeholder="123456"
                required="true" />
           </label>
-
           <p rv-show="errorMessage">
             <span class="sp-icon-warning"></span> {errorMessage}
           </p>
@@ -45,10 +44,11 @@
           <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
         </div>
 
-        <hr>
-
-        <div class="sp-mfa-challenge-actions">
-          <p><a rv-on-click="reSendSmsCode">Re-send code</a></p>
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-left"><a rv-on-click="reSendSmsCode">Re-send code</a></p>
+          <p rv-show="previousSection | isnt null" class="sp-right"><a rv-on-click="navigateBack">Back</a></p>
+          <p rv-show="previousSection | is null" class="sp-right"><a rv-show="autoClose | is true" rv-on-click="navigateBack">Cancel</a></p>
           <!--p><a rv-on-click="changeSmsPhoneNumber">Change phone number</a></p-->
         </div>
       </form>
@@ -78,6 +78,12 @@
 
         <div class="sp-form-group">
           <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
+        </div>
+
+        <div class="sp-mfa-actions" rv-show="previousSection | isnt null">
+          <hr>
+          <p class="sp-right"><a rv-on-click="navigateBack">Back</a></p>
+          <p rv-show="previousSection | is null" class="sp-right"><a rv-show="autoClose | is true" rv-on-click="navigateBack">Cancel</a></p>
         </div>
       </form>
     </div>

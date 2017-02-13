@@ -86,11 +86,12 @@ class LoginComponent {
 
       case 'factor_enroll':
         this.viewManager.showEnrollMfa({
-          section: 'enroll',
+          section: 'select',
           state: err.state,
           factors: err.allowedFactorTypes.map((id) => {
             return {
-              id: id
+              id: id,
+              type: id
             };
           }),
           onComplete: () => {

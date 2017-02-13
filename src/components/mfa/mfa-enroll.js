@@ -8,8 +8,10 @@ class MfaEnrollComponent {
   static view = view;
   static style = style;
 
-  section = null;
   state = null;
+
+  section = null;
+  previousSection = null;
 
   errorMessage = null;
 
@@ -38,6 +40,20 @@ class MfaEnrollComponent {
     }
   }
 
+  navigateBack = () => {
+    if (!this.previousSection) {
+      if (this.autoClose) {
+        this.viewManager.remove();
+      }
+      return;
+    }
+
+    this.state = null;
+    this.action = null;
+    this.resetSelectedFactor();
+    this.setSection(this.previousSection);
+  }
+
   selectFactor = (e) => {
     let id = utils.getClosestDataAttribute(e.srcElement, 'id');
     let selectedFactor = this.factors.find(x => x.id === id);
@@ -50,6 +66,11 @@ class MfaEnrollComponent {
       this.userService.createFactor(this.state)
         .catch(this.showError.bind(this));
     }
+  }
+
+  setSection(section) {
+    this.previousSection = this.section;
+    this.section = section;
   }
 
   showComplete = () => {
@@ -86,6 +107,10 @@ class MfaEnrollComponent {
     this.selectedFactor.showSecret = false;
   }
 
+  stepBackwards = () => {
+    this.selectedFactor.step--;
+  }
+
   onFormSubmit = (event) => {
     event.preventDefault();
 
@@ -113,6 +138,9 @@ class MfaEnrollComponent {
               section: 'challenge',
               state: this.state,
               selectedFactor: this.selectedFactor,
+              onBack: () => {
+                this.viewManager.showEnrollMfa(this)
+              },
               onComplete: () => {
                 this.viewManager.showEnrollMfa({
                   section: 'complete',
