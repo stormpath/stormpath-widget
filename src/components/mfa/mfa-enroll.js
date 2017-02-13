@@ -139,7 +139,7 @@ class MfaEnrollComponent {
               state: this.state,
               selectedFactor: this.selectedFactor,
               onBack: () => {
-                this.viewManager.showEnrollMfa(this)
+                this.viewManager.showEnrollMfa(this);
               },
               onComplete: () => {
                 this.viewManager.showEnrollMfa({
