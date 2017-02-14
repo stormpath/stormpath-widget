@@ -203,18 +203,6 @@ class ViewManager {
   }
 
   showEnrollMfa(options) {
-    options = options || {};
-
-    if (!options.onComplete) {
-      options.onComplete = () => {
-        setTimeout(() => {
-          if (this._modalExists()) {
-            this.remove();
-          }
-        }, 5 * 1000);
-      };
-    }
-
     this._render(MfaEnrollComponent.id, options);
   }
 

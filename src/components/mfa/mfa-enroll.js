@@ -64,6 +64,9 @@ class MfaEnrollComponent {
 
     if (id === 'google-authenticator') {
       this.userService.createFactor(this.state)
+        .then((result) => {
+          this.state = result.state;
+        })
         .catch(this.showError.bind(this));
     }
   }
@@ -155,7 +158,10 @@ class MfaEnrollComponent {
       case 'google-authenticator':
         switch (this.selectedFactor.step) {
           case 1:
-            this.userService.createFactor({ type: this.selectedFactor.type }, this.state)
+            this.userService.createFactor({
+              type: this.selectedFactor.type,
+              issuer: utils.makeReadableId()
+            }, this.state)
               .then((result) => {
                 for (var key in result) {
                   var value = result[key];
@@ -181,17 +187,19 @@ class MfaEnrollComponent {
 
           case 3:
             request.code = this.selectedFactor.code;
-            this.userService.createChallenge(this.state, request).then((result) => {
-              switch (result.status.toLowerCase()) {
-                case 'success':
-                  this.showComplete();
-                  break;
+            this.userService.createChallenge(this.state, request)
+              .then((result) => {
+                switch (result.status.toLowerCase()) {
+                  case 'success':
+                    this.showComplete();
+                    break;
 
-                case 'failed':
-                  this.showError(new Error('The code you entered was not valid.'));
-                  break;
-              }
-            });
+                  case 'failed':
+                    this.showError(new Error('The code you entered was not valid.'));
+                    break;
+                }
+              })
+              .catch(this.showError);
         }
         break;
     }

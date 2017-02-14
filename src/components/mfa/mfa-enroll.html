@@ -73,6 +73,10 @@
             </p>
           </div>
 
+          <p rv-show="errorMessage">
+            <span class="sp-icon-warning"></span> {errorMessage}
+          </p>
+
           <div class="sp-form-group">
             <sp-submit-button label="'Next'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
           </div>
@@ -158,9 +162,8 @@
 
   <div rv-show="section | is 'complete'">
     <p class="sp-text-success"><span class="sp-icon-success"></span> Device added</p>
-    <div class="sp-complete" rv-show="onComplete">
-      <p>You'll be redirected to your application shortly.</p>
-      <p class="sp-loader"></p>
-    </div>
+    <p class="sp-complete">
+      Your factor has been setup successfully.
+    </p>
   </div>
 </div>

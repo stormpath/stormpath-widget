@@ -3,10 +3,19 @@
   <div class="sp-loader" rv-show="state | is 'loading'"></div>
 
   <div rv-show="section | is 'select'">
-    <p>Choose a method to verify access to your account.</p>
+    <p>Choose one of your methods to verify access to your account.</p>
     <div class="sp-factors">
       <div class="sp-factor" rv-each-factor="factors" rv-data-id="factor.id">
-        <p class="sp-factor-title" rv-on-click="selectFactor"><span rv-class="factor.iconId | prefix 'sp-icon-'"></span>{factor.title}</p>
+        <p class="sp-factor-title" rv-on-click="selectFactor">
+          <span rv-class="factor.iconId | prefix 'sp-icon-'"></span>
+          <span rv-show="factor.id | is 'sms'">
+            SMS
+          </span>
+          <span rv-show="factor.id | isnt 'sms'">
+            {factor.title}
+          </span>
+          <span rv-show="factor.hint">({factor.hint})</span>
+        </p>
         <p class="sp-factor-description">{factor.description}</p>
       </div>
     </div>

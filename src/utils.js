@@ -1,4 +1,5 @@
 const jwtExpression = /^[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+$/;
+const readableCharSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 class Utils {
   isVisible(element) {
@@ -8,6 +9,20 @@ class Utils {
   getElementsByClass(element, className) {
     const elements = element.getElementsByClassName(className);
     return Array.prototype.slice.call(elements);
+  }
+
+  getRandomCharacterFromString(value) {
+    return value.charAt(Math.floor(Math.random() * value.length));
+  }
+
+  makeArray(length) {
+    return new Array(length).fill();
+  }
+
+  makeReadableId(length = 4) {
+    return this.makeArray(length)
+      .map(() => this.getRandomCharacterFromString(readableCharSet))
+      .join('');
   }
 
   focusIfVisible(element) {
