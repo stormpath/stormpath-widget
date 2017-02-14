@@ -12,7 +12,7 @@ const outputSourceMapFile = `${__dirname}/dist/${sourceMapFilename}`;
 
 // Sanity check
 if (!fs.existsSync(outputSourceFile) || !fs.existsSync(outputSourceMapFile)) {
-  throw new Error('The source files do not exist');
+  throw new Error('The source files do not exist. Please run the build script.');
 }
 if (fs.existsSync(stagingDirectory)) {
   throw new Error('The staging directory already exists');

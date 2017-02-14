@@ -27,7 +27,8 @@
     "protractor-sauce": "./node_modules/protractor/bin/protractor test/protractor/entry-sauce.js",
     "start": "node dev-server.js",
     "test": "npm run lint && npm run karma",
-    "pack": "node package-for-dist.js"
+    "pack": "node package-for-dist.js",
+    "publish": "node publish.js",
   },
   "dependencies": {
     "babel-cli": "^6.18.0",
