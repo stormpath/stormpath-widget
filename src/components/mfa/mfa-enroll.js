@@ -55,7 +55,7 @@ class MfaEnrollComponent {
   }
 
   selectFactor = (e) => {
-    let id = utils.getClosestDataAttribute(e.srcElement, 'id');
+    let id = utils.getClosestDataAttribute(e.target, 'id');
     let selectedFactor = this.factors.find(x => x.id === id);
 
     this.section = 'setup';

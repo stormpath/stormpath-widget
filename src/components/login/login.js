@@ -63,6 +63,13 @@ class LoginComponent {
   }
 
   onError(state, err) {
+    const closeWindowOnComplete = () => {
+      setTimeout(() => {
+        if (this.autoClose) {
+          this.viewManager.remove();
+        }
+      }, 5 * 1000);
+    }
     switch (err.action) {
       case 'factor_challenge':
         this.viewManager.showChallengeMfa({
@@ -72,11 +79,7 @@ class LoginComponent {
             id: err.factor.type.toLowerCase(),
             ...err.factor
           },
-          onComplete: () => {
-            if (this.autoClose) {
-              this.autoClose();
-            }
-          }
+          onComplete: closeWindowOnComplete
         });
         break;
 
@@ -90,11 +93,7 @@ class LoginComponent {
               type: id
             };
           }),
-          onComplete: () => {
-            if (this.autoClose) {
-              this.autoClose();
-            }
-          }
+          onComplete: closeWindowOnComplete
         });
         break;
 
@@ -102,11 +101,7 @@ class LoginComponent {
         this.viewManager.showChallengeMfa({
           section: 'select',
           factors: err.factors,
-          onComplete: () => {
-            if (this.autoClose) {
-              this.autoClose();
-            }
-          }
+          onComplete: closeWindowOnComplete
         });
         break;
 
