@@ -16,7 +16,7 @@ console.log(`Prepping version ${version}`);
 
 const packageInfo = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 packageInfo.version = version;
-fs.writeFileSync(packageJsonPath, JSON.stringify(packageInfo), 'utf-8');
+fs.writeFileSync(packageJsonPath, JSON.stringify(packageInfo, null, 2), 'utf-8');
 
 // console.log('Building project...');
 // const buildResult = child_process.spawnSync('npm', ['run', 'build']);
