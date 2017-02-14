@@ -21,6 +21,13 @@ let throwIfNotOnMaster = () => {
   }
 };
 
+let throwIfVersionLessThanCurrentTag = (newVersion) => {
+  const latestTag = git.tag();
+  if (!semver.gt(newVersion, latestTag)) {
+    throw new Error(`Proposed version ${newVersion} is not greater than current tag ${latestTag}`);
+  }
+};
+
 let updatePackageJsonVersion = (path, newVersion) => {
   const packageInfo = JSON.parse(fs.readFileSync(path, 'utf-8'));
   packageInfo.version = newVersion;
@@ -35,7 +42,9 @@ let buildProject = () => {
 };
 
 throwIfVersionInvalid(version);
-throwIfNotOnMaster();
+//throwIfNotOnMaster();
+console.log('TODO RESTORE');
+throwIfVersionLessThanCurrentTag(version);
 
 /* eslint-disable no-console */
 console.log(`Prepping version ${version}`);
