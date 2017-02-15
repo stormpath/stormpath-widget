@@ -1,3 +1,4 @@
+import { mfaOauthErrorHandler } from '../mfa/shared';
 import utils from '../../utils';
 import view from 'html!./login.html';
 
@@ -63,54 +64,13 @@ class LoginComponent {
   }
 
   onError(state, err) {
-    const closeWindowOnComplete = () => {
-      setTimeout(() => {
-        if (this.autoClose) {
-          this.viewManager.remove();
-        }
-      }, 5 * 1000);
-    }
-    switch (err.action) {
-      case 'factor_challenge':
-        this.viewManager.showChallengeMfa({
-          section: 'challenge',
-          state: err.state,
-          selectedFactor: {
-            id: err.factor.type.toLowerCase(),
-            ...err.factor
-          },
-          onComplete: closeWindowOnComplete
-        });
-        break;
-
-      case 'factor_enroll':
-        this.viewManager.showEnrollMfa({
-          section: 'select',
-          state: err.state,
-          factors: err.allowedFactorTypes.map((id) => {
-            return {
-              id: id,
-              type: id
-            };
-          }),
-          onComplete: closeWindowOnComplete
-        });
-        break;
-
-      case 'factor_select':
-        this.viewManager.showChallengeMfa({
-          section: 'select',
-          factors: err.factors,
-          onComplete: closeWindowOnComplete
-        });
-        break;
-
-      default:
+    mfaOauthErrorHandler(err, this.viewManager)
+      .then(this.viewManager.remove.bind(this.viewManager))
+      .catch((err) => {
         this.error = err;
         this.state = state;
         this.props.isSubmitting = false;
-        break;
-    }
+      });
   }
 
   onViewModelLoaded(data) {

@@ -35,3 +35,51 @@ export function setFactorDefaults(factor) {
     }
   }
 }
+
+/**
+ * Inspects an MFA error during oauth/token authentication and decides
+ * what views should be shown.
+ */
+export function mfaOauthErrorHandler(err, viewManager) {
+  return new Promise((resolve, reject) => {
+    switch (err.action) {
+      case 'factor_challenge':
+        viewManager.showChallengeMfa({
+          section: 'challenge',
+          state: err.state,
+          selectedFactor: {
+            id: err.factor.type.toLowerCase(),
+            ...err.factor
+          },
+          onComplete: () => resolve.apply(null, arguments)
+        });
+        break;
+
+      case 'factor_enroll':
+        viewManager.showEnrollMfa({
+          section: 'select',
+          state: err.state,
+          factors: err.allowedFactorTypes.map((id) => {
+            return {
+              id: id,
+              type: id
+            };
+          }),
+          onComplete: () => resolve.apply(null, arguments)
+        });
+        break;
+
+      case 'factor_select':
+        viewManager.showChallengeMfa({
+          section: 'select',
+          factors: err.factors,
+          onComplete: () => resolve.apply(null, arguments)
+        });
+        break;
+
+      default:
+        reject(err);
+        break;
+    }
+  });
+}

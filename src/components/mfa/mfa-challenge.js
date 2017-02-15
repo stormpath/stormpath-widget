@@ -62,14 +62,13 @@ class MfaChallengeComponent {
   }
 
   selectFactor = (e) => {
-    let id = utils.getClosestDataAttribute(e.target, 'id');
-    let selectedFactor = this.factors.find(x => x.id === id);
+    let hint = utils.getClosestDataAttribute(e.target, 'hint');
+    let selectedFactor = this.factors.find(x => x.hint === hint);
 
     this.setSection('challenge');
     this.state = selectedFactor.state;
     this.selectedFactor = selectedFactor;
     this.selectedFactor.isSubmitting = true;
-
     this.userService.createChallenge(this.state)
       .then((result) => {
         this.selectedFactor.isSubmitting = false;

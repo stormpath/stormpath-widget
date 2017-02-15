@@ -1,6 +1,7 @@
 import extend from 'xtend';
 import EventEmitter from 'events';
 
+import { mfaOauthErrorHandler } from './components/mfa/shared';
 import ViewManager from './view-manager';
 import utils from './utils';
 
@@ -142,7 +143,11 @@ class Stormpath extends EventEmitter {
     }
 
     this.userService.tokenLogin(assertionToken)
-      .catch((e) => this.emit('loginError', e.message));
+      .catch((err) => {
+        mfaOauthErrorHandler(err, this.viewManager)
+          .then(this.viewManager.remove.bind(this.viewManager))
+          .catch((err) => this.emit('loginError', err.message));
+      });
   }
 
   getAccount() {

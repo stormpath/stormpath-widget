@@ -158,9 +158,10 @@ class MfaEnrollComponent {
       case 'google-authenticator':
         switch (this.selectedFactor.step) {
           case 1:
+            this.newIssuer = utils.makeReadableId();
             this.userService.createFactor({
               type: this.selectedFactor.type,
-              issuer: utils.makeReadableId()
+              issuer: this.newIssuer
             }, this.state)
               .then((result) => {
                 for (var key in result) {

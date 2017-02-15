@@ -5,7 +5,7 @@
   <div rv-show="section | is 'select'">
     <p>Choose one of your methods to verify access to your account.</p>
     <div class="sp-factors">
-      <div class="sp-factor" rv-each-factor="factors" rv-data-id="factor.id">
+      <div class="sp-factor" rv-each-factor="factors" rv-data-hint="factor.hint">
         <p class="sp-factor-title" rv-on-click="selectFactor">
           <span rv-class="factor.iconId | prefix 'sp-icon-'"></span>
           <span rv-show="factor.id | is 'sms'">
@@ -16,7 +16,9 @@
           </span>
           <span rv-show="factor.hint">({factor.hint})</span>
         </p>
-        <p class="sp-factor-description">{factor.description}</p>
+        <span rv-hide="factor.hint">
+          <p class="sp-factor-description">{factor.description}</p>
+        </span>
       </div>
     </div>
   </div>
@@ -66,7 +68,7 @@
     <div rv-show="selectedFactor.id | is 'google-authenticator'">
       <form rv-on-submit="onFormSubmit">
         <div>
-          <p>Open the Authenticator app on your mobile device, and enter the code shown.</p>
+          <p>Open the Authenticator app on your mobile device, and enter the code shown for entry <strong>{selectedFactor.hint}</strong>.</p>
         </div>
 
         <fieldset class="sp-form-group">
