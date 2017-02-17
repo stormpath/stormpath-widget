@@ -247,4 +247,4 @@ This event is emitted once a user logs out.
 
 ## Contributing
 
-Want to submit a pull request or debug an issue?  Please see the [CONTRIBUTING](CONTRIBUTING.md) document for more information on how to develop for this project.
+Want to submit a pull request or debug an issue?  Please see the [CONTRIBUTING](CONTRIBUTING.MD) document for more information on how to develop for this project.
