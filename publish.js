@@ -61,13 +61,14 @@ let addAndCommitWithTag = (version) => {
   child_process.execSync(`git tag ${version}`);
 };
 
-/* eslint-disable no-console */
+// Main routine starts here:
+
 throwIfVersionInvalid(version);
-//throwIfNotOnMaster();
-console.log('TODO RESTORE');
+throwIfNotOnMaster();
 throwIfVersionLessThanCurrentTag(version);
 updatePackageJsonVersion(packageJsonPath, version);
 
+/* eslint-disable no-console */
 console.log('Building project...');
 buildProject();
 
