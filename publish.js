@@ -10,6 +10,7 @@ const version = process.argv[2];
 const packageJsonPath = `${__dirname}/package.json`;
 const minifiedDistPath = `${__dirname}/dist/stormpath.min.js`;
 const integrityFilePath = `${__dirname}/integrity.txt`;
+const shaAlgorithm = 'sha384';
 
 let throwIfVersionInvalid = (versionArg) => {
   if (!semver.valid(versionArg)) {
@@ -51,7 +52,7 @@ let computeHashFor = (path) => {
 };
 
 let appendToIntegrityFile = (version, hash) => {
-  fs.appendFileSync(integrityFilePath, `${version} ${hash}`);
+  fs.appendFileSync(integrityFilePath, `${version} ${shaAlgorithm}-${hash}`);
 };
 
 /* eslint-disable no-console */
