@@ -55,6 +55,10 @@ let appendToIntegrityFile = (version, hash) => {
   fs.appendFileSync(integrityFilePath, `${version} ${shaAlgorithm}-${hash}`);
 };
 
+let addAndCommitWithTag = () => {
+  child_process.execSync('git add --all');
+};
+
 /* eslint-disable no-console */
 throwIfVersionInvalid(version);
 //throwIfNotOnMaster();
@@ -71,5 +75,6 @@ console.log(`Built stormpath.min.js v${version} with SHA ${minifiedHash}`);
 appendToIntegrityFile(version, minifiedHash);
 
 // commit and tag
+addAndCommitWithTag();
 
 console.log(chalk.green('Done! Don\'t forget to run:\ngit push origin --tags'));
