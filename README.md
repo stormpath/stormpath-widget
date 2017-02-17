@@ -197,6 +197,10 @@ if ((/#change-password/).test(window.location.href)) {
 }
 ```
 
+#### showEnrollMfa(type)
+
+Shows the MFA flow for enrolling a specific factor. Available types are `google-authenticator` and `sms`.
+
 #### showEmailVerification(sptoken)
 
 Trigger the email verification workflow. This is used when the user is landing on your app after clicking the email verification link. The widget fetches the `sptoken` from the URL if it's not passed explicitly.

@@ -11,7 +11,7 @@ class SubmitButtonComponent {
 
   constructor(data) {
     this.label = data.label;
-    this.submitting = data.submitting;
+    this.submitting = data.submitting || false;
   }
 
   handler(e, model) {

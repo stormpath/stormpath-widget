@@ -1,6 +1,61 @@
 const jwtExpression = /^[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+\.[a-zA-Z0-9+/_=-]+$/;
+const readableCharSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
 class Utils {
+  isVisible(element) {
+    return window.getComputedStyle(element).display !== 'none';
+  }
+
+  getElementsByClass(element, className) {
+    const elements = element.getElementsByClassName(className);
+    return Array.prototype.slice.call(elements);
+  }
+
+  getRandomCharacterFromString(value) {
+    return value.charAt(Math.floor(Math.random() * value.length));
+  }
+
+  makeArray(length) {
+    return new Array(length).fill();
+  }
+
+  makeReadableId(length = 4) {
+    return this.makeArray(length)
+      .map(() => this.getRandomCharacterFromString(readableCharSet))
+      .join('');
+  }
+
+  focusIfVisible(element) {
+    if (this.isVisible(element)) {
+      element.focus();
+    }
+  }
+
+  focusVisibleElement(element, className) {
+    this.getElementsByClass(element, className)
+      .forEach(element => this.focusIfVisible(element));
+  }
+
+  tryParseJson(data) {
+    try {
+      return JSON.parse(data);
+    } catch (otherErr) {
+      return false;
+    }
+  }
+
+  getClosestDataAttribute(element, name) {
+    if (element.dataset[name]) {
+      return element.dataset[name];
+    }
+
+    if (element.parentNode) {
+      return this.getClosestDataAttribute(element.parentNode, name);
+    }
+
+    return false;
+  }
+
   // Takes an object array and remaps it to an object based on a key.
   mapArrayToObject(source, key) {
     if (!Array.isArray(source) || typeof key !== 'string') {

@@ -14,7 +14,9 @@ import {
   PasswordFormFieldComponent,
   RegistrationComponent,
   SubmitButtonComponent,
-  VerifyEmailComponent
+  VerifyEmailComponent,
+  MfaChallengeComponent,
+  MfaEnrollComponent
 } from './components';
 
 class ViewManager {
@@ -58,6 +60,14 @@ class ViewManager {
     [VerifyEmailComponent.id]: {
       component: VerifyEmailComponent,
       view: () => VerifyEmailComponent.view
+    },
+    [MfaChallengeComponent.id]: {
+      component: MfaChallengeComponent,
+      view: () => MfaChallengeComponent.view
+    },
+    [MfaEnrollComponent.id]: {
+      component: MfaEnrollComponent,
+      view: () => MfaEnrollComponent.view
     }
   };
 
@@ -75,6 +85,8 @@ class ViewManager {
     Rivets.formatters['in'] = (a, b) => (b || '').split(',').indexOf(a) !== -1;
     Rivets.formatters['gt'] = (x, y) => x > y;
     Rivets.formatters['any'] = (arr) => (arr || []).length > 0;
+    Rivets.formatters['contains'] = (arr, x) => (arr || []).includes(x);
+    Rivets.formatters['or'] = (value, defaultValue) => value || defaultValue;
     Rivets.formatters.prefix = utils.prefix;
 
     Rivets.binders.required = (el, val) => el.required = val === true;
@@ -119,13 +131,17 @@ class ViewManager {
   _render(viewComponentId, data) {
     data = data || {};
     data.userService = this.userService;
+    data.autoClose = this._modalExists();
     data.viewManager = utils.bindAll(this, [
       'remove',
       'showLogin',
       'showRegistration',
       'showForgotPassword',
       'showChangePassword',
-      'showEmailVerification']);
+      'showEmailVerification',
+      'showChallengeMfa',
+      'showEnrollMfa'
+    ]);
 
     Rivets.init(
       utils.prefix(viewComponentId, this.prefix, '-'),
@@ -167,15 +183,11 @@ class ViewManager {
   }
 
   showLogin() {
-    this._render(LoginComponent.id, {
-      autoClose: this._modalExists()
-    });
+    this._render(LoginComponent.id);
   }
 
   showRegistration() {
-    this._render(RegistrationComponent.id, {
-      autoClose: this._modalExists()
-    });
+    this._render(RegistrationComponent.id);
   }
 
   showForgotPassword() {
@@ -188,6 +200,14 @@ class ViewManager {
 
   showEmailVerification(token) {
     this._render(VerifyEmailComponent.id, { token });
+  }
+
+  showEnrollMfa(options) {
+    this._render(MfaEnrollComponent.id, options);
+  }
+
+  showChallengeMfa(options) {
+    this._render(MfaChallengeComponent.id, options);
   }
 }
 

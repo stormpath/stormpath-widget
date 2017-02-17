@@ -1,3 +1,4 @@
+import { mfaOauthErrorHandler } from '../mfa/shared';
 import utils from '../../utils';
 import view from 'html!./login.html';
 
@@ -63,9 +64,13 @@ class LoginComponent {
   }
 
   onError(state, err) {
-    this.error = err;
-    this.state = state;
-    this.props.isSubmitting = false;
+    mfaOauthErrorHandler(err, this.viewManager)
+      .then(this.viewManager.remove.bind(this.viewManager))
+      .catch((err) => {
+        this.error = err;
+        this.state = state;
+        this.props.isSubmitting = false;
+      });
   }
 
   onViewModelLoaded(data) {

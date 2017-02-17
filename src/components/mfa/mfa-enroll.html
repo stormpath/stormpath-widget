@@ -1,0 +1,169 @@
+<div class="sp-mfa-enroll-component">
+  <div class="sp-title">Verification Required</div>
+  <div class="sp-loader" rv-show="state | is 'loading'"></div>
+
+  <div rv-show="section | is 'select'">
+    <p>To protect your account from unauthorized access, you'll need to set up another device to verify your identity when logging in.</p>
+    <p>Please choose a method to set up now.</p>
+    <div class="sp-factors">
+      <div class="sp-factor" rv-each-factor="factors" rv-on-click="selectFactor" rv-data-id="factor.id">
+        <h2>{factor.title}</h2>
+        <p>{factor.description}</p>
+      </div>
+    </div>
+  </div>
+
+  <div rv-show="section | is 'setup'">
+    <div rv-show="selectedFactor.id | is 'sms'">
+      <form rv-on-submit="onFormSubmit">
+        <div>
+          <p class="sp-subtitle">Set up SMS</p>
+          <p>Enter a phone number that can receive SMS text messages. You'll need to have access to this phone when logging in to your account.</p>
+        </div>
+
+        <fieldset class="sp-form-group">
+          <label>Phone number
+            <input
+               type="text"
+               class="mfa-focus-target"
+               name="sms-phone-number"
+               rv-value="selectedFactor.phoneNumber"
+               placeholder="(555) 123-4567"
+               required="true" />
+           </label>
+
+          <p rv-show="errorMessage">
+            <span class="sp-icon-warning"></span> {errorMessage}
+          </p>
+        </fieldset>
+
+        <div class="sp-form-group">
+          <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
+        </div>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-right">
+            <a rv-on-click="navigateBack">
+              <span rv-show="previousSection | isnt null">Back</span>
+              <span rv-show="previousSection | is null">Cancel</span>
+            </a>
+          </p>
+          <!--p><a rv-on-click="changeSmsPhoneNumber">Change phone number</a></p-->
+        </div>
+      </form>
+    </div>
+
+    <div class="sp-mfa-setup sp-google-authenticator" rv-show="selectedFactor.id | is 'google-authenticator'">
+      <div class="sp-mfa-header">
+        <p class="sp-subtitle">Set Up Google Authenticator</p>
+        <p><span rv-class="selectedFactor.step | prefix 'sp-icon-step-'"></span></p>
+      </div>
+
+      <div class="sp-mfa-step-1" rv-show="selectedFactor.step | is 1">
+        <form rv-on-submit="onFormSubmit">
+          <p>Install Google Authenticator on your mobile device.</p>
+
+          <div class="sp-mfa-icons">
+            <p>
+              <a href="https://itunes.apple.com/app/google-authenticator/id388497605?mt=8" target="_blank"><span class="sp-icon-apple-ios"></span></a>
+            </p>
+            <p>
+              <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank"><span class="sp-icon-google-play"></span></a>
+            </p>
+          </div>
+
+          <p rv-show="errorMessage">
+            <span class="sp-icon-warning"></span> {errorMessage}
+          </p>
+
+          <div class="sp-form-group">
+            <sp-submit-button label="'Next'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
+          </div>
+        </form>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-right">
+            <a rv-on-click="navigateBack">Cancel</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="sp-mfa-step-2" rv-show="selectedFactor.step | is 2">
+        <form rv-on-submit="onFormSubmit">
+          <p>Open up Google Authenticator and add this account:</p>
+          <ul>
+            <li>Tap the plus icon.</li>
+            <li>
+              <span rv-show="selectedFactor.showSecret | is false">Scan the barcode.</span>
+              <span rv-show="selectedFactor.showSecret | is true">Manually enter the code.</span>
+            </li>
+          </ul>
+
+          <div rv-show="selectedFactor.showSecret | is false" >
+            <p class="sp-mfa-qr-code-image"><img rv-src="selectedFactor.base64QRImage | or '' | prefix 'data:image/png;base64,'" /></p>
+            <p class="sp-mfa-show-secret"><a rv-on-click="showFactorSecret">Problem scanning code?<br>Click here to enter it manually.</a></p>
+          </div>
+
+          <div rv-show="selectedFactor.showSecret | is true">
+            <p class="sp-mfa-secret">{selectedFactor.secret}</p>
+            <p class="sp-mfa-show-secret"><a rv-on-click="hideFactorSecret">Problem entering code?<br>Click here to scan it.</a></p>
+          </div>
+
+          <div class="sp-form-group">
+            <sp-submit-button label="'Next'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
+          </div>
+        </form>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-right">
+            <a rv-on-click="stepBackwards">Back</a>
+          </p>
+        </div>
+      </div>
+
+      <div class="sp-mfa-step-3" rv-show="selectedFactor.step | is 3">
+        <form rv-on-submit="onFormSubmit">
+          <p>Enter the code shown for entry <strong>{newIssuer}</strong>.</p>
+
+          <fieldset class="sp-form-x">
+            <label>Security code
+              <input
+                 type="text"
+                 class="mfa-focus-target"
+                 name="google-authenticator-code"
+                 rv-value="selectedFactor.code"
+                 placeholder="123456"
+                 required="true"
+                 />
+             </label>
+
+            <p rv-show="errorMessage">
+              <span class="sp-icon-warning"></span> {errorMessage}
+            </p>
+          </fieldset>
+
+          <div class="sp-form-group">
+            <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
+          </div>
+        </form>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-right">
+            <a rv-on-click="stepBackwards">Back</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div rv-show="section | is 'complete'">
+    <p class="sp-text-success"><span class="sp-icon-success"></span> Device added</p>
+    <p class="sp-complete">
+      Your factor has been setup successfully.
+    </p>
+  </div>
+</div>

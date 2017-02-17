@@ -1,0 +1,110 @@
+<div class="sp-mfa-challenge-component">
+  <div class="sp-title">Verification Required</div>
+  <div class="sp-loader" rv-show="state | is 'loading'"></div>
+
+  <div rv-show="section | is 'select'">
+    <p>Choose one of your methods to verify access to your account.</p>
+    <div class="sp-factors">
+      <div class="sp-factor" rv-each-factor="factors" rv-data-hint="factor.hint">
+        <p class="sp-factor-title" rv-on-click="selectFactor">
+          <span rv-class="factor.iconId | prefix 'sp-icon-'"></span>
+          <span rv-show="factor.id | is 'sms'">
+            SMS
+          </span>
+          <span rv-show="factor.id | isnt 'sms'">
+            {factor.title}
+          </span>
+          <span rv-show="factor.hint">({factor.hint})</span>
+        </p>
+        <span rv-hide="factor.hint">
+          <p class="sp-factor-description">{factor.description}</p>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div rv-show="section | is 'challenge'">
+    <div rv-show="selectedFactor.id | is 'sms'">
+      <form rv-on-submit="onFormSubmit">
+        <div>
+          <p>We've just sent a code to {selectedFactor.hint}.</p>
+          <p rv-show="action | isnt 'verifyPhone'">Enter the code you receive here.</p>
+          <p rv-show="action | is 'verifyPhone'">Please verify your phone number by entering the code you receive here.</p>
+        </div>
+
+        <p rv-show="actionMessage" class="sp-action-message">
+          {actionMessage}
+        </p>
+
+        <fieldset class="sp-form-group">
+          <label>Security code
+            <input
+               type="text"
+               class="mfa-focus-target"
+               name="sms-code"
+               rv-value="selectedFactor.code"
+               placeholder="123456"
+               required="true" />
+          </label>
+          <p rv-show="errorMessage">
+            <span class="sp-icon-warning"></span> {errorMessage}
+          </p>
+        </fieldset>
+
+        <div class="sp-form-group">
+          <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
+        </div>
+
+        <div class="sp-mfa-actions">
+          <hr>
+          <p class="sp-left"><a rv-on-click="reSendSmsCode">Re-send code</a></p>
+          <p rv-show="previousSection | isnt null" class="sp-right"><a rv-on-click="navigateBack">Back</a></p>
+          <p rv-show="previousSection | is null" class="sp-right"><a rv-show="autoClose | is true" rv-on-click="navigateBack">Cancel</a></p>
+          <!--p><a rv-on-click="changeSmsPhoneNumber">Change phone number</a></p-->
+        </div>
+      </form>
+    </div>
+
+    <div rv-show="selectedFactor.id | is 'google-authenticator'">
+      <form rv-on-submit="onFormSubmit">
+        <div>
+          <p>Open the Authenticator app on your mobile device, and enter the code shown for entry <strong>{selectedFactor.hint}</strong>.</p>
+        </div>
+
+        <fieldset class="sp-form-group">
+          <label>Security code
+            <input
+               type="text"
+               class="mfa-focus-target"
+               name="google-authenticator-code"
+               rv-value="selectedFactor.code"
+               placeholder="123456"
+               required="true" />
+          </label>
+
+          <p rv-show="errorMessage">
+            <span class="sp-icon-warning"></span> {errorMessage}
+          </p>
+        </fieldset>
+
+        <div class="sp-form-group">
+          <sp-submit-button label="'Continue'" submitting="selectedFactor.isSubmitting"></sp-submit-button>
+        </div>
+
+        <div class="sp-mfa-actions" rv-show="previousSection | isnt null">
+          <hr>
+          <p class="sp-right"><a rv-on-click="navigateBack">Back</a></p>
+          <p rv-show="previousSection | is null" class="sp-right"><a rv-show="autoClose | is true" rv-on-click="navigateBack">Cancel</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div rv-show="section | is 'complete'">
+    <p class="sp-text-success"><span class="sp-icon-success"></span> Verification successful</p>
+    <div class="sp-complete">
+      <p>You'll be redirected to your application shortly.</p>
+      <p class="sp-loader"></p>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,7 @@
 import xhr from 'xhr';
-import utils from '../../utils';
 import formUrlencoded from 'form-urlencoded';
+import utils from '../../utils';
+import HttpError from './http-error';
 import AuthStrategy from '../auth-strategy';
 
 class HttpProvider {
@@ -33,14 +34,21 @@ class HttpProvider {
   }
 
   postForm(path, data, options) {
+    if (!options) {
+      options = {};
+    }
+
+    if (!options.headers) {
+      options.headers = {};
+    }
+
+    options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    options.headers['Accept'] = 'application/json';
+
     return this._createRequest({
       method: 'POST',
       path: path,
       body: formUrlencoded(data),
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json'
-      },
       ...options
     });
   }
@@ -51,39 +59,6 @@ class HttpProvider {
     } catch (otherErr) {
       return false;
     }
-  }
-
-  _createResponseError(err) {
-    if (!err) {
-      return this._createResponseError('Unknown error.');
-    }
-
-    let type;
-    let message;
-    let status;
-
-    if (typeof err === 'string') {
-      const parsedError = this._tryParseJson(err);
-      if (parsedError) {
-        err = parsedError;
-      }
-    }
-
-    if (err && typeof err === 'object') {
-      status = err.status ? err.status : undefined;
-      type = err.type ? err.type : 'unknown';
-      message = err.message ? err.message : JSON.stringify(err);
-    } else {
-      type = 'unknown';
-      message = err || 'Unknown error';
-    }
-
-    const newError = new Error(message);
-
-    newError.status = status;
-    newError.type = type;
-
-    return newError;
   }
 
   _needsPreflight(options) {
@@ -118,15 +93,15 @@ class HttpProvider {
             err = 'Communication error. Check the API configuration option and allowed origins on your application.';
           }
 
-          return reject(this._createResponseError(err));
+          return reject(new HttpError(resp.statusCode, err));
         }
 
         if (resp && resp.statusCode >= 400) {
-          return reject(this._createResponseError(body && body.error || body));
+          return reject(new HttpError(resp.statusCode, body && body.error || body));
         }
 
         if (typeof body === 'string') {
-          const parsedBody = this._tryParseJson(body);
+          const parsedBody = utils.tryParseJson(body);
           if (parsedBody !== false) {
             body = parsedBody;
           }

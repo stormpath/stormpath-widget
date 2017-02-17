@@ -1,22 +1,49 @@
 @import (reference) "./variables.less";
 
-.svg-icon(@uri, @size) {
+.svg-icon(@uri, @width, @height) {
   background-image: url(@uri);
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: center;
-  width: @size;
-  height: @size;
+  width: @width;
+  height: @height ;
   display: inline-block;
   position: relative;
   top: 2px;
 }
 
 .sp-icon-warning {
-  .svg-icon('../../assets/warning.svg', 14px);
+  .svg-icon('../../assets/warning.svg', 14px, 14px);
 }
 
 .sp-icon-success {
-  .svg-icon('../../assets/success.svg', 14px);
+  .svg-icon('../../assets/success.svg', 14px, 14px);
 }
 
+.sp-icon-sms {
+  .svg-icon('../../assets/sms.svg', 18px, 18px);
+}
+
+.sp-icon-mobile {
+  .svg-icon('../../assets/mobile.svg', 18px, 18px);
+}
+
+.sp-icon-google-play {
+  .svg-icon('../../assets/google-play.svg', 133px, 38px);
+}
+
+.sp-icon-apple-ios {
+  .svg-icon('../../assets/apple-ios.svg', 133px, 38px);
+}
+
+.sp-icon-step-1 {
+  .svg-icon('../../assets/step-1.svg', 112px, 12px);
+}
+
+.sp-icon-step-2 {
+  .svg-icon('../../assets/step-2.svg', 112px, 12px);
+}
+
+.sp-icon-step-3 {
+  .svg-icon('../../assets/step-3.svg', 112px, 12px);
+}
